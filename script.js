@@ -27,7 +27,10 @@ const possibleEmojis = [
   
   const configuration = {
     iceServers: [{
-      url: 'stun:stun.l.google.com:19302'
+      url: 'stun:stun.l.google.com:19302',
+      url:'stun:stun01.sipphone.com',
+      url:'stun:stun01.sipphone.com',
+      url:'stun:stun4.l.google.com:19302'
     }]
   };
   // RTCPeerConnection
