@@ -19,7 +19,7 @@ const possibleEmojis = [
   const chatHash = location.hash.substring(1);
   
   // TODO: Replace with your own channel ID
-  const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
+  const drone = new ScaleDrone('6FH7kYc5EbpaZfGD');
   // Scaledrone room name needs to be prefixed with 'observable-'
   const roomName = 'observable-' + chatHash;
   // Scaledrone room used for signaling
