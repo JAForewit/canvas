@@ -1,0 +1,47 @@
+{
+    "canvas": {
+        "name": "",
+        "tokens": [
+            {
+                "token": {
+                    "name": "",
+                    "url": "",
+                    "width": WIDTH,
+                    "height": HEIGHT,
+                    "x": X_POSITION,
+                    "y": Y_POSITION,
+                    "light": {
+                        "enabled": true,
+                        "bright":   BRIGHT_LIGHT_DISTANCE,
+                        "dim": DIM_LIGHT_DISTANCE
+                    },
+                    "can_view": []
+                }
+            }
+        ],
+        "drawings": [
+            {
+                "drawing": {
+                    "points": [],
+                    "indices": [],
+                    "opaque": true
+                }
+            }
+        ],
+        "background": {
+            "name": "",
+            "url": ""
+        },
+        "grid": {
+            "enabled": false,
+            "style": "square",
+            "width": GRID_WIDTH,
+            "height": GRID_HEIGHT
+        }
+    },
+    "player": {
+        "name": "",
+        "url": "",
+        "can_control": []
+    }
+}
