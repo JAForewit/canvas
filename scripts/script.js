@@ -149,21 +149,4 @@ function checkDataChannelState() {
   }
 }
 
-const form = document.querySelector('form');
-form.addEventListener('submit', () => {
-  const input = document.querySelector('input[type="text"]');
-  const value = input.value;
-  input.value = '';
-
-  const data = {
-    name,
-    content: value,
-    emoji,
-  };
-
-  dataChannel.send(JSON.stringify(data));
-
-  console.log(data, true);
-});
-
 console.log('Chat URL is ' + location.href);
