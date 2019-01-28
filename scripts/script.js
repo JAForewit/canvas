@@ -139,36 +139,14 @@ function setupDataChannel() {
   dataChannel.onopen = checkDataChannelState;
   dataChannel.onclose = checkDataChannelState;
   dataChannel.onmessage = event =>
-    insertMessageToDOM(JSON.parse(event.data), false)
+    console.log(JSON.parse(event.data))
 }
 
 function checkDataChannelState() {
   console.log('WebRTC channel state is:', dataChannel.readyState);
   if (dataChannel.readyState === 'open') {
-    insertMessageToDOM({ content: 'WebRTC data channel is now open' });
+    console.log('WebRTC data channel is now open');
   }
-}
-
-function insertMessageToDOM(options, isFromMe) {
-  const template = document.querySelector('template[data-template="message"]');
-  const nameEl = template.content.querySelector('.message__name');
-  if (options.emoji || options.name) {
-    nameEl.innerText = options.emoji + ' ' + options.name;
-  }
-  template.content.querySelector('.message__bubble').innerText = options.content;
-  const clone = document.importNode(template.content, true);
-  const messageEl = clone.querySelector('.message');
-  if (isFromMe) {
-    messageEl.classList.add('message--mine');
-  } else {
-    messageEl.classList.add('message--theirs');
-  }
-
-  const messagesEl = document.querySelector('.messages');
-  messagesEl.appendChild(clone);
-
-  // Scroll to bottom
-  messagesEl.scrollTop = messagesEl.scrollHeight - messagesEl.clientHeight;
 }
 
 const form = document.querySelector('form');
@@ -185,7 +163,7 @@ form.addEventListener('submit', () => {
 
   dataChannel.send(JSON.stringify(data));
 
-  insertMessageToDOM(data, true);
+  console.log(data, true);
 });
 
-insertMessageToDOM({ content: 'Chat URL is ' + location.href });
+console.log('Chat URL is ' + location.href);
