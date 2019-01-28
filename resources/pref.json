@@ -18,7 +18,8 @@
                 "y": Y_POSITION,
                 "light": {
                     "enabled": true,
-                    "bright":   BRIGHT_LIGHT_DISTANCE,
+                    "color" : LIGHT_COLOR,
+                    "bright" : BRIGHT_LIGHT_DISTANCE,
                     "dim": DIM_LIGHT_DISTANCE
                 },
                 "can_view": []
@@ -28,6 +29,12 @@
             {
                 "name": "",
                 "url": "",
+                "grid": {
+                    "enabled": false,
+                    "style": "square",
+                    "width": GRID_WIDTH,
+                    "height": GRID_HEIGHT
+                },
                 "tokens": [
                     {
                         "id": TOKEN_INDEX
@@ -39,13 +46,7 @@
                         "indices": [],
                         "opaque": true
                     }
-                ],
-                "grid": {
-                    "enabled": false,
-                    "style": "square",
-                    "width": GRID_WIDTH,
-                    "height": GRID_HEIGHT
-                }
+                ]
             }
         ]
     }
