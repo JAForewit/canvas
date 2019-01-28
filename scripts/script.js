@@ -16,6 +16,7 @@ const configuration = {
     { urls: 'stun:stun.l.google.com:19302' }
   ]
 };
+
 // RTCPeerConnection
 let pc;
 // RTCDataChannel
@@ -122,7 +123,7 @@ function setupDataChannel() {
   dataChannel.onopen = checkDataChannelState;
   dataChannel.onclose = checkDataChannelState;
   dataChannel.onmessage = event =>
-    console.log(JSON.parse(event.data))
+    console.log(event.data)
 }
 
 function checkDataChannelState() {
