@@ -1,17 +1,3 @@
-const possibleEmojis = [
-  '🐀', '🐁', '🐭', '🐹', '🐂', '🐃', '🐄', '🐮', '🐅', '🐆', '🐯', '🐇', '🐐', '🐑', '🐏', '🐴',
-  '🐎', '🐱', '🐈', '🐰', '🐓', '🐔', '🐤', '🐣', '🐥', '🐦', '🐧', '🐘', '🐩', '🐕', '🐷', '🐖',
-  '🐗', '🐫', '🐪', '🐶', '🐺', '🐻', '🐨', '🐼', '🐵', '🙈', '🙉', '🙊', '🐒', '🐉', '🐲', '🐊',
-  '🐍', '🐢', '🐸', '🐋', '🐳', '🐬', '🐙', '🐟', '🐠', '🐡', '🐚', '🐌', '🐛', '🐜', '🐝', '🐞',
-];
-function randomEmoji() {
-  var randomIndex = Math.floor(Math.random() * possibleEmojis.length);
-  return possibleEmojis[randomIndex];
-}
-
-const emoji = randomEmoji();
-const name = prompt("What's your name?");
-
 // Generate random chat hash if needed
 if (!location.hash) {
   location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
@@ -26,12 +12,9 @@ const roomName = 'observable-' + chatHash;
 let room;
 
 const configuration = {
-  iceServers: [{
-    url: 'stun:stun.l.google.com:19302',
-    url: 'stun:stun01.sipphone.com',
-    url: 'stun:stun01.sipphone.com',
-    url: 'stun:stun4.l.google.com:19302'
-  }]
+  iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' }
+  ]
 };
 // RTCPeerConnection
 let pc;
