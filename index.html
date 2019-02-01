@@ -19,8 +19,8 @@
 <body>
 
   <div id="app">
-    <h1 v-bind:class="{'open': showToolbar }" class="Toolbar">Toolbar</h1>
-    <button v-on:click="showToolbar = !showToolbar">toggle toolbar</button>
+    <widget-toolbar ref="toolbar"></widget-toolbar>
+    <button v-on:click="$refs.toolbar.showToolbar = !$refs.toolbar.showToolbar">toggle toolbar</button>
   </div>
 
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
