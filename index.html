@@ -5,7 +5,7 @@
   <title>Marc Anderson</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 
-  <link rel="stylesheet" href="./style/style.css">
+  <link rel="stylesheet" href="./style/app.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
@@ -18,8 +18,15 @@
 
 <body>
 
+  <div id="app">
+    <h1 v-bind:class="{'open': showToolbar }" class="Toolbar">Toolbar</h1>
+    <button v-on:click="showToolbar = !showToolbar">toggle toolbar</button>
+  </div>
+
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
   <script src="./scripts/script.js"></script>
+  <script src="./scripts/app.js"></script>
 
 </body>
 
