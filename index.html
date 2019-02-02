@@ -19,22 +19,27 @@
   <div id="manager">
     <div v-bind:class="{ 'open': showToolbar }" class="Toolbar">
       <h1>Toolbar</h1>
+      <div id="container">
+        <div class="widget">widget</div>
+      </div>
     </div>
     <button v-on:click="showToolbar = !showToolbar" style="float: right">toggle toolbar</button>
   </div>
   <!--canvas-->
-  <div id="canvas">
-
-  </div>
+  <div id="canvas"></div>
   <!--preferences-->
-  <div id="preferences">
+  <div id="preferences"></div>
 
-  </div>
-
-  <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+  <!--3RD PARTY-->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
-  <script src="./scripts/script.js"></script>
+  <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+  <!------------->
+  <!--https://github.com/bcherny/draggable-->
+  <script src="./scripts/draggable/draggable.min.js"></script>
+  <!---------------------------------------->
+  <script src="./scripts/rtc.js"></script>
   <script src="./scripts/app.js"></script>
 
 </body>
+
 </html>

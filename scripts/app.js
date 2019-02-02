@@ -1,16 +1,16 @@
-Vue.component('widget-toolbar', {
-    data: function() {
-        return {
-            showToolbar: false,
-        };
-    },
-    template: '<div><h1 v-bind:class="{ \'open\': showToolbar }" class="Toolbar">Toolbar</h1></div>'
-});
-
+// widget manager Vue
 new Vue({
     el: '#manager',
     data: {
-        title: 'title',
-        showToolbar: false
-    }
+        showToolbar: false,
+    },
 });
+
+// Initialize dragable widget
+element = document.getElementsByClassName('widget')[0];
+var options = {
+	grid: 100,
+	setCursor: true,
+    smoothDrag: true
+};
+var drag = new Draggable(element, options);

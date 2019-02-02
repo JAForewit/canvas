@@ -1,6 +1,10 @@
+/*Open Sans: https://www.cssfontstack.com/Open-Sans*/
+h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } h3 { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } p { font-family: "Open Sans"; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } blockquote { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } pre { font-family: "Open Sans"; font-size: 11px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; }
+
 .Toolbar {
+  color: white;
   height: 100%;
-  background: rgb(223, 8, 8);
+  background: rgb(90, 80, 100);
   box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
@@ -16,5 +20,9 @@
   transform: translateX(0);
 }
 
-/*Open Sans: https://www.cssfontstack.com/Open-Sans*/
-h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } h3 { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } p { font-family: "Open Sans"; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } blockquote { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } pre { font-family: "Open Sans"; font-size: 11px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; }
+.widget {
+  z-index: 5000;
+  width: 200px;
+  height: 200px;
+  background-color: grey;
+}
