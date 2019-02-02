@@ -1,4 +1,3 @@
-
 Vue.component('widget-toolbar', {
     data: function() {
         return {
@@ -9,8 +8,9 @@ Vue.component('widget-toolbar', {
 });
 
 new Vue({
-    el: '#app',
+    el: '#manager',
     data: {
         title: 'title',
+        showToolbar: false
     }
 });
