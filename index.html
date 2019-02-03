@@ -16,14 +16,11 @@
 <body>
 
   <!--manager-->
-  <div id="manager">
-    <div v-bind:class="{ 'open': showToolbar }" class="Toolbar">
-      <h1>Toolbar</h1>
-      <div class="widget">
-        <div class="widget-handle"></div>
-      </div>
-    </div>
-    <button v-on:click="showToolbar = !showToolbar" style="float: right">toggle toolbar</button>
+  <div id="app">
+    <toolbar>
+      <widget></widget>
+      <widget></widget>
+    </toolbar>
   </div>
   <!--canvas-->
   <div id="canvas"></div>
