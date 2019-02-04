@@ -1,3 +1,36 @@
+Vue.component('grid-layout', {
+    props: {
+        cols: {
+            type: Number,
+            required: true
+        }
+    },
+    template: `
+    <div>
+        <slot></slot>
+    </div>`,
+    mounted: function() {
+        for (var i=0; i<this.$el.children.length; i++) {
+            element = this.$el.children[i];
+            options = {
+                grid: 100,
+                smoothDrag: true,
+            };
+            new Draggable(element, options);
+        }
+    },
+});
+
+Vue.component('widget', {
+    template: `
+    <div class='widget'>
+        <div class='widget-handle'>
+            <slot></slot>
+        </div>
+    </div>`,
+});
+
+
 new Vue({
     el: '#app',
     data: {},
@@ -15,23 +48,6 @@ new Vue({
                 }
             }
         },
-        'widget': {
-            template: `
-                <div class='widget'>
-                    <div class='widget-handle'>
-                        <slot></slot>
-                    </div>
-                </div>`,
-            mounted: function() {
-                options = {
-                    grid: 100,
-                    smoothDrag: true,
-                    handle: this.$el.children[0]
-                };
-                new Draggable(this.$el, options);
-            },
-            props: {},
-        }
     }
-    
 });
+
