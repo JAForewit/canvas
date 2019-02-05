@@ -23,7 +23,7 @@ Vue.component('grid-layout', {
             drag.element.style.transition = "none";
         },
         dragEnd: function(drag,x,y,event) {
-            drag.set(Math.round(x/400)*400);
+            drag.set(Math.max(0, Math.round(x/400)*400), Math.max(0,y));
             console.log(drag.options.id);
             drag.element.style.transition = "ease-out 0.1s";
         },
