@@ -27,12 +27,6 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   -moz-box-shadow:    0px 6px 5px -5px #000;   /* Firefox 3.5 - 3.6 */
   box-shadow:         0px 6px 5px -5px #000;   /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
   border-radius: 10px;
-  transition: 0.1s ease-out;
-}
-.widget:active {
-  transition: none;
-  -webkit-transition: none;
-  -moz-transition: none;
 }
 .widget-handle {
   height: 25px;

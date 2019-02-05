@@ -19,9 +19,13 @@ Vue.component('grid-layout', {
         <slot></slot>
     </div>`,
     methods: {
+        dragStart: function(drag,x,y,event) {
+            drag.element.style.transition = "none";
+        },
         dragEnd: function(drag,x,y,event) {
             drag.set(Math.round(x/400)*400);
             console.log(drag.options.id);
+            drag.element.style.transition = "ease-out 0.1s";
         },
     },
     mounted: function() {
@@ -31,6 +35,7 @@ Vue.component('grid-layout', {
             options = { 
                 id: i,
                 smoothDrag: true,
+                onDragStart: this.dragStart,
                 onDragEnd: this.dragEnd,
             };
             if (this.handles) options.handle = element.children[0];
