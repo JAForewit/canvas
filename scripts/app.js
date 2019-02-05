@@ -19,11 +19,9 @@ Vue.component('grid-layout', {
         <slot></slot>
     </div>`,
     methods: {
-        dragStart: function(element,x,y,event) {
-            console.log("drag start");
-        },
-        dragEnd: function(element,x,y,event) {
-            console.log("drag end");
+        dragEnd: function(drag,x,y,event) {
+            drag.set(Math.round(x/400)*400);
+            console.log(drag.options.id);
         },
     },
     mounted: function() {
@@ -31,9 +29,8 @@ Vue.component('grid-layout', {
         for (var i=0; i<this.$el.children.length; i++) {
             element = this.$el.children[i];
             options = { 
-                grid: 100,
+                id: i,
                 smoothDrag: true,
-                onDragStart: this.dragStart,
                 onDragEnd: this.dragEnd,
             };
             if (this.handles) options.handle = element.children[0];

@@ -356,7 +356,7 @@
 
       // trigger start event?
       if (!dragEvent.started) {
-        options.onDragStart(element, x, y, e);
+        options.onDragStart(me, x, y, e);
         dragEvent.started = true;
       }
 
@@ -422,7 +422,7 @@
 
       // trigger dragend event
       if (me.dragEvent.started) {
-        options.onDragEnd(element, dragEvent.x, dragEvent.y, e);
+        options.onDragEnd(me, dragEvent.x, dragEvent.y, e);
       }
 
       // clear temp vars
