@@ -31,6 +31,8 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
 }
 .widget:active {
   transition: none;
+  -webkit-transition: none;
+  -moz-transition: none;
 }
 .widget-handle {
   height: 25px;
