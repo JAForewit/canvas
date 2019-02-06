@@ -9,8 +9,7 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   position: fixed;
   top: 0;
   left: 0;
-  width: 70%;
-  max-width: 400px;
+  width: 300px;
   z-index: 200;
   transform: translateX(-100%);
   transition: transform 0.3s ease-out;

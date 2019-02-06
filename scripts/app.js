@@ -1,13 +1,9 @@
 Vue.component('grid-layout', {
     props: {
-        cols: {
-            type: Number,
-            default: 1
-        },
         handles: {
             type: Boolean,
             default: false
-        }
+        },
     },
     data: function() {
         return {
@@ -23,8 +19,22 @@ Vue.component('grid-layout', {
             drag.element.style.transition = "none";
         },
         dragEnd: function(drag,x,y,event) {
-            drag.set(Math.max(0, Math.round(x/400)*400), Math.max(0,y));
-            console.log(drag.options.id);
+            var newy = 0;
+            for (var i = 0; i < this.items.length; i++) {
+                console.log("hi");
+                if (this.items[i].options.id != drag.options.id) {
+                    var bottom = this.items[i]._dimensions.top + this.items[i]._dimensions.height;
+                    if (bottom < y) {
+                        if (bottom > newy) {
+                            newy = bottom;
+                        }
+                    }
+                }
+            }
+            console.log(newy);
+            
+            width = this.$el.clientWidth;
+            drag.set(Math.max(0, Math.round(x/width)*width), Math.max(0,y));
             drag.element.style.transition = "ease-out 0.1s";
         },
     },
