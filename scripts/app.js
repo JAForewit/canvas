@@ -1,4 +1,4 @@
-Vue.component('grid-layout', {
+Vue.component('sortable', {
     props: {
         handles: {
             type: Boolean,
