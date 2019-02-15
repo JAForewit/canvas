@@ -43,10 +43,12 @@ Vue.component('sortable', {
         for (var i=0; i<this.$el.children.length; i++) {
             element = this.$el.children[i];
             options = { 
+                setPosition: false,
                 id: i,
                 smoothDrag: true,
                 onDragStart: this.dragStart,
                 onDragEnd: this.dragEnd,
+                
             };
             if (this.handles) options.handle = element.children[0];
             drag = new Draggable(element, options);
