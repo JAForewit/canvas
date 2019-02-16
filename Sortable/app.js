@@ -20,17 +20,19 @@ function sortableList(list) {
         items.push(drag);
     };
 
-    function dragging(el, x, y, event) {
-        console.log("dragging");
-    }
-
-    function release(el, x, y, event) {
-        console.log("release", el);
-    };
-
     function grab(el, x, y, event) {
         console.log("grab");
     };
+
+    function dragging(el, x, y, event) {
+        console.log("dragging");
+    };
+
+    function release(el, x, y, event) {
+        console.log("release");
+    };
+
+    
 
 
     /* LOGIC
