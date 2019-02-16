@@ -364,7 +364,7 @@
       if (me.move(x, y)) {
 
         // trigger drag event
-        options.onDrag(element, dragEvent.x, dragEvent.y, e);
+        options.onDrag(me, dragEvent.x, dragEvent.y, e);
       }
 
     },
