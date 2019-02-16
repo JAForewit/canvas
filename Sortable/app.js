@@ -20,19 +20,29 @@ function sortableList(list) {
         items.push(drag);
     };
 
-    function grab(el, x, y, event) {
+    // create blank div element
+    var placeholderEl = document.createElement('div');
+    placeholderEl.classList.add('placeholder');
+
+    function grab(drag, x, y, event) {
         console.log("grab");
+
+        // insert element before drag element
+        drag.element.parentNode.insertBefore(placeholderEl, drag.element);
+        drag.element.style.position = "absolute";
     };
 
-    function dragging(el, x, y, event) {
+    function dragging(drag, x, y, event) {
         console.log("dragging");
     };
 
-    function release(el, x, y, event) {
+    function release(drag, x, y, event) {
         console.log("release");
+        drag.element.style.position = "inherit";
+        drag.element.style.top = 0;
+        drag.element.style.left = 0;
+        drag.element.parentNode.removeChild(placeholderEl);
     };
-
-    
 
 
     /* LOGIC

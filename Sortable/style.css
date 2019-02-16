@@ -16,3 +16,9 @@
     border-radius: 5px 0px 0px 0px;
     background-color: #2c2f33;
   }
+  .placeholder {
+    height: 120px;
+    width: 100px;
+    border-style: dashed;
+    border-width: medium;
+  }
