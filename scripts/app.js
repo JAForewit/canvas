@@ -57,7 +57,7 @@ function sortableList(list) {
         placeholderEl.style.width = el.clientWidth + 'px';
         placeholderEl.style.top = el.style.top;
         placeholderEl.style.left = el.style.left;
-        list.parentNode.insertBefore(placeholderEl, list);
+        el.parentNode.insertBefore(placeholderEl, el);
     };
 
     // returns true if (x, y) is inside a draggable object
