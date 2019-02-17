@@ -23,6 +23,7 @@ mylist = new sortableList(document.getElementById("mylist"));
 
 // creates a list elemnt where children are sortable
 function sortableList(list) {
+    var drags = [];
 
     // Initialize list children as Draggable elements
     for (var i = 0; i < list.children.length; i++) {
@@ -36,52 +37,53 @@ function sortableList(list) {
             onDrag: dragging
         };
         drag = new Draggable(element, options);
-        if (i > 0) {
-
-        }
         var top = (i > 0) ? top + list.children[i - 1].clientHeight : 0;
         drag.set(0, top);
-        console.log(top);
+        drags.push(drag);
     };
 
     // create blank div element
     var placeholderEl = document.createElement('div');
     placeholderEl.classList.add('placeholder');
+    var overEl; // element being hovered over
+
 
     function grab(drag, x, y, event) {
         var el = drag.element;
+        el.style.transition = "none";
 
-        // insert element before drag element
-        //el.style.position = "absolute";
-        //placeholderEl.style.height = drag._dimensions.height + 'px';
-        //placeholderEl.style.width = drag._dimensions.width + 'px';
-        //el.parentNode.insertBefore(placeholderEl, el);
+        // insert placeholder in the list scope
+        placeholderEl.style.height = el.clientHeight + 'px';
+        placeholderEl.style.width = el.clientWidth + 'px';
+        placeholderEl.style.top = el.style.top;
+        placeholderEl.style.left = el.style.left;
+        list.parentNode.insertBefore(placeholderEl, list);
     };
 
     // returns true if (x, y) is inside a draggable object
-    function inside(mX, mY, el1, el2) {
-        rect = el2.getBoundingClientRect();
-        return (mX < rect.x + rect.width &&
-            mY > rect.y + rect.height - el1.clientHeight &&
-            mY < rect.y + rect.height);
+    function inside(mX, mY, drag1, drag2) {
+        rect = drag2.element.getBoundingClientRect();
+        return (mX < rect.left + rect.width &&
+            mY > rect.top + rect.height - drag1._dimensions.height &&
+            mY < rect.top + rect.height);
     }
 
-
     function dragging(drag, x, y, e) {
-        var el = drag.element;
-        var nodes = el.parentNode.children;
-        mousePos = {
+        var mouse = {
             x: (e.targetTouches ? e.targetTouches[0] : e).clientX,
             y: (e.targetTouches ? e.targetTouches[0] : e).clientY
         };
 
-        for (var i = 0; i < nodes.length; i++) {
+        for (i in drags) {
             // is curser inside item
-            if (!el.isSameNode(nodes[i]) && inside(mousePos.x, mousePos.y, el, nodes[i])) {
+            //console.log(drags[i]);
+            if (overEl !== drags[i] &&
+                drag !== drags[i] &&
+                inside(mouse.x, mouse.y, drag, drags[i])) {
+
                 // insert placeholder
-                //el.parentNode.removeChild(placeholderEl);
-                //el.parentNode.insertBefore(placeholderEl, nodes[i])
-                console.log(nodes[i].style.background);
+                console.log(drags[i].element.style.background);
+                overEl = drags[i];
                 break;
             }
         }
@@ -89,15 +91,10 @@ function sortableList(list) {
 
 
     function release(drag, x, y, event) {
-        var el = drag.element;
-
+        drag.element.style.transition = "ease-out 0.1s";
         // drop drag into new position
-        // 1. check for mouse pos in "widget"
-
-        //el.style.position = "inherit";
-        //el.style.top = 0;
-        //el.style.left = 0;
-        //placeholderEl.parentNode.replaceChild(el, placeholderEl);
-
+        var rect = placeholderEl.getBoundingClientRect();
+        drag.set(rect.left, rect.top);
+        placeholderEl.parentNode.removeChild(placeholderEl);
     };
 };
