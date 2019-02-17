@@ -1,14 +1,14 @@
-sortableList(document.getElementById("mylist"));
+mylist = new sortableList(document.getElementById("mylist"));
 
 
 // creates a list elemnt where children are sortable
 function sortableList(list) {
+    var me = this;
+
     // Initialize list children as Draggable elements
-    var drags = [];
     for (var i = 0; i < list.children.length; i++) {
         element = list.children[i];
         options = {
-            id: i,
             setPosition: false,
             smoothDrag: true,
             handle: element.children[0],
@@ -17,57 +17,52 @@ function sortableList(list) {
             onDrag: dragging
         };
         drag = new Draggable(element, options);
-        drags.push(drag);
     };
 
     // create blank div element
     var placeholderEl = document.createElement('div');
     placeholderEl.classList.add('placeholder');
 
-
-    // returns true if (x, y) is inside a draggable object
-    function inside(x, y, drag) {
-        var dx = drag._dimensions.left,
-            dy = drag._dimensions.top,
-            dh = drag._dimensions.height,
-            dw = drag._dimensions.width;
-
-        if (x > dx + dw) return false;
-        if (y < dy || y > dy + dh) return false;
-        return true;
-    }
-
-
     function grab(drag, x, y, event) {
         var el = drag.element;
 
         // insert element before drag element
-        //drag.set(0, 0);
         el.style.position = "absolute";
         placeholderEl.style.height = drag._dimensions.height + 'px';
         placeholderEl.style.width = drag._dimensions.width + 'px';
+        placeholderEl.id = drag.id;
         el.parentNode.insertBefore(placeholderEl, el);
-
-        for (i in drags) {
-            console.log(parseInt((drags[i].element.style.left,10) ||  drags[i].element.offsetLeft), drags[i].element.style.background);
-        }
     };
+
+    // returns true if (x, y) is inside a draggable object
+    function inside(x, y, element) {
+        rect = element.getBoundingClientRect();
+
+        if (x > rect.x + rect.width) return false;
+        if (y < rect.y || y > rect.y + rect.height) return false;
+        return true;
+    }
+
 
     function dragging(drag, x, y, e) {
         var el = drag.element;
+        var nodes = el.parentNode.children;
         mousePos = {
             x: (e.targetTouches ? e.targetTouches[0] : e).clientX,
             y: (e.targetTouches ? e.targetTouches[0] : e).clientY
         };
-        for (i in drags) {
+
+        for (var i = 0; i < nodes.length; i++) {
             // is curser inside item
-            if (inside(mousePos.x, mousePos.y, drags[i])) {
-                //console.log(drags[i].element.style.background);
-                //el.parentNode.insertBefore(placeholderEl, drags[i].element)
-                //break;
+            if (!el.isSameNode(nodes[i]) && inside(mousePos.x, mousePos.y, nodes[i])) {
+                // insert placeholder
+                el.parentNode.removeChild(placeholderEl);
+                el.parentNode.insertBefore(placeholderEl, nodes[i])
+                break;
             }
         }
     }
+
 
     function release(drag, x, y, event) {
         var el = drag.element;
@@ -78,7 +73,7 @@ function sortableList(list) {
         el.style.position = "inherit";
         el.style.top = 0;
         el.style.left = 0;
-        el.parentNode.removeChild(placeholderEl);
+        placeholderEl.parentNode.replaceChild(el, placeholderEl);
 
     };
 
