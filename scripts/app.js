@@ -23,6 +23,7 @@ mylist = new sortableList(document.getElementById("mylist"));
 
 // creates a list elemnt where children are sortable
 function sortableList(list) {
+    // TODO: setup drags as the reference list and widget order
     var drags = [];
 
     // Initialize list children as Draggable elements
@@ -37,6 +38,7 @@ function sortableList(list) {
             onDrag: dragging
         };
         drag = new Draggable(element, options);
+        drag.index = i;
         var top = (i > 0) ? top + list.children[i - 1].clientHeight : 0;
         drag.set(0, top);
         drags.push(drag);
@@ -60,13 +62,24 @@ function sortableList(list) {
         el.parentNode.insertBefore(placeholderEl, el);
     };
 
+    // move item in array
+    function array_move(arr, old_index, new_index) {
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    };
+    function updateDragPositions() {
+        for (var i = 0; i < list.children.length; i++) {
+            var top = (i > 0) ? top + list.children[i - 1].clientHeight : 0;
+            drag.set(0, top);
+        };
+    };
+
     // returns true if (x, y) is inside a draggable object
     function inside(mX, mY, drag1, drag2) {
         rect = drag2.element.getBoundingClientRect();
         return (mX < rect.left + rect.width &&
             mY > rect.top + rect.height - drag1._dimensions.height &&
             mY < rect.top + rect.height);
-    }
+    };
 
     function dragging(drag, x, y, e) {
         var mouse = {
@@ -74,7 +87,7 @@ function sortableList(list) {
             y: (e.targetTouches ? e.targetTouches[0] : e).clientY
         };
 
-        for (i in drags) {
+        for (var i = 0; i < drags.length; i++) {
             // is curser inside item
             //console.log(drags[i]);
             if (overEl !== drags[i] &&
@@ -84,6 +97,11 @@ function sortableList(list) {
                 // insert placeholder
                 console.log(drags[i].element.style.background);
                 overEl = drags[i];
+
+                
+
+                //placeholderEl.style.top = drags[i].element.getBoundingClientRect().top + "px";
+
                 break;
             }
         }
