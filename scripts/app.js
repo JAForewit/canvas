@@ -76,6 +76,7 @@ function WidgetList(el) {
                 mY < top + me.threshold);
         }
 
+        // find new drop zone
         for (var i = 0; i < me.items.length; i++) {
             if (me.items[i] !== item) {
                 var rect = me.items[i].element.getBoundingClientRect();
