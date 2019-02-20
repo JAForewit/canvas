@@ -42,4 +42,6 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   height: 0;
   background: lightgrey;
   transition: height ease-out 0.1s;
+  height: 3px;
+  width: 100%;
 }

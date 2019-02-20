@@ -19,100 +19,97 @@ new Vue({
 });
 
 
-mylist = new sortableList(document.getElementById("mylist"));
+mylist = new WidgetList(document.getElementById("mylist"));
 
 // creates a list elemnt where children are sortable
-function sortableList(list) {
-    // TODO: setup drags as the reference list and widget order
-    var drags = [];
+function WidgetList(el) {
+    var me = this;
 
-    // Initialize list children as Draggable elements
-    for (var i = 0; i < list.children.length; i++) {
-        element = list.children[i];
-        options = {
-            setPosition: true,
-            smoothDrag: true,
-            handle: element.children[0],
-            onDragEnd: release,
-            onDragStart: grab,
-            onDrag: dragging
-        };
-        drag = new Draggable(element, options);
-        drag.index = i;
-        var top = (i > 0) ? top + list.children[i - 1].clientHeight : 0;
-        drag.set(0, top);
-        drags.push(drag);
+    me.el = el;             // list element
+    me.items = [];          // draggable items
+    me.threshold = 20;      // drop zone threshold
+
+    // Initialize el children as items in the list
+    for (var i = 0; i < me.el.children.length; i++) {
+        var element = me.el.children[i],
+            options = {
+                setPosition: true,
+                smoothDrag: true,
+                handle: element.children[0],
+                onDragEnd: onRelease,
+                onDragStart: onGrab,
+                onDrag: onDrag
+            },
+            item = new Draggable(element, options);
+        // set initial position
+        var top = (i > 0) ? top + me.el.children[i - 1].clientHeight : 0;
+        item.set(0, top);
+
+        me.items.push(item);
     };
 
-    // create blank div element
-    var placeholderEl = document.createElement('div');
-    placeholderEl.classList.add('placeholder');
-    var overEl; // element being hovered over
+    // create placeholder element
+    var placeholder = document.createElement('div');
+    placeholder.classList.add('placeholder');
 
+    function onGrab(item, x, y, e) {
+        // prevent transition animation while dragging
+        item.element.style.transition = "none";
 
-    function grab(drag, x, y, event) {
-        var el = drag.element;
-        el.style.transition = "none";
+        // insert placeholder
+        var rect = item.element.getBoundingClientRect();;
+        placeholder.style.top = rect.top + 'px';
+        placeholder.style.left = rect.left + 'px';
+        me.el.appendChild(placeholder);
 
-        // insert placeholder in the list scope
-        placeholderEl.style.height = el.clientHeight + 'px';
-        placeholderEl.style.width = el.clientWidth + 'px';
-        placeholderEl.style.top = el.style.top;
-        placeholderEl.style.left = el.style.left;
-        el.parentNode.insertBefore(placeholderEl, el);
+        // remove item list and update positions of items
+        me.items.splice(me.items.indexOf(item), 1);
     };
 
-    // move item in array
-    function array_move(arr, old_index, new_index) {
-        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-    };
-    function updateDragPositions() {
-        for (var i = 0; i < list.children.length; i++) {
-            var top = (i > 0) ? top + list.children[i - 1].clientHeight : 0;
-            drag.set(0, top);
-        };
-    };
+    function onDrag(item, x, y, e) {
+        var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
+            mY = (e.targetTouches ? e.targetTouches[0] : e).clientY
 
-    // returns true if (x, y) is inside a draggable object
-    function inside(mX, mY, drag1, drag2) {
-        rect = drag2.element.getBoundingClientRect();
-        return (mX < rect.left + rect.width &&
-            mY > rect.top + rect.height - drag1._dimensions.height &&
-            mY < rect.top + rect.height);
-    };
+        function inThreshold(top, left, width) {
+            return (mX < left + width &&
+                mY > top - me.threshold &&
+                mY < top + me.threshold);
+        }
 
-    function dragging(drag, x, y, e) {
-        var mouse = {
-            x: (e.targetTouches ? e.targetTouches[0] : e).clientX,
-            y: (e.targetTouches ? e.targetTouches[0] : e).clientY
-        };
-
-        for (var i = 0; i < drags.length; i++) {
-            // is curser inside item
-            //console.log(drags[i]);
-            if (overEl !== drags[i] &&
-                drag !== drags[i] &&
-                inside(mouse.x, mouse.y, drag, drags[i])) {
-
-                // insert placeholder
-                console.log(drags[i].element.style.background);
-                overEl = drags[i];
-
-                
-
-                //placeholderEl.style.top = drags[i].element.getBoundingClientRect().top + "px";
-
-                break;
+        for (var i = 0; i < me.items.length; i++) {
+            if (me.items[i] !== item) {
+                var rect = me.items[i].element.getBoundingClientRect();
+                if (inThreshold(rect.top, rect.left, rect.width)) {
+                    // move placeholder to new drop zone
+                    placeholder.style.top = rect.top + 'px';
+                    placeholder.style.left = rect.left + 'px';
+                    placeholder.index = i;
+                    break;
+                }
+                if (i == me.items.length - 1 &&
+                    inThreshold(rect.bottom, rect.left, rect.width)) {
+                    // move placeholder to new drop zone
+                    placeholder.style.top = rect.bottom + 'px';
+                    placeholder.style.left = rect.left + 'px';
+                    placeholder.index = me.items.length;
+                    break;
+                }
             }
         }
-    }
+    };
 
+    function onRelease(item, x, y, event) {
+        // add transition animation
+        item.element.style.transition = "ease-out 0.1s";
+    
+        // add item to list
+        me.items.splice(placeholder.index, 0, item);
 
-    function release(drag, x, y, event) {
-        drag.element.style.transition = "ease-out 0.1s";
-        // drop drag into new position
-        var rect = placeholderEl.getBoundingClientRect();
-        drag.set(rect.left, rect.top);
-        placeholderEl.parentNode.removeChild(placeholderEl);
+        // TODO update positions
+        var rect = placeholder.getBoundingClientRect();
+        item.set(rect.left, rect.top);
+
+         // remove placeholder
+         me.el.removeChild(placeholder);
     };
 };
