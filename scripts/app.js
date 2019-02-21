@@ -88,6 +88,9 @@ function WidgetList(el) {
                 if (i == me.items.length - 1 &&
                     inThreshold(rect.bottom, rect.left, rect.width, rect.height)) {
                     // move placeholder to new drop zone
+
+                    // TODO stop placeholder from placing during a transition
+                    // or add a check to stop it from constantly looking for drop zones +1
                     placeholder.style.top = rect.bottom + me.gap / 2 + 'px';
                     placeholder.index = me.items.length;
                     break;
