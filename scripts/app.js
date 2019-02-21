@@ -27,7 +27,9 @@ function WidgetList(el) {
 
     me.el = el;             // list element
     me.items = [];          // draggable items
-    me.threshold = 20;      // drop zone threshold
+    me.threshold = 100;     // drop zone threshold
+    me.gap = 10;            // gap between items on drag
+    me.left = el.clientLeft;
 
     // Initialize el children as items in the list
     for (var i = 0; i < me.el.children.length; i++) {
@@ -41,76 +43,77 @@ function WidgetList(el) {
                 onDrag: onDrag
             },
             item = new Draggable(element, options);
-        // set initial position
-        var top = (i > 0) ? top + me.el.children[i - 1].clientHeight : 0;
-        item.set(0, top);
-
         me.items.push(item);
-    };
+    }
+    updatePositions();
 
     // create placeholder element
     var placeholder = document.createElement('div');
     placeholder.classList.add('placeholder');
+    placeholder.style.left = me.left + 'px';
 
     function onGrab(item, x, y, e) {
         // prevent transition animation while dragging
-        item.element.style.transition = "none";
-
-        // insert placeholder
-        var rect = item.element.getBoundingClientRect();;
-        placeholder.style.top = rect.top + 'px';
-        placeholder.style.left = rect.left + 'px';
-        me.el.appendChild(placeholder);
+        item.element.classList.add("dragging");
 
         // remove item list and update positions of items
         me.items.splice(me.items.indexOf(item), 1);
-    };
+        updatePositions(me.gap);
+
+        // insert placeholder
+        placeholder.style.top = item.element.clientTop + me.gap / 2 + 'px';
+        me.el.appendChild(placeholder);
+    }
 
     function onDrag(item, x, y, e) {
         var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
             mY = (e.targetTouches ? e.targetTouches[0] : e).clientY
 
-        function inThreshold(top, left, width) {
+        function inThreshold(top, left, width, height) {
             return (mX < left + width &&
-                mY > top - me.threshold &&
-                mY < top + me.threshold);
+                mY > top - height / 2 &&
+                mY < top + height / 2);
         }
 
         // find new drop zone
         for (var i = 0; i < me.items.length; i++) {
             if (me.items[i] !== item) {
                 var rect = me.items[i].element.getBoundingClientRect();
-                if (inThreshold(rect.top, rect.left, rect.width)) {
+                if (inThreshold(rect.top, rect.left, rect.width, rect.height)) {
                     // move placeholder to new drop zone
-                    placeholder.style.top = rect.top + 'px';
-                    placeholder.style.left = rect.left + 'px';
+                    placeholder.style.top = rect.top - me.gap / 2 + 'px';
                     placeholder.index = i;
                     break;
                 }
                 if (i == me.items.length - 1 &&
-                    inThreshold(rect.bottom, rect.left, rect.width)) {
+                    inThreshold(rect.bottom, rect.left, rect.width, rect.height)) {
                     // move placeholder to new drop zone
-                    placeholder.style.top = rect.bottom + 'px';
-                    placeholder.style.left = rect.left + 'px';
+                    placeholder.style.top = rect.bottom + me.gap / 2 + 'px';
                     placeholder.index = me.items.length;
                     break;
                 }
             }
         }
-    };
+    }
 
     function onRelease(item, x, y, event) {
         // add transition animation
-        item.element.style.transition = "ease-out 0.1s";
-    
+        item.element.classList.remove("dragging");
+
         // add item to list
         me.items.splice(placeholder.index, 0, item);
 
-        // TODO update positions
-        var rect = placeholder.getBoundingClientRect();
-        item.set(rect.left, rect.top);
+        // update positions
+        updatePositions();
 
-         // remove placeholder
-         me.el.removeChild(placeholder);
-    };
+        // remove placeholder
+        me.el.removeChild(placeholder);
+    }
+
+    function updatePositions(gap) {
+        for (var i = 0; i < me.items.length; i++) {
+            var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
+            me.items[i].set(me.left, top);
+        }
+    }
 };

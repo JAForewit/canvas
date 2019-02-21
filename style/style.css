@@ -18,6 +18,10 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   transform: translateX(0);
 }
 
+.dragging {
+  transition: none !important;
+}
+ 
 .widget {
   margin: 0;
   width: 100%;
@@ -27,6 +31,7 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   -moz-box-shadow:    0px 6px 5px -5px #000;   /* Firefox 3.5 - 3.6 */
   box-shadow:         0px 6px 5px -5px #000;   /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
   border-radius: 10px 0;
+  transition: ease 0.2s;
 }
 .widget-handle {
   cursor: move;
@@ -41,7 +46,6 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   margin: 0;
   height: 0;
   background: lightgrey;
-  transition: height ease-out 0.1s;
   height: 3px;
   width: 100%;
 }
