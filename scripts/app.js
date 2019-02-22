@@ -29,7 +29,10 @@ function WidgetList(el) {
     me.items = [];          // draggable items
     me.threshold = 100;     // drop zone threshold
     me.gap = 10;            // gap between items on drag
-    me.left = el.clientLeft;
+
+    me._left = el.clientLeft;
+    me._width = el.clientWidth;
+    me._dropZones = [];
 
     // Initialize el children as items in the list
     for (var i = 0; i < me.el.children.length; i++) {
@@ -50,25 +53,66 @@ function WidgetList(el) {
     // create placeholder element
     var placeholder = document.createElement('div');
     placeholder.classList.add('placeholder');
-    placeholder.style.left = me.left + 'px';
+    placeholder.style.left = me._left + 'px';
 
     function onGrab(item, x, y, e) {
         // prevent transition animation while dragging
         item.element.classList.add("dragging");
 
-        // remove item list and update positions of items
-        me.items.splice(me.items.indexOf(item), 1);
+        // remove item
+        var itemIndex = me.items.indexOf(item);
+        me.items.splice(itemIndex, 1);
         updatePositions(me.gap);
 
+        // set drop zones
+        var top = me.gap / 2;
+        me._dropZones = [top];
+        for (var i in me.items) {
+            top += me.items[i].element.clientHeight + me.gap;
+            me._dropZones.push(top);
+        }
+
         // insert placeholder
-        placeholder.style.top = item.element.clientTop + me.gap / 2 + 'px';
+        placeholder.index = itemIndex;
+        placeholder.style.top = me._dropZones[itemIndex] + 'px';
         me.el.appendChild(placeholder);
     }
 
     function onDrag(item, x, y, e) {
-        var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
-            mY = (e.targetTouches ? e.targetTouches[0] : e).clientY
 
+        var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
+            mY = (e.targetTouches ? e.targetTouches[0] : e).clientY;
+
+        function inDropZone(top, above, below) {
+            return (mX < me._left + me._width &&
+                mY > top - above / 2 &&
+                mY < top + below / 2);
+        }
+
+        // TODO finish this logic
+        if (me.items.length == 0) {
+            return;
+        } else {
+            var zones = me._dropZones;
+
+            // TODO check first drop zone
+            if (placeholder.index != 0 &&
+                inDropZone(me._dropZones[0], 0, me.items[0].element.clientHeight)) {
+                console.log("zone 0");
+            }
+            // TODO check middle drop zone
+            for (var i = 1; i < me._dropZones.length - 1; i++) {
+                if (placeholder.index != i) {
+
+                }
+            }
+            // TODO check last drop zone
+            if (placeholder.index != me._dropZones.length) {
+
+            }
+        }
+
+        // TODO REMOVE AFTER HERE
         function inThreshold(top, left, width, height) {
             return (mX < left + width &&
                 mY > top - height / 2 &&
@@ -77,25 +121,25 @@ function WidgetList(el) {
 
         // find new drop zone
         for (var i = 0; i < me.items.length; i++) {
-            if (me.items[i] !== item) {
-                var rect = me.items[i].element.getBoundingClientRect();
-                if (inThreshold(rect.top, rect.left, rect.width, rect.height)) {
-                    // move placeholder to new drop zone
-                    placeholder.style.top = rect.top - me.gap / 2 + 'px';
-                    placeholder.index = i;
-                    break;
-                }
-                if (i == me.items.length - 1 &&
-                    inThreshold(rect.bottom, rect.left, rect.width, rect.height)) {
-                    // move placeholder to new drop zone
 
-                    // TODO stop placeholder from placing during a transition
-                    // or add a check to stop it from constantly looking for drop zones +1
-                    placeholder.style.top = rect.bottom + me.gap / 2 + 'px';
-                    placeholder.index = me.items.length;
-                    break;
-                }
+            var rect = me.items[i].element.getBoundingClientRect();
+            if (inThreshold(rect.top, rect.left, rect.width, rect.height)) {
+                // move placeholder to new drop zone
+                //placeholder.style.top = rect.top - me.gap / 2 + 'px';
+                placeholder.index = i;
+                break;
             }
+            if (i == me.items.length - 1 &&
+                inThreshold(rect.bottom, rect.left, rect.width, rect.height)) {
+                // move placeholder to new drop zone
+
+                // TODO stop placeholder from placing during a transition
+                // or add a check to stop it from constantly looking for drop zones +1
+                //placeholder.style.top = rect.bottom + me.gap / 2 + 'px';
+                placeholder.index = me.items.length;
+                break;
+            }
+
         }
     }
 
@@ -116,7 +160,7 @@ function WidgetList(el) {
     function updatePositions(gap) {
         for (var i = 0; i < me.items.length; i++) {
             var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
-            me.items[i].set(me.left, top);
+            me.items[i].set(me._left, top);
         }
     }
 };

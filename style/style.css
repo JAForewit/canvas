@@ -43,9 +43,8 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
 .placeholder {
   position: absolute;
   padding: 0;
-  margin: 0;
-  height: 0;
+  margin-top: -1px;
   background: lightgrey;
-  height: 3px;
+  height: 2px;
   width: 100%;
 }
