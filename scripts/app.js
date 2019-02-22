@@ -93,53 +93,38 @@ function WidgetList(el) {
         if (me.items.length == 0) {
             return;
         } else {
-            var zones = me._dropZones;
-
             // TODO check first drop zone
             if (placeholder.index != 0 &&
-                inDropZone(me._dropZones[0], 0, me.items[0].element.clientHeight)) {
-                console.log("zone 0");
+                inDropZone(
+                    me._dropZones[0],
+                    0,
+                    me.items[0].element.clientHeight)) {
+                placeholder.style.top = me._dropZones[0] + 'px';
+                placeholder.index = 0;
+                return;
             }
             // TODO check middle drop zone
-            for (var i = 1; i < me._dropZones.length - 1; i++) {
-                if (placeholder.index != i) {
-
+            for (var i = 1; i < me.items.length; i++) {
+                if (placeholder.index != i &&
+                    inDropZone(
+                        me._dropZones[i],
+                        me.items[i - 1].element.clientHeight,
+                        me.items[i].element.clientHeight)) {
+                    placeholder.style.top = me._dropZones[i] + 'px';
+                    placeholder.index = i;
+                    return;
                 }
             }
             // TODO check last drop zone
-            if (placeholder.index != me._dropZones.length) {
-
-            }
-        }
-
-        // TODO REMOVE AFTER HERE
-        function inThreshold(top, left, width, height) {
-            return (mX < left + width &&
-                mY > top - height / 2 &&
-                mY < top + height / 2);
-        }
-
-        // find new drop zone
-        for (var i = 0; i < me.items.length; i++) {
-
-            var rect = me.items[i].element.getBoundingClientRect();
-            if (inThreshold(rect.top, rect.left, rect.width, rect.height)) {
-                // move placeholder to new drop zone
-                //placeholder.style.top = rect.top - me.gap / 2 + 'px';
-                placeholder.index = i;
-                break;
-            }
-            if (i == me.items.length - 1 &&
-                inThreshold(rect.bottom, rect.left, rect.width, rect.height)) {
-                // move placeholder to new drop zone
-
-                // TODO stop placeholder from placing during a transition
-                // or add a check to stop it from constantly looking for drop zones +1
-                //placeholder.style.top = rect.bottom + me.gap / 2 + 'px';
+            if (placeholder.index != me.items.length &&
+                inDropZone(
+                    me._dropZones[me._dropZones.length - 1],
+                    me.items[me.items.length - 1].element.clientHeight,
+                    0)) {
+                placeholder.style.top = me._dropZones[me._dropZones.length - 1] + 'px';
                 placeholder.index = me.items.length;
-                break;
+                return;
             }
-
         }
     }
 
