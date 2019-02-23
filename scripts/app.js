@@ -13,11 +13,12 @@ new Vue({
                 return {
                     showToolbar: true
                 }
-            }
+            },
         },
     }
 });
 
+document.getElementsByClassName("toolbar").addEventListener('scroll', onDrag(e))
 
 mylist = new WidgetList(document.getElementById("mylist"));
 
