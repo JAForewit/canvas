@@ -1,27 +1,13 @@
-new Vue({
-    el: '#app',
-    data: {},
-    components: {
-        'toolbar': {
-            template: `
-            <div v-bind:class="{ 'open': showToolbar }" class="toolbar">
-                <button v-on:click="showToolbar = !showToolbar" style="float: right; margin-right: -100px;">toggle toolbar</button>    
-                <slot></slot>
-            </div>`,
-            props: {},
-            data: function () {
-                return {
-                    showToolbar: true
-                }
-            }
-        },
-    }
+function toggleToolbar() {
+    document.getElementById("widget-toolbar").classList.toggle("open");
+}
+
+window.addEventListener('scroll', function () {
+    console.log("scroll");
 });
 
+mylist = new WidgetList(document.getElementById("wrapper"));
 
-mylist = new WidgetList(document.getElementById("mylist"));
-
-// creates a list elemnt where children are sortable
 function WidgetList(el) {
     var me = this;
 
@@ -64,14 +50,6 @@ function WidgetList(el) {
         me.items.splice(itemIndex, 1);
         updatePositions(me.gap);
 
-        // set drop zones
-        var top = me.gap / 2;
-        me._dropZones = [top];
-        for (var i in me.items) {
-            top += me.items[i].element.clientHeight + me.gap;
-            me._dropZones.push(top);
-        }
-
         // insert placeholder
         placeholder.index = itemIndex;
         placeholder.style.top = me._dropZones[itemIndex] + 'px';
@@ -83,17 +61,16 @@ function WidgetList(el) {
         var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
             mY = (e.targetTouches ? e.targetTouches[0] : e).clientY;
 
-        function inDropZone(top, above, below) {
+        function inDropZone(y, above, below) {
             return (mX < me._left + me._width &&
-                mY > top - above / 2 &&
-                mY < top + below / 2);
+                mY > y - above / 2 &&
+                mY < y + below / 2);
         }
 
-        // TODO finish this logic
         if (me.items.length == 0) {
             return;
         } else {
-            // TODO check first drop zone
+            // check first drop zone
             if (placeholder.index != 0 &&
                 inDropZone(
                     me._dropZones[0],
@@ -103,7 +80,7 @@ function WidgetList(el) {
                 placeholder.index = 0;
                 return;
             }
-            // TODO check middle drop zone
+            // check middle drop zones
             for (var i = 1; i < me.items.length; i++) {
                 if (placeholder.index != i &&
                     inDropZone(
@@ -115,7 +92,7 @@ function WidgetList(el) {
                     return;
                 }
             }
-            // TODO check last drop zone
+            // check last drop zone
             if (placeholder.index != me.items.length &&
                 inDropZone(
                     me._dropZones[me._dropZones.length - 1],
@@ -143,7 +120,12 @@ function WidgetList(el) {
     }
 
     function updatePositions(gap) {
-        for (var i = 0; i < me.items.length; i++) {
+        var zone = me.gap / 2;
+        me._dropZones = [zone];
+        for (var i in me.items) {
+            zone += me.items[i].element.clientHeight + me.gap;
+            me._dropZones.push(zone);
+
             var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
             me.items[i].set(me._left, top);
         }

@@ -15,39 +15,33 @@
 
 <body>
   <div id="app">
-    <!--widget manager-->
-    <toolbar>
-      <div id="mylist">
+    <!--widget toolbar-->
+    <button onclick="toggleToolbar()" style="position: absolute; right: 10px">toggle toolbar</button>
+    <div id="widget-toolbar" class="open">
+      <div id="wrapper">
         <div class="widget" style="background: green; height: 80px;">
           <div class="widget-handle"></div>
         </div>
-        <div class="widget" style="background: yellowgreen; height: 220x;">
+        <div class="widget" style="background: yellowgreen; height: 720px;">
           <div class="widget-handle"></div>
         </div>
-        <div class="widget" style="background: lightblue; height: 100px;">
+        <div class="widget" style="background: lightblue; height: 500px;">
           <div class="widget-handle"></div>
         </div>
         <div class="widget" style="background: lightgrey; height: 300px;">
           <div class="widget-handle"></div>
         </div>
       </div>
-    </toolbar>
+    </div>
     <!--canvas-->
-    <!--preferences-->
+    <!--preferences toolbar-->
   </div>
 
   <!--3RD PARTY-->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-  <!------------->
-  <!--https://github.com/bcherny/draggable-->
   <script src="./scripts/draggable/draggable.js"></script>
+  <!--https://github.com/bcherny/draggable-->
   <!---------------------------------------->
-
-  <!--Modifying the DOM-->
-  <!--https://www.sitepoint.com/dom-manipulation-vanilla-javascript-no-jquery/-->
-
-
   <script src="./scripts/rtc.js"></script>
   <script src="./scripts/app.js"></script>
 </body>
