@@ -17,6 +17,12 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
   transform: translateX(0);
 }
 
+#wrapper {
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .widget {
   width: 100%;
   margin: 0;

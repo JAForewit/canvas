@@ -6,7 +6,7 @@ window.addEventListener('scroll', function () {
     console.log("scroll");
 });
 
-mylist = new WidgetList(document.getElementById("widget-toolbar"));
+mylist = new WidgetList(document.getElementById("wrapper"));
 
 function WidgetList(el) {
     var me = this;
