@@ -2,9 +2,12 @@ function toggleToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
 }
 
+window.addEventListener('scroll', function () {
+    console.log("scroll");
+});
+
 mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
-// creates a list elemnt where children are sortable
 function WidgetList(el) {
     var me = this;
 

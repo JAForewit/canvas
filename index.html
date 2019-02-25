@@ -15,29 +15,30 @@
 
 <body>
   <div id="app">
-    <!--widget manager-->
+    <!--widget toolbar-->
     <button onclick="toggleToolbar()" style="position: absolute; right: 10px">toggle toolbar</button>
-    <div id="widget-toolbar">
-        <div class="widget" style="background: green; height: 80px;">
-          <div class="widget-handle"></div>
-        </div>
-        <div class="widget" style="background: yellowgreen; height: 720px;">
-          <div class="widget-handle"></div>
-        </div>
-        <div class="widget" style="background: lightblue; height: 500px;">
-          <div class="widget-handle"></div>
-        </div>
-        <div class="widget" style="background: lightgrey; height: 300px;">
-          <div class="widget-handle"></div>
+    <div id="widget-toolbar" class="open">
+      <div class="widget" style="background: green; height: 80px;">
+        <div class="widget-handle"></div>
+      </div>
+      <div class="widget" style="background: yellowgreen; height: 720px;">
+        <div class="widget-handle"></div>
+      </div>
+      <div class="widget" style="background: lightblue; height: 500px;">
+        <div class="widget-handle"></div>
+      </div>
+      <div class="widget" style="background: lightgrey; height: 300px;">
+        <div class="widget-handle"></div>
       </div>
     </div>
     <!--canvas-->
-    <!--preferences-->
+    <!--preferences toolbar-->
   </div>
 
   <!--3RD PARTY-->
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-  <script src="./scripts/draggable/draggable.js"></script><!--https://github.com/bcherny/draggable-->
+  <script src="./scripts/draggable/draggable.js"></script>
+  <!--https://github.com/bcherny/draggable-->
   <!---------------------------------------->
   <script src="./scripts/rtc.js"></script>
   <script src="./scripts/app.js"></script>
