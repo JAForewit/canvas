@@ -1,26 +1,8 @@
-new Vue({
-    el: '#app',
-    data: {},
-    components: {
-        'toolbar': {
-            template: `
-            <div v-bind:class="{ 'open': showToolbar }" class="toolbar">
-                <button v-on:click="showToolbar = !showToolbar" style="float: right; margin-right: -100px;">toggle toolbar</button>    
-                <slot></slot>
-            </div>`,
-            props: {},
-            data: function () {
-                return {
-                    showToolbar: true
-                }
-            },
-        },
-    }
-});
+function toggleToolbar() {
+    document.getElementById("widget-toolbar").classList.toggle("open");
+}
 
-document.getElementsByClassName("toolbar").addEventListener('scroll', onDrag(e))
-
-mylist = new WidgetList(document.getElementById("mylist"));
+mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 // creates a list elemnt where children are sortable
 function WidgetList(el) {
