@@ -365,7 +365,7 @@
       if (me.move(x, y)) {
 
         // trigger drag event
-        options.onDrag(me, dragEvent.x, dragEvent.y, e);
+        options.onDrag(me, cursor.x, cursor.y, e);
       }
 
     },
@@ -535,7 +535,7 @@
         style = element.style;
 
       util.assign(me._dimensions, {
-        // Modified to add scroll offset --Marc Anderson
+        // MODIFIED to add scroll offset --Marc Anderson
         left: (parse(style.left) || element.offsetLeft) - element.parentNode.scrollLeft,
         top: (parse(style.top) || element.offsetTop) - element.parentNode.scrollTop
       });

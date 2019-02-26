@@ -61,13 +61,10 @@ function WidgetList(el) {
     }
 
     function onDrag(item, x, y, e) {
-        var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
-            mY = (e.targetTouches ? e.targetTouches[0] : e).clientY;
-
-        function inDropZone(y, above, below) {
-            return (mX < me._left + me._width &&
-                mY > y - above / 2 &&
-                mY < y + below / 2);
+        function inDropZone(top, above, below) {
+            return (x < me._left + me._width &&
+                y > top - above / 2 &&
+                y < top + below / 2);
         }
 
         if (me.items.length == 0) {
@@ -77,7 +74,7 @@ function WidgetList(el) {
             if (placeholder.index != 0 &&
                 inDropZone(
                     me._dropZones[0] - me.el.scrollTop,
-                    0,
+                    1000,
                     me.items[0].element.clientHeight)) {
                 placeholder.style.top = me._dropZones[0] + 'px';
                 placeholder.index = 0;
@@ -100,7 +97,7 @@ function WidgetList(el) {
                 inDropZone(
                     me._dropZones[me._dropZones.length - 1] - me.el.scrollTop,
                     me.items[me.items.length - 1].element.clientHeight,
-                    0)) {
+                    1000)) {
                 placeholder.style.top = me._dropZones[me._dropZones.length - 1] + 'px';
                 placeholder.index = me.items.length;
                 return;
@@ -109,9 +106,6 @@ function WidgetList(el) {
     }
 
     function onRelease(item, x, y, event) {
-        // add transition animation
-        item.element.classList.remove("dragging");
-
         // move item in DOM
         document.body.removeChild(item.element);
         me.el.appendChild(item.element);
@@ -124,14 +118,21 @@ function WidgetList(el) {
 
         // remove placeholder
         me.el.removeChild(placeholder);
+
+        // add transition animation
+        item.element.classList.remove("dragging");
+
+        // TODO scroll to where placed if placed above/bellow view
+        // TODO fix jerkiness when removing from bottom
+        //      may need to stop removing elements from DOM
     }
 
     function updatePositions(gap) {
-        var zone = me.gap / 2;
-        me._dropZones = [zone];
+        var newZone = me.gap / 2;
+        me._dropZones = [newZone];
         for (var i in me.items) {
-            zone += me.items[i].element.clientHeight + me.gap;
-            me._dropZones.push(zone);
+            newZone += me.items[i].element.clientHeight + me.gap;
+            me._dropZones.push(newZone);
 
             var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
             me.items[i].set(me._left, top);
