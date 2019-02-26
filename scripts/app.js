@@ -2,10 +2,6 @@ function toggleToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
 }
 
-window.addEventListener('scroll', function () {
-    console.log("scroll");
-});
-
 mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 function WidgetList(el) {
@@ -13,7 +9,7 @@ function WidgetList(el) {
 
     me.el = el;             // list element
     me.items = [];          // draggable items
-    me.threshold = 100;     // drop zone threshold
+    me.threshold = 60;     // drop zone threshold
     me.gap = 10;            // gap between items on drag
 
     me._left = el.clientLeft;
@@ -43,6 +39,9 @@ function WidgetList(el) {
     placeholder.style.height = me.gap + 'px';
 
     function onGrab(item, x, y, e) {
+        // move element in DOM
+        document.body.appendChild(item.element);
+
         // prevent transition animation while dragging
         item.element.classList.add("dragging");
 
@@ -51,10 +50,6 @@ function WidgetList(el) {
         me.items.splice(itemIndex, 1);
         updatePositions(me.gap);
         
-        // move item in DOM
-        me.el.removeChild(item.element);
-        document.body.appendChild(item.element);
-
         // insert placeholder
         placeholder.index = itemIndex;
         placeholder.style.top = me._dropZones[itemIndex] + 'px';
@@ -62,11 +57,10 @@ function WidgetList(el) {
     }
 
     function onDrag(item, x, y, e) {
-        // TODO ad smooth scrolling if y<0 or y>me.el.height
         function inDropZone(top, above, below) {
             return (x < me._left + me._width &&
-                y > top - above / 2 &&
-                y < top + below / 2);
+                y > top - above / 2 && //me.threshold = above
+                y < top + below / 2); //me.threshold = below
         }
 
         if (me.items.length == 0) {
@@ -80,7 +74,6 @@ function WidgetList(el) {
                     me.items[0].element.clientHeight)) {
                 placeholder.style.top = me._dropZones[0] + 'px';
                 placeholder.index = 0;
-
                 return;
             }
             // check middle drop zones
@@ -109,24 +102,20 @@ function WidgetList(el) {
     }
 
     function onRelease(item, x, y, event) {
-        // move item in DOM
-        document.body.removeChild(item.element);
-        me.el.appendChild(item.element);
-
         // add item to list
         me.items.splice(placeholder.index, 0, item);
 
         // update positions
         updatePositions();
 
+        // move element in DOM
+        me.el.appendChild(item.element)
+
         // remove placeholder
         me.el.removeChild(placeholder);
 
         // add transition animation
         item.element.classList.remove("dragging");
-
-        // TODO fix jerkiness when removing from bottom
-        //      may need to stop removing elements from DOM
     }
 
     function updatePositions(gap) {
