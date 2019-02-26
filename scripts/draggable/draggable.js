@@ -327,8 +327,8 @@
 
     },
 
-    drag: function (e) {
-
+    drag: function (e) {  
+          
       var me = this,
         dragEvent = me.dragEvent,
         element = me.element,
@@ -340,6 +340,7 @@
         threshold = options.threshold,
         x = (cursor.x - initialCursor.x)/zoom + initialPosition.left,
         y = (cursor.y - initialCursor.y)/zoom + initialPosition.top;
+
 
       // check threshold
       if (!dragEvent.started && threshold &&
@@ -534,8 +535,9 @@
         style = element.style;
 
       util.assign(me._dimensions, {
-        left: parse(style.left) || element.offsetLeft,
-        top: parse(style.top) || element.offsetTop
+        // Modified to add scroll offset --Marc Anderson
+        left: (parse(style.left) || element.offsetLeft) - element.parentNode.scrollLeft,
+        top: (parse(style.top) || element.offsetTop) - element.parentNode.scrollTop
       });
 
     },

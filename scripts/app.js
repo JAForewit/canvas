@@ -49,6 +49,10 @@ function WidgetList(el) {
         var itemIndex = me.items.indexOf(item);
         me.items.splice(itemIndex, 1);
         updatePositions(me.gap);
+        
+        // move item in DOM
+        me.el.removeChild(item.element);
+        me.el.parentNode.appendChild(item.element);
 
         // insert placeholder
         placeholder.index = itemIndex;
@@ -57,7 +61,6 @@ function WidgetList(el) {
     }
 
     function onDrag(item, x, y, e) {
-
         var mX = (e.targetTouches ? e.targetTouches[0] : e).clientX,
             mY = (e.targetTouches ? e.targetTouches[0] : e).clientY;
 
@@ -73,7 +76,7 @@ function WidgetList(el) {
             // check first drop zone
             if (placeholder.index != 0 &&
                 inDropZone(
-                    me._dropZones[0],
+                    me._dropZones[0] - me.el.scrollTop,
                     0,
                     me.items[0].element.clientHeight)) {
                 placeholder.style.top = me._dropZones[0] + 'px';
@@ -84,7 +87,7 @@ function WidgetList(el) {
             for (var i = 1; i < me.items.length; i++) {
                 if (placeholder.index != i &&
                     inDropZone(
-                        me._dropZones[i],
+                        me._dropZones[i] - me.el.scrollTop,
                         me.items[i - 1].element.clientHeight,
                         me.items[i].element.clientHeight)) {
                     placeholder.style.top = me._dropZones[i] + 'px';
@@ -95,7 +98,7 @@ function WidgetList(el) {
             // check last drop zone
             if (placeholder.index != me.items.length &&
                 inDropZone(
-                    me._dropZones[me._dropZones.length - 1],
+                    me._dropZones[me._dropZones.length - 1] - me.el.scrollTop,
                     me.items[me.items.length - 1].element.clientHeight,
                     0)) {
                 placeholder.style.top = me._dropZones[me._dropZones.length - 1] + 'px';
@@ -108,6 +111,10 @@ function WidgetList(el) {
     function onRelease(item, x, y, event) {
         // add transition animation
         item.element.classList.remove("dragging");
+
+        // move item in DOM
+        me.el.parentNode.removeChild(item.element);
+        me.el.appendChild(item.element);
 
         // add item to list
         me.items.splice(placeholder.index, 0, item);
