@@ -52,7 +52,7 @@ function WidgetList(el) {
         
         // move item in DOM
         me.el.removeChild(item.element);
-        me.el.parentNode.appendChild(item.element);
+        document.body.appendChild(item.element);
 
         // insert placeholder
         placeholder.index = itemIndex;
@@ -113,7 +113,7 @@ function WidgetList(el) {
         item.element.classList.remove("dragging");
 
         // move item in DOM
-        me.el.parentNode.removeChild(item.element);
+        document.body.removeChild(item.element);
         me.el.appendChild(item.element);
 
         // add item to list
