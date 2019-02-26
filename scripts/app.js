@@ -6,7 +6,7 @@ window.addEventListener('scroll', function () {
     console.log("scroll");
 });
 
-mylist = new WidgetList(document.getElementById("wrapper"));
+mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 function WidgetList(el) {
     var me = this;
@@ -40,6 +40,7 @@ function WidgetList(el) {
     var placeholder = document.createElement('div');
     placeholder.classList.add('placeholder');
     placeholder.style.left = me._left + 'px';
+    placeholder.style.height = me.gap + 'px';
 
     function onGrab(item, x, y, e) {
         // prevent transition animation while dragging
@@ -61,6 +62,7 @@ function WidgetList(el) {
     }
 
     function onDrag(item, x, y, e) {
+        // TODO ad smooth scrolling if y<0 or y>me.el.height
         function inDropZone(top, above, below) {
             return (x < me._left + me._width &&
                 y > top - above / 2 &&
@@ -78,6 +80,7 @@ function WidgetList(el) {
                     me.items[0].element.clientHeight)) {
                 placeholder.style.top = me._dropZones[0] + 'px';
                 placeholder.index = 0;
+
                 return;
             }
             // check middle drop zones
@@ -122,13 +125,12 @@ function WidgetList(el) {
         // add transition animation
         item.element.classList.remove("dragging");
 
-        // TODO scroll to where placed if placed above/bellow view
         // TODO fix jerkiness when removing from bottom
         //      may need to stop removing elements from DOM
     }
 
     function updatePositions(gap) {
-        var newZone = me.gap / 2;
+        var newZone = 0;
         me._dropZones = [newZone];
         for (var i in me.items) {
             newZone += me.items[i].element.clientHeight + me.gap;
