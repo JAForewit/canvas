@@ -74,6 +74,7 @@ function WidgetList(el) {
                     me.items[0].element.clientHeight)) {
                 placeholder.style.top = me._dropZones[0] + 'px';
                 placeholder.index = 0;
+                me.el.scrollTop = 0;
                 return;
             }
             // check middle drop zones
@@ -85,6 +86,7 @@ function WidgetList(el) {
                         me.items[i].element.clientHeight)) {
                     placeholder.style.top = me._dropZones[i] + 'px';
                     placeholder.index = i;
+                    // TODO scroll up if placeholder above or down if below
                     return;
                 }
             }
@@ -96,6 +98,7 @@ function WidgetList(el) {
                     1000)) {
                 placeholder.style.top = me._dropZones[me._dropZones.length - 1] + 'px';
                 placeholder.index = me.items.length;
+                me.el.scrollTop = me.el.scrollHeight;
                 return;
             }
         }
@@ -128,5 +131,6 @@ function WidgetList(el) {
             var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
             me.items[i].set(me._left, top);
         }
+        //TODO add gap at bottom
     }
 };
