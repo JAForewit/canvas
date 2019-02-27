@@ -1,10 +1,18 @@
 /*Open Sans: https://www.cssfontstack.com/Open-Sans*/
 h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } h3 { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } p { font-family: "Open Sans"; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } blockquote { font-family: "Open Sans"; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } pre { font-family: "Open Sans"; font-size: 11px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; }
 
-body {
-  overflow: hidden;
+html, body {
   margin: 0;
 }
+
+/*********** CANVAS ************/
+#canvas {
+  width: 100%;
+  height: 100%;
+  background: lightblue;
+  position: fixed;
+}
+/*********** END CANVAS ************/
 
 /*********** WIDGET TOOLBAR ************/
 #widget-toolbar {
@@ -13,9 +21,7 @@ body {
   width: 300px;
   top: 0;
   left: 0;
-  color: white;
   background: rgb(117, 117, 131);
-  box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
   transform: translateX(-100%);
   transition: 0.2s ease;
   overflow-y: scroll;
@@ -28,6 +34,23 @@ body {
 } 
 #widget-toolbar.open {
   transform: translateX(0);
+}
+
+#nav-icon {
+  width: 40px;
+  height: 40px;
+  left: 0;
+  position: absolute;
+  z-index: 100;
+  -webkit-transition: .2s 0.2s ease;
+  -moz-transition: .2s 0.2s ease;
+  -o-transition: .2s 0.2s ease;
+  transition: .2s 0.2s ease;
+  cursor: pointer;
+  background: #d3531a
+}
+#nav-icon.open {
+  transform: translateX(300px);
 }
 
 .widget {
@@ -64,14 +87,36 @@ body {
   width: 95%;
   z-index: -1;
 }
+/*********** END WIDGET TOOLBAR ************/
 
-#nav-icon {
-  z-index: 100;
-  margin: 0;
-  padding: 0;
+/*********** PREFERENCES TOOLBAR ************/
+#pref-toolbar {
+  position: fixed;
+  height: 100%;
+  width: 300px;
+  top: 0;
+  right: 0;
+  background: rgb(117, 117, 131);
+  transform: translateX(100%);
+  transition: 0.2s ease;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox 64 and later */
+}
+#pref-toolbar::-webkit-scrollbar { /* Chrome */
+  width: 0 !important;
+  height: 0 !important;
+} 
+#pref-toolbar.open {
+  transform: translateX(0);
+}
+
+#nav-icon2 {
   width: 40px;
   height: 40px;
+  right: 0;
   position: absolute;
+  z-index: 100;
   -webkit-transition: .2s 0.2s ease;
   -moz-transition: .2s 0.2s ease;
   -o-transition: .2s 0.2s ease;
@@ -79,13 +124,7 @@ body {
   cursor: pointer;
   background: #d3531a
 }
-#nav-icon.open {
-  transform: translateX(300px);
+#nav-icon2.open {
+  transform: translateX(-300px);
 }
-/*********** END WIDGET TOOLBAR ************/
-
-/*********** CANVAS ************/
-/*********** END CANVAS ************/
-
-/*********** PREFERENCES TOOLBAR ************/
 /*********** END PREFERENCES TOOLBAR ************/

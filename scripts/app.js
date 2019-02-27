@@ -3,6 +3,12 @@ function toggleWidgetToolbar() {
     document.getElementById("nav-icon").classList.toggle("open");
 }
 
+function togglePrefToolbar() {
+    document.getElementById("pref-toolbar").classList.toggle("open");
+    document.getElementById("nav-icon2").classList.toggle("open");
+}
+
+
 mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 function WidgetList(el) {
