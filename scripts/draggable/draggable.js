@@ -535,7 +535,7 @@
         style = element.style;
 
       util.assign(me._dimensions, {
-        // MODIFIED to add scroll offset --Marc Anderson
+        // MODIFIED to add scroll offset due to DOM manipulation --Marc Anderson
         left: parse(style.left) || element.offsetLeft,
         top: (parse(style.top) || element.offsetTop) - element.parentNode.scrollTop
       });
