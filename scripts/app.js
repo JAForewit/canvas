@@ -1,5 +1,6 @@
-function toggleToolbar() {
+function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
+    document.getElementById("nav-icon").classList.toggle("open");
 }
 
 mylist = new WidgetList(document.getElementById("widget-toolbar"));
@@ -9,7 +10,6 @@ function WidgetList(el) {
 
     me.el = el;             // list element
     me.items = [];          // draggable items
-    me.threshold = 60;     // drop zone threshold
     me.gap = 10;            // gap between items on drag
 
     me._left = el.clientLeft;
@@ -18,7 +18,8 @@ function WidgetList(el) {
 
     // Initialize el children as items in the list
     for (var i = 0; i < me.el.children.length; i++) {
-        var element = me.el.children[i],
+        if (me.el.children[i].classList.contains("widget")) {
+            var element = me.el.children[i],
             options = {
                 setPosition: true,
                 smoothDrag: true,
@@ -28,7 +29,8 @@ function WidgetList(el) {
                 onDrag: onDrag
             },
             item = new Draggable(element, options);
-        me.items.push(item);
+            me.items.push(item);
+        }
     }
     updatePositions();
 

@@ -3,8 +3,10 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
 
 body {
   overflow: hidden;
+  margin: 0;
 }
 
+/*********** WIDGET TOOLBAR ************/
 #widget-toolbar {
   position: fixed;
   height: 100%;
@@ -15,7 +17,7 @@ body {
   background: rgb(117, 117, 131);
   box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
   transform: translateX(-100%);
-  transition: transform 0.2s ease-out;
+  transition: 0.2s ease;
   overflow-y: scroll;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox 64 and later */
@@ -24,7 +26,6 @@ body {
   width: 0 !important;
   height: 0 !important;
 } 
-
 #widget-toolbar.open {
   transform: translateX(0);
 }
@@ -63,3 +64,28 @@ body {
   width: 95%;
   z-index: -1;
 }
+
+#nav-icon {
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  -webkit-transition: .2s 0.2s ease;
+  -moz-transition: .2s 0.2s ease;
+  -o-transition: .2s 0.2s ease;
+  transition: .2s 0.2s ease;
+  cursor: pointer;
+  background: #d3531a
+}
+#nav-icon.open {
+  transform: translateX(300px);
+}
+/*********** END WIDGET TOOLBAR ************/
+
+/*********** CANVAS ************/
+/*********** END CANVAS ************/
+
+/*********** PREFERENCES TOOLBAR ************/
+/*********** END PREFERENCES TOOLBAR ************/

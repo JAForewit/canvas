@@ -14,43 +14,46 @@
 </head>
 
 <body>
-  <div id="app">
-    <!--widget toolbar-->
-    <button onclick="toggleToolbar()" style="position: absolute; right: 10px">toggle toolbar</button>
-    <div id="widget-toolbar" class="open">
-      <div class="widget" style="background: green; height: 80px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: lightgrey; height: 300px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: yellowgreen; height: 120px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: lightblue; height: 100px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: lightgrey; height: 300px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: yellowgreen; height: 120px;">
-        <div class="widget-handle"></div>
-      </div>
-      <div class="widget" style="background: lightblue; height: 100px;">
-        <div class="widget-handle"></div>
-      </div>
+  <!--widget toolbar-->
+  <div id="nav-icon" class="open" onclick="toggleWidgetToolbar()"></div>
+  <div id="widget-toolbar" class="open">
+    <div class="widget" style="background: green; height: 80px;">
+      <div class="widget-handle"></div>
     </div>
-    <!--canvas-->
-    <!--preferences toolbar-->
+    <div class="widget" style="background: lightgrey; height: 300px;">
+      <div class="widget-handle"></div>
+    </div>
+    <div class="widget" style="background: yellowgreen; height: 120px;">
+      <div class="widget-handle"></div>
+    </div>
+    <div class="widget" style="background: lightblue; height: 100px;">
+      <div class="widget-handle"></div>
+    </div>
+    <div class="widget" style="background: lightgrey; height: 300px;">
+      <div class="widget-handle"></div>
+    </div>
+    <div class="widget" style="background: yellowgreen; height: 120px;">
+      <div class="widget-handle"></div>
+    </div>
+    <div class="widget" style="background: lightblue; height: 100px;">
+      <div class="widget-handle"></div>
+    </div>
   </div>
 
-  <!--3RD PARTY-->
+  <!--canvas-->
+  <div id="canvas"></div>
+
+  <!--preferences toolbar-->
+  <div id="pref-toolbar"></div>
+
+  <!--3RD PARTY SCRIPTS -->
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-  <script src="./scripts/draggable/draggable.js"></script>
-  <!--https://github.com/bcherny/draggable-->
-  <!---------------------------------------->
-  <!--<script src="./scripts/rtc.js"></script>-->
+  <script src="./scripts/draggable/draggable.js"></script>  <!--https://github.com/bcherny/draggable-->
+
+  <!--MY SCRIPTS-->
   <script src="./scripts/app.js"></script>
 </body>
 
 </html>
+
+<!-- TODO gooey menus: https://codepen.io/lbebber/pen/LELBEo -->
