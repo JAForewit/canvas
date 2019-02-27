@@ -86,7 +86,9 @@ function WidgetList(el) {
                         me.items[i].element.clientHeight)) {
                     placeholder.style.top = me._dropZones[i] + 'px';
                     placeholder.index = i;
-                    // TODO scroll up if placeholder above or down if below
+                    if (y < 0 || y > me.el.clientHeight) {
+                        placeholder.scrollIntoView();
+                    }
                     return;
                 }
             }
@@ -130,7 +132,9 @@ function WidgetList(el) {
 
             var top = (i > 0) ? top + me.items[i - 1].element.clientHeight + (gap || 0) : (gap || 0);
             me.items[i].set(me._left, top);
+
+            if (gap == null) me.items[i].element.style.marginBottom = '0px';
+            else me.items[i].element.style.marginBottom = gap + 'px';
         }
-        //TODO add gap at bottom
     }
 };
