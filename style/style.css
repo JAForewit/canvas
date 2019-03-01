@@ -6,23 +6,11 @@ html, body {
   margin: 0;
   height: 100%;
   width: 100%;
+  background: lightblue;
   overflow: hidden;
   -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
+  -webkit-text-size-adjust: none;
 }
 body {
   position: fixed;
 }
-
-/*
-html, body {
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  position: fixed;
-}
-#bodyWrapper {
-  width: 100vw;
-  height: 100vh;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; 
-}*/
