@@ -5,7 +5,8 @@
 
 .menu {
     position: absolute;
-    left: 50%;
+    left: 60px;
+    bottom: -25px;
     margin-left: -80px;
     padding-top: 20px;
     padding-left: 80px;
