@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 
   <link rel="stylesheet" href="./style/style.css">
+  <link rel="stylesheet" href="./style/canvas.css">
+  <link rel="stylesheet" href="./style/menu.css">
+  <link rel="stylesheet" href="./style/prefToolbar.css">
+  <link rel="stylesheet" href="./style/widgetToolbar.css">
+
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
@@ -16,6 +21,21 @@
 <body>
   <!--canvas-->
   <div id="canvas"></div>
+
+  <!--popup menu-->
+  <nav class="menu">
+    <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+    <label class="menu-open-button" for="menu-open">
+      <span class="hamburger hamburger-1"></span>
+      <span class="hamburger hamburger-2"></span>
+      <span class="hamburger hamburger-3"></span>
+    </label>
+
+    <a href="#" class="menu-item"></a>
+    <a href="#" class="menu-item"></a>
+    <a href="#" class="menu-item"></a>
+    <a href="#" class="menu-item"></a>
+  </nav>
 
   <!--widget toolbar-->
   <div id="nav-icon" onclick="toggleWidgetToolbar()"></div>
@@ -45,16 +65,37 @@
 
   <!--preferences toolbar-->
   <div id="nav-icon2" onclick="togglePrefToolbar()"></div>
-  <div id="pref-toolbar">
-
-  </div>
+  <div id="pref-toolbar"></div>
 
   <!--3RD PARTY SCRIPTS -->
   <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-  <script src="./scripts/draggable/draggable.js"></script>  <!--https://github.com/bcherny/draggable-->
+  <script src="./scripts/draggable/draggable.js"></script>
+  <!--https://github.com/bcherny/draggable-->
 
   <!--MY SCRIPTS-->
   <script src="./scripts/app.js"></script>
+
+  <!-- filters -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <filter id="shadowed-goo">
+
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+        <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+        <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+          result="shadow" />
+        <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+        <feComposite in2="shadow" in="goo" result="goo" />
+        <feComposite in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+        <feComposite in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+    </defs>
+  </svg>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
 (function (root, factory) {
-    if (typeof exports === 'object') {
-      module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {
-      define([], factory);
-    } else {
-      root.Draggable = factory();
-    }
+  if (typeof exports === 'object') {
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else {
+    root.Draggable = factory();
+  }
 }(this, function () {
 
   'use strict';
@@ -37,7 +37,7 @@
   var env = {
 
     // CSS vendor-prefixed transform property
-    transform: (function(){
+    transform: (function () {
 
       var prefixes = ' -o- -ms- -moz- -webkit-'.split(' ');
       var style = document.body.style;
@@ -60,9 +60,9 @@
       var obj = arguments[0];
       var count = arguments.length;
 
-      for ( var n = 1; n < count; n++ ) {
+      for (var n = 1; n < count; n++) {
         var argument = arguments[n];
-        for ( var key in argument ) {
+        for (var key in argument) {
           obj[key] = argument[key];
         }
       }
@@ -72,27 +72,27 @@
     },
 
     bind: function (fn, context) {
-      return function() {
+      return function () {
         fn.apply(context, arguments);
       }
     },
 
     on: function (element, e, fn) {
       if (e && fn) {
-        util.addEvent (element, e, fn);
+        util.addEvent(element, e, fn);
       } else if (e) {
         for (var ee in e) {
-          util.addEvent (element, ee, e[ee]);
+          util.addEvent(element, ee, e[ee]);
         }
       }
     },
 
     off: function (element, e, fn) {
       if (e && fn) {
-        util.removeEvent (element, e, fn);
+        util.removeEvent(element, e, fn);
       } else if (e) {
         for (var ee in e) {
-          util.removeEvent (element, ee, e[ee]);
+          util.removeEvent(element, ee, e[ee]);
         }
       }
     },
@@ -106,7 +106,7 @@
         limit = [+limit[0], +limit[1]];
         if (n < limit[0]) n = limit[0];
         else if (n > limit[1]) n = limit[1];
-      // {Number} limit.x
+        // {Number} limit.x
       } else {
         n = +limit;
       }
@@ -115,11 +115,11 @@
     },
 
     addEvent: ('attachEvent' in Element.prototype)
-      ? function (element, e, fn) { element.attachEvent('on'+e, fn) }
+      ? function (element, e, fn) { element.attachEvent('on' + e, fn) }
       : function (element, e, fn) { element.addEventListener(e, fn, false) },
 
     removeEvent: ('attachEvent' in Element.prototype)
-      ? function (element, e, fn) { element.detachEvent('on'+e, fn) }
+      ? function (element, e, fn) { element.detachEvent('on' + e, fn) }
       : function (element, e, fn) { element.removeEventListener(e, fn) }
 
   };
@@ -132,7 +132,7 @@
     new Draggable (element)
   */
 
-  function Draggable (element, options) {
+  function Draggable(element, options) {
 
     var me = this,
       start = util.bind(me.start, me),
@@ -152,8 +152,8 @@
       // DOM element
       element: element,
       handle: (options.handle && isElement(options.handle))
-              ? options.handle
-              : element,
+        ? options.handle
+        : element,
 
       // DOM event handlers
       handlers: {
@@ -179,7 +179,7 @@
 
   }
 
-  util.assign (Draggable.prototype, {
+  util.assign(Draggable.prototype, {
 
     // public
 
@@ -194,7 +194,7 @@
 
     },
 
-    get: function() {
+    get: function () {
 
       var dragEvent = this.dragEvent;
 
@@ -229,7 +229,7 @@
       y: 0
     },
 
-    initialize: function() {
+    initialize: function () {
 
       var me = this,
         element = me.element,
@@ -327,8 +327,8 @@
 
     },
 
-    drag: function (e) {  
-          
+    drag: function (e) {
+
       var me = this,
         dragEvent = me.dragEvent,
         element = me.element,
@@ -338,8 +338,8 @@
         zoom = initialPosition.zoom,
         cursor = me.getCursor(e),
         threshold = options.threshold,
-        x = (cursor.x - initialCursor.x)/zoom + initialPosition.left,
-        y = (cursor.y - initialCursor.y)/zoom + initialPosition.top;
+        x = (cursor.x - initialCursor.x) / zoom + initialPosition.left,
+        y = (cursor.y - initialCursor.y) / zoom + initialPosition.top;
 
 
       // check threshold
@@ -381,7 +381,7 @@
 
       // snap to grid?
       if (!options.smoothDrag && grid) {
-        pos = me.round (pos, grid);
+        pos = me.round(pos, grid);
       }
 
       // move it
@@ -431,7 +431,7 @@
 
     },
 
-    reset: function() {
+    reset: function () {
 
       this.dragEvent.started = false;
 
@@ -442,8 +442,8 @@
       var grid = this.options.grid;
 
       return {
-        x: grid * Math.round(pos.x/grid),
-        y: grid * Math.round(pos.y/grid)
+        x: grid * Math.round(pos.x / grid),
+        y: grid * Math.round(pos.y / grid)
       };
 
     },
@@ -467,7 +467,7 @@
 
       var me = this,
         _true = function (x, y) {
-          return { x:x, y:y };
+          return { x: x, y: y };
         };
 
       // limit is a function
@@ -528,7 +528,7 @@
 
     },
 
-    setPosition: function() {
+    setPosition: function () {
 
       var me = this,
         element = me.element,
@@ -542,7 +542,7 @@
 
     },
 
-    setZoom: function() {
+    setZoom: function () {
 
       var me = this;
       var element = me.element;
@@ -586,31 +586,31 @@
 
   // helpers
 
-  function parse (string) {
+  function parse(string) {
     return parseInt(string, 10);
   }
 
-  function getStyle (element) {
+  function getStyle(element) {
     return 'currentStyle' in element ? element.currentStyle : getComputedStyle(element);
   }
 
-  function isArray (thing) {
+  function isArray(thing) {
     return thing instanceof Array; // HTMLElement
   }
 
-  function isDefined (thing) {
+  function isDefined(thing) {
     return thing !== void 0 && thing !== null;
   }
 
-  function isElement (thing) {
+  function isElement(thing) {
     return thing instanceof Element || typeof HTMLDocument !== 'undefined' && thing instanceof HTMLDocument;
   }
 
-  function isFunction (thing) {
+  function isFunction(thing) {
     return thing instanceof Function;
   }
 
-  function noop (){};
+  function noop() { };
 
   return Draggable;
 

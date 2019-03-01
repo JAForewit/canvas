@@ -1,0 +1,88 @@
+#widget-toolbar {
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    top: 0;
+    left: 0;
+    background: rgb(117, 117, 131);
+    transform: translateX(-100%);
+    transition: 0.2s ease;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox 64 and later */
+}
+
+#widget-toolbar::-webkit-scrollbar {
+    /* Chrome */
+    width: 0 !important;
+    height: 0 !important;
+}
+
+#widget-toolbar.open {
+    transform: translateX(0);
+}
+
+#nav-icon {
+    width: 40px;
+    height: 40px;
+    left: 0;
+    position: absolute;
+    z-index: 100;
+    -webkit-transition: .2s 0.2s ease;
+    -moz-transition: .2s 0.2s ease;
+    -o-transition: .2s 0.2s ease;
+    transition: .2s 0.2s ease;
+    cursor: pointer;
+    background: #d3531a
+}
+
+#nav-icon.open {
+    transform: translateX(300px);
+}
+
+.widget {
+    position: relative;
+    width: 100%;
+    -webkit-box-shadow: 0px 6px 5px -5px #000;
+    /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 0px 6px 5px -5px #000;
+    /* Firefox 3.5 - 3.6 */
+    box-shadow: 0px 6px 5px -5px #000;
+    /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    border-radius: 10px 0;
+    transition: ease 0.2s;
+}
+
+.widget.dragging {
+    transition: none !important;
+}
+
+.widget-handle {
+    cursor: move;
+    height: 25px;
+    width: 100%;
+    border-radius: 10px 0px 0px 0px;
+    background-color: #2c2f33;
+}
+
+.placeholder {
+    background: red;
+    position: relative;
+    z-index: 1;
+}
+
+.placeholder:before {
+    border-top: 2px solid #dfdfdf;
+    content: "";
+    margin: 0 auto;
+    /* this centers the line to the full width specified */
+    position: absolute;
+    /* positioning must be absolute here, and relative positioning must be applied to the parent */
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 95%;
+    z-index: -1;
+}
