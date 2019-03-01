@@ -3,6 +3,7 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
 
 html, body {
   margin: 0;
+  overflow: hidden;
 }
 
 /*********** CANVAS ************/
