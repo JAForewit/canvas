@@ -1,7 +1,3 @@
-document.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-}, false);
-
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
     document.getElementById("nav-icon").classList.toggle("open");
