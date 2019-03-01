@@ -4,6 +4,7 @@ h1 { font-family: "Open Sans"; font-size: 23px; font-style: normal; font-variant
 html, body {
   margin: 0;
   overflow: hidden;
+  height: 100%;
 }
 body {
   position: relative;
