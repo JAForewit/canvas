@@ -5,9 +5,8 @@ html, body {
   margin: 0;
   overflow: hidden;
   height: 100%;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: none;
 }
 body {
   position: relative;
+  overscroll-behavior-y: none;
 }
