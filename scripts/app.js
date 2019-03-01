@@ -1,3 +1,17 @@
+document.body.addEventListener('touchmove', function (event) {
+    event.preventDefault();
+}, false);
+
+window.onresize = function () {
+    $(document.body).width(window.innerWidth).height(window.innerHeight);
+}
+
+$(function () {
+    window.onresize();
+});
+
+
+
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
     document.getElementById("nav-icon").classList.toggle("open");
@@ -26,15 +40,15 @@ function WidgetList(el) {
     for (var i = 0; i < me.el.children.length; i++) {
         if (me.el.children[i].classList.contains("widget")) {
             var element = me.el.children[i],
-            options = {
-                setPosition: true,
-                smoothDrag: true,
-                handle: element.children[0],
-                onDragEnd: onRelease,
-                onDragStart: onGrab,
-                onDrag: onDrag
-            },
-            item = new Draggable(element, options);
+                options = {
+                    setPosition: true,
+                    smoothDrag: true,
+                    handle: element.children[0],
+                    onDragEnd: onRelease,
+                    onDragStart: onGrab,
+                    onDrag: onDrag
+                },
+                item = new Draggable(element, options);
             me.items.push(item);
         }
     }
@@ -57,7 +71,7 @@ function WidgetList(el) {
         var itemIndex = me.items.indexOf(item);
         me.items.splice(itemIndex, 1);
         updatePositions(me.gap);
-        
+
         // insert placeholder
         placeholder.index = itemIndex;
         placeholder.style.top = me._dropZones[itemIndex] + 'px';
