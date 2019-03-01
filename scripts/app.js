@@ -1,17 +1,3 @@
-document.body.addEventListener('touchmove', function (event) {
-    event.preventDefault();
-}, false);
-
-window.onresize = function () {
-    $(document.body).width(window.innerWidth).height(window.innerHeight);
-}
-
-$(function () {
-    window.onresize();
-});
-
-
-
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
     document.getElementById("nav-icon").classList.toggle("open");
