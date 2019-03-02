@@ -21,7 +21,9 @@
 
 <body>
   <!--canvas-->
-  <div id="canvas"></div>
+  <canvas id="canvas">
+    Your browser does not support canvas element.
+  </canvas>
 
   <!--popup menu-->
   <div class="menu">
@@ -64,18 +66,6 @@
     </div>
   </div>
 
-  <!--preferences toolbar-->
-  <div id="nav-icon2" onclick="togglePrefToolbar()"></div>
-  <div id="pref-toolbar"></div>
-
-  <!--3RD PARTY SCRIPTS -->
-  <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-  <script src="./scripts/draggable/draggable.js"></script>
-  <!--https://github.com/bcherny/draggable-->
-
-  <!--MY SCRIPTS-->
-  <script src="./scripts/app.js"></script>
-
   <!-- filters -->
   <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
     <defs>
@@ -97,6 +87,19 @@
       </filter>
     </defs>
   </svg>
+
+  <!--preferences toolbar-->
+  <div id="nav-icon2" onclick="togglePrefToolbar()"></div>
+  <div id="pref-toolbar"></div>
+
+  <!--3RD PARTY SCRIPTS -->
+  <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+  <script src="./scripts/draggable/draggable.js"></script>
+  <!--https://github.com/bcherny/draggable-->
+
+  <!--SCRIPTS-->
+  <script src="./scripts/app.js"></script>
+  <script src="./scripts/canvas.js"></script>
 </body>
 
 </html>
