@@ -9,6 +9,3 @@ html, body {
   overflow: hidden;
   -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
 }
-body {
-  position: fixed;
-}
