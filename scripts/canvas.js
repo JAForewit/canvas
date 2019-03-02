@@ -1,9 +1,9 @@
-var el = document.getElementsByTagName("canvas")[0];
+var el = document.getElementById("canvas");
 el.addEventListener("touchstart", handleStart, false);
 el.addEventListener("touchend", handleEnd, false);
 el.addEventListener("touchcancel", handleCancel, false);
 el.addEventListener("touchmove", handleMove, false);
-console.log("initialized.");
+log("initialized.");
 
 var ongoingTouches = [];
 
@@ -13,7 +13,7 @@ function handleStart(evt) {
 
   for (var i = 0; i < touches.length; i++) {
     ongoingTouches.push(copyTouch(touches[i]));
-    console.log("start touch " + i);
+    log("start touch " + i);
   }
 }
 
@@ -25,10 +25,10 @@ function handleMove(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
 
     if (idx >= 0) {
-      console.log("continuing touch " + idx);
+      log("continuing touch " + idx);
       ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
     } else {
-      console.log("can't figure out which touch to continue");
+      log("can't figure out which touch to continue");
     }
   }
 }
@@ -42,16 +42,16 @@ function handleEnd(evt) {
 
     if (idx >= 0) {
       ongoingTouches.splice(idx, 1);  // remove it; we're done
-      console.log("end touch " + idx)
+      log("end touch " + idx)
     } else {
-      console.log("can't figure out which touch to end");
+      log("can't figure out which touch to end");
     }
   }
 }
 
 function handleCancel(evt) {
   evt.preventDefault();
-  console.log("touchcancel.");
+  log("touchcancel.");
   var touches = evt.changedTouches;
 
   for (var i = 0; i < touches.length; i++) {
@@ -74,3 +74,8 @@ function ongoingTouchIndexById(idToFind) {
   }
   return -1;    // not found
 }
+
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+  }
