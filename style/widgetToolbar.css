@@ -1,5 +1,5 @@
 #widget-toolbar {
-    position: fixed;
+    position: absolute;
     height: 100%;
     width: 300px;
     top: 0;
