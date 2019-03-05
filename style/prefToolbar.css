@@ -11,6 +11,7 @@
     scroll-behavior: smooth;
     scrollbar-width: none;
     /* Firefox 64 and later */
+    pointer-events: auto;
 }
 
 #pref-toolbar::-webkit-scrollbar {
