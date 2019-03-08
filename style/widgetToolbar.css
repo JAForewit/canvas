@@ -25,6 +25,7 @@
 }
 
 #nav-icon {
+    pointer-events: auto;
     width: 40px;
     height: 40px;
     left: 0;

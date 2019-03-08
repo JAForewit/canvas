@@ -25,6 +25,7 @@
 }
 
 #nav-icon2 {
+    pointer-events: auto;
     width: 40px;
     height: 40px;
     right: 0;
@@ -36,7 +37,7 @@
     -o-transition: .2s 0.2s ease;
     transition: .2s 0.2s ease;
     cursor: pointer;
-    background: #d3531a
+    background: #d3531a;
 }
 
 #nav-icon2.open {

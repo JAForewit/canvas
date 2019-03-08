@@ -5,4 +5,5 @@
     left: 0;
     background: lightcyan;
     position: absolute;
+    pointer-events: auto;
 }
