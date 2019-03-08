@@ -1,0 +1,16 @@
+html body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    background: lightcoral;
+}
+
+#scrollableBox {
+    height: 120vh;
+    width: 30vw;
+    background: grey;
+}
