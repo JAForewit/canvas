@@ -3,36 +3,34 @@
 const preventDefault = e => e.preventDefault();
 // When rendering our container
 window.addEventListener('touchmove', preventDefault, {
-   passive: false
+    passive: false
 });
-// Remember to clean up when removing it
-window.removeEventListener('touchmove', preventDefault);
-
-
 
 function scrollToPreventBounce(htmlElement) {
-    const {scrollTop, offsetHeight, scrollHeight} = htmlElement;
-  
+    const { scrollTop, offsetHeight, scrollHeight } = htmlElement;
+
     // If at top, bump down 1px
     if (scrollTop <= 0) {
-      htmlElement.scrollTo(0, 1);
-      return;
+        htmlElement.scrollTo(0, 1);
+        return;
     }
-  
+
     // If at bottom, bump up 1px
     if (scrollTop + offsetHeight >= scrollHeight) {
-      htmlElement.scrollTo(0, scrollHeight - offsetHeight - 1);
+        htmlElement.scrollTo(0, scrollHeight - offsetHeight - 1);
     }
-  }
-  // When rendering the element
-  function afterRender() {
-     document.getElementById("scrollableBox").addEventListener('touchstart', scrollToPreventBounce);
-  }
+}
+// When rendering the element
+document.getElementById("scrollableBox").addEventListener('touchstart', scrollToPreventBounce);
+
+/*
+// Remember to clean up when removing it
+window.removeEventListener('touchmove', preventDefault);
   // Remember to clean-up when removing it
   function beforeRemove() {
     document.getElementById("scrollableBox").removeEventListener('touchstart', scrollToPreventBounce);
   }
-
+*/
 
 
 /*var el = document.getElementById("scrollableBox");
