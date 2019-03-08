@@ -1,6 +1,6 @@
 html body {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
 }
 
@@ -10,7 +10,11 @@ body {
 }
 
 #scrollableBox {
-    height: 1000px;
+    overflow: auto;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 300px;
     width: 200px;
     background: grey;
     -webkit-overflow-scrolling: touch;
