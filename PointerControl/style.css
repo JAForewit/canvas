@@ -6,19 +6,15 @@ html body {
 
 body {
     margin: 0;
-    background: lightcoral;
+    background: lightcyan;
 }
 
 #wrapper {
     height: 100%;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
 }
 
 #scrollableBox {
     height: 1000px;
-    width: 30vw;
+    width: 200px;
     background: grey;
 }
