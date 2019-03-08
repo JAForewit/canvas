@@ -26,11 +26,11 @@ function scrollToPreventBounce(htmlElement) {
   }
   // When rendering the element
   function afterRender() {
-     htmlElement.addEventListener('touchstart', scrollToPreventBounce);
+     document.getElementById("scrollableBox").addEventListener('touchstart', scrollToPreventBounce);
   }
   // Remember to clean-up when removing it
   function beforeRemove() {
-     htmlElement.removeEventListener('touchstart', scrollToPreventBounce);
+    document.getElementById("scrollableBox").removeEventListener('touchstart', scrollToPreventBounce);
   }
 
 
