@@ -7,7 +7,7 @@ window.addEventListener('touchmove', preventDefault, {
 });
 
 
-var htmlElement = docuemnt.getElementById("scrollableBox");
+var htmlElement = document.getElementById("scrollableBox");
 function scrollToPreventBounce(htmlElement) {
     const { scrollTop, offsetHeight, scrollHeight } = htmlElement;
 
