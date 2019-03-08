@@ -1,6 +1,6 @@
 html body {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 
@@ -10,7 +10,7 @@ body {
 }
 
 #wrapper {
-    height: 100vh;
+    height: 100%;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
@@ -18,7 +18,7 @@ body {
 }
 
 #scrollableBox {
-    height: 120vh;
+    height: 1000px;
     width: 30vw;
     background: grey;
 }
