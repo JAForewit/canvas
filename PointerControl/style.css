@@ -9,6 +9,14 @@ body {
     background: lightcoral;
 }
 
+#wrapper {
+    height: 100vh;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
 #scrollableBox {
     height: 120vh;
     width: 30vw;
