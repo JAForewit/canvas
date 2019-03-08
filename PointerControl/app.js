@@ -6,6 +6,8 @@ window.addEventListener('touchmove', preventDefault, {
     passive: false
 });
 
+
+var htmlElement = docuemnt.getElementById("scrollableBox");
 function scrollToPreventBounce(htmlElement) {
     const { scrollTop, offsetHeight, scrollHeight } = htmlElement;
 
@@ -21,13 +23,13 @@ function scrollToPreventBounce(htmlElement) {
     }
 }
 // When rendering the element
-document.getElementById("scrollableBox").addEventListener('touchstart', scrollToPreventBounce);
+htmlElement.addEventListener('touchstart', scrollToPreventBounce);
 
 /*
 // Remember to clean up when removing it
 window.removeEventListener('touchmove', preventDefault);
-  // Remember to clean-up when removing it
-  function beforeRemove() {
+
+// Remember to clean-up when removing it
+function beforeRemove() {
     document.getElementById("scrollableBox").removeEventListener('touchstart', scrollToPreventBounce);
-  }
-*/
+}*/
