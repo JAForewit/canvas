@@ -28,19 +28,21 @@ window.addEventListener('load', function () {
     var touchstartHandler = function (e) {
         setTouchStartPoint(e);
         atTop = (element.scrollTop === 0);
-        atBottom = (element.scrollTop >= (element.scrollHeight - element.offsetHeight));
+        atBottom = (element.scrollTop === (element.scrollHeight - element.offsetHeight));
         log("top: " + atTop + " bot: " + atBottom);
     };
 
     var touchmoveHandler = function (e) {
         if (atTop && isScrollingUp(e) && e.cancelable) {
             atTop = false;
-            e.preventDefault();
+            element.scrollTop = 20; 
+            //e.preventDefault();
             return;
         }
         if (atBottom && isScrollingDown(e) && e.cancelable) {
             atBottom = false;
-            e.preventDefault();
+            element.scrollTop = (element.scrollHeight - element.offsetHeight) - 20;
+            //e.preventDefault();
             return;
         }
     };
