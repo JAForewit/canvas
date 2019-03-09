@@ -37,12 +37,14 @@ window.addEventListener('load', function () {
             atTop = false;
             element.scrollTop = 20; 
             //e.preventDefault();
+            e.stopPropagation();
             return;
         }
         if (atBottom && isScrollingDown(e) && e.cancelable) {
             atBottom = false;
             element.scrollTop = (element.scrollHeight - element.offsetHeight) - 20;
             //e.preventDefault();
+            e.stopPropagation();
             return;
         }
     };
