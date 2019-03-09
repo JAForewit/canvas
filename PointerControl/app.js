@@ -47,8 +47,8 @@ window.addEventListener('load', function () {
         }
     };
 
-    document.addEventListener('touchstart', touchstartHandler);
-    document.addEventListener('touchmove', touchmoveHandler, { passive: false });
+    element.addEventListener('touchstart', touchstartHandler);
+    element.addEventListener('touchmove', touchmoveHandler, { passive: false });
 });
 
 
