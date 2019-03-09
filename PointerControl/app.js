@@ -10,17 +10,20 @@ function log(msg) {
 
 document.addEventListener('touchmove', function (e) { e.preventDefault() }, { capture: false, passive: false });
 document.getElementById('scrollableBox').addEventListener('touchmove', function (e) {
-    e.stopPropagation()
+    e.stopPropagation();
 
     var top = this.scrollTop,
-        height = this.scrollHeight;
+        totalScroll = this.scrollHeight,
+        currentScroll = top + this.offsetHeight;
 
-    if (top <= 0) {
-        this.scrollTop = 1
-    } else if (top >= height) {
-        this.scrolltop = height;
+    if (top === 0 && currentScroll === totalScroll) {
+        e.preventDefault();
+    } else if (top === 0) {
+        this.scrollTop = 1;
+    } else if (currentScroll === totalScroll) {
+        this.scrollTop = top - 1;
     }
-}, { capture: false });
+}, { capture: false, passive: false });
 
 
 
