@@ -1,21 +1,27 @@
 
 // see: https://medium.com/turo-engineering/ios-mobile-scroll-in-web-react-1d92d910604b
 
+var prevent = false,
+    element = document.getElementById('wrapper');
 
-function preventPullToRefresh(element) {
-    var prevent = false;
+element.addEventListener('touchstart', function (e) {
+    log(event.target.id + " start");
+    var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+    prevent = (scrollY === 0);
+});
 
-    window.addEventListener('touchstart', function(e){
-      var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
-      prevent = (scrollY === 0);
-    });
-
-    window.addEventListener('touchmove', function(e){
-      if (prevent) {
+element.addEventListener('touchmove', function (e) {
+    log(event.target.id + " move");
+    if (prevent) {
         prevent = false;
         e.preventDefault();
-      }
-    }, { passive: false });
-  }
+    }
+}, { passive: false });
 
-  preventPullToRefresh('html') // pass #id or html tag into the method
+
+
+// DO NOT DELETE
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+  }
