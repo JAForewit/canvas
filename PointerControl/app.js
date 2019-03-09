@@ -7,15 +7,18 @@ function log(msg) {
     var p = document.getElementById('log');
     p.innerHTML = msg;
 }
+var status = 1;
 
 document.getElementById('scrollableBox').addEventListener('touchmove', function (e) {
     e.stopPropagation();
+    log("scroll" + status);
+    status = (status == 1) ? 0 : 1;
 }, {capture: true});
 
-var status = 1;
-document.addEventListener('touchmove', function (e) {
-    console.log("document move");
-    log("document" + status);
+
+window.addEventListener('touchmove', function (e) {
+    console.log("window move");
+    log("window" + status);
     status = (status == 1) ? 0 : 1;
 })
 
