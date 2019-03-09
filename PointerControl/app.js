@@ -6,28 +6,11 @@
 function log(msg) {
     var p = document.getElementById('log');
     p.innerHTML = msg;
-  }
+}
 
+document.addEventListener('touchmove', function (e) { e.preventDefault() }, {capture: false, passive: false});
+document.getElementById('scrollableBox').addEventListener('touchmove', function (e) { e.stopPropagation() }, {capture: false});
 
-document.getElementById("scrollableBox").addEventListener('touchmove', function(e) {
-    //e.stopPropagation();
-    log("scrollable move");
-    console.log("scrollable move");
-}, {passive: false});
-document.getElementById("scrollableBox").addEventListener("touchend", function(d) {
-    log("scrollable end");
-    console.log("scrollable end");
-});
-
-
-document.body.addEventListener("touchmove", function (e) {
-    log("body move");
-    console.log("body move");
-});
-document.body.addEventListener("touchend", function (e) {
-    log("body end");
-    console.log("body end");
-});
 
 
 /*
