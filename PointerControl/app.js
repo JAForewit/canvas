@@ -8,8 +8,19 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
-document.addEventListener('touchmove', function (e) { e.preventDefault() }, {capture: false, passive: false});
-document.getElementById('scrollableBox').addEventListener('touchmove', function (e) { e.stopPropagation() }, {capture: false});
+document.addEventListener('touchmove', function (e) { e.preventDefault() }, { capture: false, passive: false });
+document.getElementById('scrollableBox').addEventListener('touchmove', function (e) {
+    e.stopPropagation()
+
+    var top = this.scrollTop,
+        height = this.scrollHeight;
+
+    if (top <= 0) {
+        this.scrollTop = 1
+    } else if (top >= height) {
+        this.scrolltop = height;
+    }
+}, { capture: false });
 
 
 
