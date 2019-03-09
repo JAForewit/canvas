@@ -8,24 +8,16 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
-document.addEventListener('touchmove', function (e) { e.preventDefault() }, { capture: false, passive: false });
 document.getElementById('scrollableBox').addEventListener('touchmove', function (e) {
     e.stopPropagation();
+}, {capture: true});
 
-    var top = this.scrollTop,
-        totalScroll = this.scrollHeight,
-        currentScroll = top + this.offsetHeight;
-
-    if (top === 0 && currentScroll === totalScroll) {
-        e.preventDefault();
-    } else if (top === 0) {
-        this.scrollTop = 1;
-    } else if (currentScroll === totalScroll) {
-        this.scrollTop = top - 1;
-    }
-}, { capture: false, passive: false });
-
-
+var status = 1;
+document.body.addEventListener('touchmove', function (e) {
+    console.log("body move");
+    log("body" + status);
+    status = (status == 1) ? 0 : 1;
+})
 
 /*
 var freeze = function (e) {
@@ -59,5 +51,6 @@ var enableScroll = function () {
     document.removeEventListener("touchmove", freeze);
     document.body.style.overflow = "";
 }
+
 
 disableScroll();*/
