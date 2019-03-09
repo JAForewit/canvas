@@ -4,13 +4,13 @@
 var prevent = false,
     element = document.getElementById('wrapper');
 
-element.addEventListener('touchstart', function (e) {
+window.addEventListener('touchstart', function (e) {
     log(event.target.id + " start");
     var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
     prevent = (scrollY === 0);
 });
 
-element.addEventListener('touchmove', function (e) {
+window.addEventListener('touchmove', function (e) {
     log(event.target.id + " move");
     if (prevent) {
         prevent = false;
