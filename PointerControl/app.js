@@ -1,19 +1,48 @@
-// Function to disable "pull-to-refresh" effect present in some webviews.
-// Especially Crosswalk 12 and above (Chromium 41+) runtimes.
+let lastTouchY = 0;
+const setTouchStartPoint = event => {
+    lastTouchY = event.touches[0].clientY;
+};
+const isScrollingUp = event => {
+    const touchY = event.touches[0].clientY;
+    const touchYDelta = touchY - lastTouchY;
+
+    lastTouchY = touchY;
+
+    return touchYDelta > 0;
+};
+const isScrollingDown = event => {
+    const touchY = event.touches[0].clientY;
+    const touchYDelta = touchY - lastTouchY;
+
+    lastTouchY = touchY;
+
+    return touchYDelta < 0;
+};
+
 
 window.addEventListener('load', function () {
-    var maybePreventPullToRefresh = false,
+    var atTop = false,
+        atBottom = false,
         element = document.getElementById("scrollableBox");
 
     var touchstartHandler = function (e) {
-        maybePreventPullToRefresh = (element.scrollTop === 0) || (element.scrollTop >= (element.scrollHeight - element.offsetHeight));
-        log(maybePreventPullToRefresh);
+        setTouchStartPoint(e);
+        atTop = (element.scrollTop === 0);
+        atBottom = (element.scrollTop >= (element.scrollHeight - element.offsetHeight));
+        log("top: " + atTop + " bot: " + atBottom);
     };
 
     var touchmoveHandler = function (e) {
-        if (maybePreventPullToRefresh) {
-            maybePreventPullToRefresh = false;
+        if (atTop && isScrollingUp(e) && e.cancelable) {
+            atTop = false;
             e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        if (atBottom && isScrollingDown(e) && e.cancelable) {
+            atBottom = false;
+            e.preventDefault();
+            e.stopPropagation();
             return;
         }
     };
@@ -21,6 +50,7 @@ window.addEventListener('load', function () {
     document.addEventListener('touchstart', touchstartHandler);
     document.addEventListener('touchmove', touchmoveHandler, { passive: false });
 });
+
 
 // DO NOT DELETE
 function log(msg) {
