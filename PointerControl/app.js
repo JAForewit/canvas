@@ -1,3 +1,5 @@
+
+
 let lastTouchY = 0;
 const setTouchStartPoint = event => {
     lastTouchY = event.touches[0].clientY;
@@ -33,17 +35,18 @@ window.addEventListener('load', function () {
     };
 
     var touchmoveHandler = function (e) {
+
         if (atTop && isScrollingUp(e) && e.cancelable) {
             atTop = false;
-            element.scrollTop = 20; 
-            //e.preventDefault();
+            //element.scrollTop = 1; 
+            e.preventDefault();
             e.stopPropagation();
             return;
         }
         if (atBottom && isScrollingDown(e) && e.cancelable) {
             atBottom = false;
-            element.scrollTop = (element.scrollHeight - element.offsetHeight) - 20;
-            //e.preventDefault();
+            //element.scrollTop = (element.scrollHeight - element.offsetHeight) - 1;
+            e.preventDefault();
             e.stopPropagation();
             return;
         }
