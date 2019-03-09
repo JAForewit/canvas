@@ -35,13 +35,13 @@ window.addEventListener('load', function () {
     var touchmoveHandler = function (e) {
         if (atTop && isScrollingUp(e) && e.cancelable) {
             atTop = false;
-            e.preventDefault();
+            //e.preventDefault();
             e.stopPropagation();
             return;
         }
         if (atBottom && isScrollingDown(e) && e.cancelable) {
             atBottom = false;
-            e.preventDefault();
+            //e.preventDefault();
             e.stopPropagation();
             return;
         }
