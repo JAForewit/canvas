@@ -3,6 +3,9 @@ html body {
     width: 100vw;
     overflow: hidden;
 }
+html {
+    position: fixed;
+}
 
 body {
     margin: 0;
@@ -18,4 +21,8 @@ body {
     width: 200px;
     background: grey;
     -webkit-overflow-scrolling: touch;
+}
+
+#wrapper {
+    height: 100%;
 }
