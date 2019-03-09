@@ -10,7 +10,7 @@ function log(msg) {
 
 
 document.getElementById("scrollableBox").addEventListener('touchmove', function(e) {
-    e.stopPropagation();
+    //e.stopPropagation();
     log("scrollable move");
     console.log("scrollable move");
 }, {passive: false});
