@@ -28,10 +28,9 @@ window.addEventListener('load', function() {
 
         if (maybePreventPullToRefresh) {
             maybePreventPullToRefresh = false ;
-            if (touchYDelta > 0) {
+            if (touchYDelta >= 0) {
                 e.preventDefault() ;
-                log("TouchY: " + touchYDelta);
-                console.log("pull-to-refresh event detected") ;
+               log("pull-to-refresh event detected" + touchYDelta) ;
                 return ;
             }
         }
