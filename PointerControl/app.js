@@ -1,138 +1,23 @@
-(() => {
-    const isChrome = window.chrome || navigator.userAgent.match('CriOS');
-    const isTouch = 'ontouchstart' in document.documentElement;
-  
-    if (!isChrome || !isTouch) {
-      return;
-    }
-  
-    let supportsOverscroll = false;
-    let supportsPassive = false;
-    let lastTouchY = 0;
-    let maybePrevent = false;
-  
-    try {
-      if (CSS.supports('overscroll-behavior-y', 'contain')) {
-        supportsOverscroll = true;
-      }
-    } catch (e) {}
-  
-    if (supportsOverscroll) {
-      return (document.body.style.overscrollBehaviorY = 'contain');
-    } else {
-      const head = document.head || document.body;
-      const style = document.createElement('style');
-      const css = `
-        ::-webkit-scrollbar {
-          width: 5px;
-        }
-        ::-webkit-scrollbar-thumb {
-          border-radius: 5px;
-          background-color: rgba(0, 0, 0, 0.2);
-        }
-        body {
-          -webkit-overflow-scrolling: auto!important;
-        }
-      `;
-  
-      style.type = 'text/css';
-  
-      if (style.styleSheet) {
-        style.styleSheet.cssText = css;
-      } else {
-        style.appendChild(document.createTextNode(css));
-      }
-  
-      head.appendChild(style);
-    }
-  
-    try {
-      addEventListener('test', null, {
-        get passive() {
-          supportsPassive = true;
-        },
-      });
-    } catch (e) {}
-  
-    const setTouchStartPoint = event => {
-      lastTouchY = event.touches[0].clientY;
-    };
-  
-    const isScrollingUp = event => {
-      const touchY = event.touches[0].clientY;
-      const touchYDelta = touchY - lastTouchY;
-  
-      lastTouchY = touchY;
-  
-      return touchYDelta > 0;
-    };
-  
-    const touchstartHandler = event => {
-      if (event.touches.length !== 1) return;
-      setTouchStartPoint(event);
-      maybePrevent = window.pageYOffset === 0;
-    };
-  
-    const touchmoveHandler = event => {
-      if (maybePrevent) {
-        maybePrevent = false;
-        if (isScrollingUp(event)) {
-          return event.preventDefault();
-        }
-      }
-    };
-  
-    document.addEventListener(
-      'touchstart',
-      touchstartHandler,
-      supportsPassive ? {passive: true} : false,
-    );
-  
-    document.addEventListener(
-      'touchmove',
-      touchmoveHandler,
-      supportsPassive ? {passive: false} : false,
-    );
-  })();
 
 // see: https://medium.com/turo-engineering/ios-mobile-scroll-in-web-react-1d92d910604b
 
-// "fixed-element" is the class of the overlay (fixed element) what has "position: fixed"
-// Call disableScroll() and enableScroll() to toggle
 
+function preventPullToRefresh(element) {
+    var prevent = false;
 
-/*
-var freeze = function (e) {
-    if (!document.getElementsByClassName("fixed-element")[0].contains(e.target)) {
-        e.preventDefault();
-    }
-}
+    document.querySelector(element).addEventListener('touchstart', function(e){
+      if (e.touches.length !== 1) { return; }
 
-var disableScroll = function () {
-
-    // Only accept touchmove from fixed-element
-    document.addEventListener('touchmove', freeze, false);
-
-    // Prevent background scrolling
-    document.getElementsByClassName("fixed-element")[0].addEventListener("touchmove", function (e) {
-        var top = this.scrollTop,
-            totalScroll = this.scrollHeight,
-            currentScroll = top + this.offsetHeight;
-
-        if (top === 0 && currentScroll === totalScroll) {
-            e.preventDefault();
-        } else if (top === 0) {
-            this.scrollTop = 1;
-        } else if (currentScroll === totalScroll) {
-            this.scrollTop = top - 1;
-        }
+      var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+      prevent = (scrollY === 0);
     });
-}
 
-var enableScroll = function () {
-    document.removeEventListener("touchmove", freeze);
-    document.body.style.overflow = "";
-}
+    document.querySelector(element).addEventListener('touchmove', function(e){
+      if (prevent) {
+        prevent = false;
+        e.preventDefault();
+      }
+    });
+  }
 
-
-disableScroll();*/
+  preventPullToRefresh('html') // pass #id or html tag into the method
