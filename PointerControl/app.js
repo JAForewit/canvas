@@ -13,9 +13,9 @@ document.getElementById('scrollableBox').addEventListener('touchmove', function 
 }, {capture: true});
 
 var status = 1;
-document.body.addEventListener('touchmove', function (e) {
-    console.log("body move");
-    log("body" + status);
+document.addEventListener('touchmove', function (e) {
+    console.log("document move");
+    log("document" + status);
     status = (status == 1) ? 0 : 1;
 })
 
