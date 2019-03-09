@@ -28,12 +28,12 @@ window.addEventListener('load', function() {
 
         if (maybePreventPullToRefresh) {
             maybePreventPullToRefresh = false ;
-            //if (touchYDelta > 0) {
+            if (touchYDelta > 0) {
                 e.preventDefault() ;
-                //document.getElementById('txtLog').textContent = "TouchY: " + touchYDelta;
-                // console.log("pull-to-refresh event detected") ;
+                log("TouchY: " + touchYDelta);
+                console.log("pull-to-refresh event detected") ;
                 return ;
-            //}
+            }
         }
 
         // if (preventScrollCheckbox.checked) {
