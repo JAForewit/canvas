@@ -3,6 +3,14 @@
 // "fixed-element" is the class of the overlay (fixed element) what has "position: fixed"
 // Call disableScroll() and enableScroll() to toggle
 
+
+
+
+document.getElementById("scrollableBox").addEventListener('touchmove', function(e) {
+    e.stopPropagation();
+}, {passive: false});
+
+/*
 var freeze = function (e) {
     if (!document.getElementsByClassName("fixed-element")[0].contains(e.target)) {
         e.preventDefault();
@@ -10,7 +18,6 @@ var freeze = function (e) {
 }
 
 var disableScroll = function () {
-    document.body.style.overflow = "hidden"; // Or toggle using class: document.body.className += "overflow-hidden-class";
 
     // Only accept touchmove from fixed-element
     document.addEventListener('touchmove', freeze, false);
@@ -36,4 +43,4 @@ var enableScroll = function () {
     document.body.style.overflow = "";
 }
 
-disableScroll();
+disableScroll();*/

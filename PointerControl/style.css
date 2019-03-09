@@ -6,12 +6,12 @@ html body {
 
 body {
     margin: 0;
-    background: lightgoldenrodyellow;
+    background: lightcoral;
 }
 
 #scrollableBox {
     overflow: auto;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     height: 300px;
