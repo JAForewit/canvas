@@ -11,7 +11,7 @@ body {
 
 #scrollableBox {
     overflow: auto;
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     height: 300px;

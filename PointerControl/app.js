@@ -1,35 +1,39 @@
 // see: https://medium.com/turo-engineering/ios-mobile-scroll-in-web-react-1d92d910604b
 
-const preventDefault = e => e.preventDefault();
-// When rendering our container
-window.addEventListener('touchmove', preventDefault, {
-    passive: false
-});
+// "fixed-element" is the class of the overlay (fixed element) what has "position: fixed"
+// Call disableScroll() and enableScroll() to toggle
 
-
-var htmlElement = document.getElementById("scrollableBox");
-function scrollToPreventBounce(htmlElement) {
-    const { scrollTop, offsetHeight, scrollHeight } = htmlElement;
-
-    // If at top, bump down 1px
-    if (scrollTop <= 0) {
-        htmlElement.scrollTo(0, 1);
-        return;
-    }
-
-    // If at bottom, bump up 1px
-    if (scrollTop + offsetHeight >= scrollHeight) {
-        htmlElement.scrollTo(0, scrollHeight - offsetHeight - 1);
+var freeze = function (e) {
+    if (!document.getElementsByClassName("fixed-element")[0].contains(e.target)) {
+        e.preventDefault();
     }
 }
-// When rendering the element
-htmlElement.addEventListener('touchstart', scrollToPreventBounce);
 
-/*
-// Remember to clean up when removing it
-window.removeEventListener('touchmove', preventDefault);
+var disableScroll = function () {
+    document.body.style.overflow = "hidden"; // Or toggle using class: document.body.className += "overflow-hidden-class";
 
-// Remember to clean-up when removing it
-function beforeRemove() {
-    document.getElementById("scrollableBox").removeEventListener('touchstart', scrollToPreventBounce);
-}*/
+    // Only accept touchmove from fixed-element
+    document.addEventListener('touchmove', freeze, false);
+
+    // Prevent background scrolling
+    document.getElementsByClassName("fixed-element")[0].addEventListener("touchmove", function (e) {
+        var top = this.scrollTop,
+            totalScroll = this.scrollHeight,
+            currentScroll = top + this.offsetHeight;
+
+        if (top === 0 && currentScroll === totalScroll) {
+            e.preventDefault();
+        } else if (top === 0) {
+            this.scrollTop = 1;
+        } else if (currentScroll === totalScroll) {
+            this.scrollTop = top - 1;
+        }
+    });
+}
+
+var enableScroll = function () {
+    document.removeEventListener("touchmove", freeze);
+    document.body.style.overflow = "";
+}
+
+disableScroll();
