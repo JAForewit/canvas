@@ -3,12 +3,32 @@
 // "fixed-element" is the class of the overlay (fixed element) what has "position: fixed"
 // Call disableScroll() and enableScroll() to toggle
 
-
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+  }
 
 
 document.getElementById("scrollableBox").addEventListener('touchmove', function(e) {
     e.stopPropagation();
+    log("scrollable move");
+    console.log("scrollable move");
 }, {passive: false});
+document.getElementById("scrollableBox").addEventListener("touchend", function(d) {
+    log("scrollable end");
+    console.log("scrollable end");
+});
+
+
+document.body.addEventListener("touchmove", function (e) {
+    log("body move");
+    console.log("body move");
+});
+document.body.addEventListener("touchend", function (e) {
+    log("body end");
+    console.log("body end");
+});
+
 
 /*
 var freeze = function (e) {
