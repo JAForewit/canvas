@@ -29,10 +29,11 @@ window.addEventListener('load', function () {
         setTouchStartPoint(e);
         atTop = (element.scrollTop === 0);
         atBottom = (element.scrollTop >= (element.scrollHeight - element.offsetHeight));
-        log("top: " + atTop + " bot: " + atBottom);
+        //log("top: " + atTop + " bot: " + atBottom);
     };
 
     var touchmoveHandler = function (e) {
+        log(e.target)
         if (atTop && isScrollingUp(e) && e.cancelable) {
             atTop = false;
             e.preventDefault();
