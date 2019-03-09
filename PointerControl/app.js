@@ -1,4 +1,8 @@
-
+// DO NOT DELETE
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+}
 
 let lastTouchY = 0;
 const setTouchStartPoint = event => {
@@ -9,8 +13,9 @@ const isScrollingUp = event => {
     const touchYDelta = touchY - lastTouchY;
 
     lastTouchY = touchY;
-
+    if (touchYDelta > 0) log("up");
     return touchYDelta > 0;
+    
 };
 const isScrollingDown = event => {
     const touchY = event.touches[0].clientY;
@@ -18,6 +23,7 @@ const isScrollingDown = event => {
 
     lastTouchY = touchY;
 
+    if (touchYDelta < 0) log("down");
     return touchYDelta < 0;
 };
 
@@ -37,28 +43,17 @@ window.addEventListener('load', function () {
     var touchmoveHandler = function (e) {
 
         if (atTop && isScrollingUp(e) && e.cancelable) {
-            atTop = false;
-            //element.scrollTop = 1; 
             e.preventDefault();
-            e.stopPropagation();
             return;
         }
         if (atBottom && isScrollingDown(e) && e.cancelable) {
-            atBottom = false;
-            //element.scrollTop = (element.scrollHeight - element.offsetHeight) - 1;
             e.preventDefault();
-            e.stopPropagation();
             return;
         }
     };
 
     element.addEventListener('touchstart', touchstartHandler);
-    element.addEventListener('touchmove', touchmoveHandler, { passive: false });
+    element.addEventListener('touchmove', touchmoveHandler, { capture: true, passive: false });
 });
 
 
-// DO NOT DELETE
-function log(msg) {
-    var p = document.getElementById('log');
-    p.innerHTML = msg;
-}
