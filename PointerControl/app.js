@@ -18,6 +18,7 @@ document.addEventListener('touchstart', function (e) {
 document.addEventListener('touchmove', function (e) {
     if (!selection.el) { e.preventDefault(); return; }
 
+    console.log("moving");
     var el = selection.el,
         lastTouchY = selection.lastTouchY;
 
