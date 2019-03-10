@@ -17,6 +17,7 @@ document.addEventListener('touchstart', function (e) {
 
 document.addEventListener('touchmove', function (e) {
     if (!selection.el) { e.preventDefault(); return; }
+
     var el = selection.el,
         lastTouchY = selection.lastTouchY;
 
@@ -33,10 +34,8 @@ document.addEventListener('touchmove', function (e) {
 
 document.addEventListener('touchend', function (e) {
     selection = {};
-    e.stopPropagation();
 });
 
 document.addEventListener('touchcancel', function (e) {
     selection = {};
-    e.stopPropagation();
 });
