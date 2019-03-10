@@ -5,6 +5,7 @@ function log(msg) {
 }
 
 // prevent chain scrolling and pull-to-refresh
+// all scrollable nodes need the .scrollable class
 var selection = {};
 document.addEventListener('touchstart', function (e) {
     selection.el = e.target.closest('.scrollable');
