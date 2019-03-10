@@ -13,17 +13,13 @@ const isScrollingUp = event => {
     const touchYDelta = touchY - lastTouchY;
 
     lastTouchY = touchY;
-    if (touchYDelta > 0) log("up");
     return touchYDelta > 0;
-    
 };
 const isScrollingDown = event => {
     const touchY = event.touches[0].clientY;
     const touchYDelta = touchY - lastTouchY;
 
     lastTouchY = touchY;
-
-    if (touchYDelta < 0) log("down");
     return touchYDelta < 0;
 };
 
