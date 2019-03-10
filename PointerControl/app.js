@@ -5,9 +5,12 @@ function log(msg) {
 }
 
 // prevent chain scrolling and pull-to-refresh
-for (var i = 0; i < document.getElementsByClassName("scrollable"); i++) {
-    var elem = document.getElementsByClassName("scrollable")[i],
-        lastTouchY;
+for (var i = 0; i < document.getElementsByClassName('scrollable'); i++) {
+    pointerControl(document.getElementsByClassName('scrollable')[i]);
+}
+
+var pointerControl = function (elem) {
+    var lastTouchY;
 
     elem.addEventListener('touchstart', function (e) {
         lastTouchY = e.changedTouches[0].clientY;
