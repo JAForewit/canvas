@@ -14,12 +14,10 @@ body {
     width: 200px;
     background: grey;
     -webkit-overflow-scrolling: touch;
-    
     display: block;
     overflow-y: auto;
     position: absolute;
     top: 20px;
     left: 20px;
-    touch-action: pan-y;
     user-select: none;
 }
