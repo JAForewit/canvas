@@ -1,4 +1,4 @@
-/*var el = document.getElementById("canvas");
+var el = document.getElementById("canvas");
 el.addEventListener("touchstart", handleStart, false);
 el.addEventListener("touchend", handleEnd, false);
 el.addEventListener("touchcancel", handleCancel, false);
@@ -78,4 +78,4 @@ function ongoingTouchIndexById(idToFind) {
 function log(msg) {
     var p = document.getElementById('log');
     p.innerHTML = msg;
-  }*/
+  }
