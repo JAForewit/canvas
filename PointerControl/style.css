@@ -31,6 +31,6 @@ body {
     overflow-y: auto;
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: -100px;
     user-select: none;
 }
