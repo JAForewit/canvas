@@ -176,8 +176,8 @@ document.addEventListener('touchmove', function (e) {
         atTop = (el.scrollTop === 0),
         atBottom = (el.scrollTop === (el.scrollHeight - el.offsetHeight));
 
-    if ((atTop && touchY > lastTouchY && e.cancelable) ||
-        (atBottom && touchY < lastTouchY && e.cancelable)) {
+    if ((atTop && touchY >= lastTouchY && e.cancelable) ||
+        (atBottom && touchY <= lastTouchY && e.cancelable)) {
         e.preventDefault();
         e.stopPropagation();
     }
