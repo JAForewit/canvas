@@ -21,3 +21,16 @@ body {
     left: 20px;
     user-select: none;
 }
+
+#scrollableBox2 {
+    height: 300px;
+    width: 200px;
+    background: grey;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    overflow-y: auto;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    user-select: none;
+}
