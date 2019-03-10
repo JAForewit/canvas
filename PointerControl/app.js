@@ -16,7 +16,7 @@ document.addEventListener('touchstart', function (e) {
 });
 
 document.addEventListener('touchmove', function (e) {
-    if (!selection.el) { e.preventDefault(); return; }
+    if (!selection.el) { e.preventDefault(); console.log("stop"); return; }
 
     console.log("moving");
     var el = selection.el,
