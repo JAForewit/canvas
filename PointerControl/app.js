@@ -6,7 +6,7 @@ function log(msg) {
 
 // prevent chain scrolling and pull-to-refresh
 // all scrollable nodes need the .scrollable class
-// TODO: prevent default on ALL but .scrollable elements
+// TODO: prevent horizontal scroll
 (function() {
     var selection = {};
     document.addEventListener('touchstart', function (e) {
@@ -17,7 +17,7 @@ function log(msg) {
     });
 
     document.addEventListener('touchmove', function (e) {
-        if (!selection.el) { e.preventDefault(); return; }
+        if (!selection.el) { e.preventDefault(); e.stopPropagation(); return; }
 
         var el = selection.el,
             lastTouchY = selection.lastTouchY;

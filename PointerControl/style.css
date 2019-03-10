@@ -2,12 +2,15 @@ html body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    position: relative;
 }
 
 body {
     margin: 0;
-    background: lightseagreen;
+    background: lightgreen;
+}
+
+#wrapper {
+    overflow: hidden;
 }
 
 #scrollableBox {
