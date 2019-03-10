@@ -10,8 +10,6 @@
     overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    /* Firefox 64 and later */
-    pointer-events: auto;
 }
 
 #widget-toolbar::-webkit-scrollbar {
