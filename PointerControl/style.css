@@ -6,7 +6,7 @@ html body {
 
 body {
     margin: 0;
-    background: lightseagreen;
+    background: lightpink;
 }
 
 #scrollableBox {
@@ -16,7 +16,7 @@ body {
     -webkit-overflow-scrolling: touch;
     display: block;
     overflow-y: auto;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     user-select: none;
