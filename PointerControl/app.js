@@ -22,17 +22,11 @@ document.addEventListener('touchmove', function (e) {
         atTop = (el.scrollTop === 0),
         atBottom = (el.scrollTop === (el.scrollHeight - el.offsetHeight));
 
-    if (atTop && touchY > lastTouchY && e.cancelable) {
-        // stop scrolling up
+    if ((atTop && touchY > lastTouchY && e.cancelable) ||
+        (atBottom && touchY < lastTouchY && e.cancelable)) {
         e.preventDefault();
-        el.scrollTop = 0;
+        e.stopPropagation();
     }
-    if (atBottom && touchY < lastTouchY && e.cancelable) {
-        // stop scrolling down
-        e.preventDefault();
-        el.scrollTop = (el.scrollHeight - el.offsetHeight);
-    }
-    e.stopPropagation();
 }, { passive: false });
 
 document.addEventListener('touchend', function (e) {
