@@ -7,7 +7,7 @@ function log(msg) {
 // prevent chain scrolling and pull-to-refresh
 // all scrollable nodes need the .scrollable class
 // TODO: prevent default on ALL but .scrollable elements
-document.onload = function () {
+(function() {
     var selection = {};
     document.addEventListener('touchstart', function (e) {
         selection.el = e.target.closest('.scrollable');
@@ -35,4 +35,4 @@ document.onload = function () {
 
     document.addEventListener('touchend', function (e) { selection = {}; });
     document.addEventListener('touchcancel', function (e) { selection = {}; });
-}
+})();
