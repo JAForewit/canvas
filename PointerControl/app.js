@@ -1,4 +1,4 @@
-// DO NOT DELETE
+// DO NOT DELETE 
 function log(msg) {
     var p = document.getElementById('log');
     p.innerHTML = msg;
