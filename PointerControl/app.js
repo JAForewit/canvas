@@ -23,7 +23,8 @@ elem.addEventListener('touchstart', function (e) {
     var touches = e.changedTouches;
     lastTouchY = touches[0].clientY;
     log("startY: " + lastTouchY);
-}, { capture: true });
+    e.stopPropagation();
+});
 
 elem.addEventListener('touchmove', function (e) {
     var touches = e.changedTouches;
@@ -35,20 +36,20 @@ elem.addEventListener('touchmove', function (e) {
         // stop scrolling up
         console.log("up");
         elem.scrollTop = 0;
-        return;
     }
     if (atBottom && touchY < lastTouchY) {
         // stop scrolling down
         console.log("down");
         elem.scrollTop = (elem.scrollHeight - elem.offsetHeight);
-        return;
     }
-}, { capture: true });
+    e.stopPropagation();
+});
 
 elem.addEventListener('touchend', function (e) {
     var touches = e.changedTouches;
     log("endY: " + touches[0].clientY);
-}, { capture: true });
+    e.stopPropagation();
+});
 
 
 
