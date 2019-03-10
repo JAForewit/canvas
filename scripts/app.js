@@ -1,3 +1,9 @@
+// FOR DEBUGGING
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+}
+
 // toggle for widget toolbar
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
@@ -21,8 +27,8 @@ document.addEventListener('touchstart', function (e) {
 });
 
 document.addEventListener('touchmove', function (e) {
-    if (!selection.el) { e.preventDefault(); e.stopPropagation(); console.log("hi"); return; }
-
+    if (!selection.el) { e.preventDefault(); e.stopPropagation(); log("stop"); return; }
+    log("move");
     var el = selection.el,
         lastTouchY = selection.lastTouchY;
 
