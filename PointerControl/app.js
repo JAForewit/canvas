@@ -32,18 +32,20 @@ elem.addEventListener('touchmove', function (e) {
         atTop = (elem.scrollTop === 0),
         atBottom = (elem.scrollTop === (elem.scrollHeight - elem.offsetHeight));
     
-    if (atTop && touchY > lastTouchY) {
+    if (atTop && touchY > lastTouchY && e.cancelable) {
         // stop scrolling up
         console.log("up");
+        e.preventDefault();
         elem.scrollTop = 0;
     }
-    if (atBottom && touchY < lastTouchY) {
+    if (atBottom && touchY < lastTouchY && e.cancelable) {
         // stop scrolling down
         console.log("down");
+        e.preventDefault();
         elem.scrollTop = (elem.scrollHeight - elem.offsetHeight);
     }
     e.stopPropagation();
-});
+}, { passive: false });
 
 elem.addEventListener('touchend', function (e) {
     var touches = e.changedTouches;
