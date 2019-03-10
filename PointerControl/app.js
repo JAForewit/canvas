@@ -5,37 +5,42 @@ function log(msg) {
 }
 
 // prevent chain scrolling and pull-to-refresh
-for (var i = 0; i < document.getElementsByClassName('scrollable'); i++) {
-    pointerControl(document.getElementsByClassName('scrollable')[i]);
-}
+var selection = {};
+document.addEventListener('touchstart', function (e) {
+    selection.el = e.target.closest('.scrollable');
+    if (!selection.el) return;
+    selection.lastTouchY = e.changedTouches[0].clientY;
+    e.stopPropagation();
+});
 
-var pointerControl = function (elem) {
-    var lastTouchY;
+document.addEventListener('touchmove', function (e) {
+    if (!selection.el) return;
+    var el = selection.el,
+        lastTouchY = selection.lastTouchY;
 
-    elem.addEventListener('touchstart', function (e) {
-        lastTouchY = e.changedTouches[0].clientY;
-        e.stopPropagation();
-    });
+    var touchY = e.changedTouches[0].clientY,
+        atTop = (el.scrollTop === 0),
+        atBottom = (el.scrollTop === (el.scrollHeight - el.offsetHeight));
 
-    elem.addEventListener('touchmove', function (e) {
-        var touchY = e.changedTouches[0].clientY,
-            atTop = (elem.scrollTop === 0),
-            atBottom = (elem.scrollTop === (elem.scrollHeight - elem.offsetHeight));
+    if (atTop && touchY > lastTouchY && e.cancelable) {
+        // stop scrolling up
+        e.preventDefault();
+        el.scrollTop = 0;
+    }
+    if (atBottom && touchY < lastTouchY && e.cancelable) {
+        // stop scrolling down
+        e.preventDefault();
+        el.scrollTop = (el.scrollHeight - el.offsetHeight);
+    }
+    e.stopPropagation();
+}, { passive: false });
 
-        if (atTop && touchY > lastTouchY && e.cancelable) {
-            // stop scrolling up
-            e.preventDefault();
-            elem.scrollTop = 0;
-        }
-        if (atBottom && touchY < lastTouchY && e.cancelable) {
-            // stop scrolling down
-            e.preventDefault();
-            elem.scrollTop = (elem.scrollHeight - elem.offsetHeight);
-        }
-        e.stopPropagation();
-    }, { passive: false });
+document.addEventListener('touchend', function (e) {
+    selection = {};
+    e.stopPropagation();
+});
 
-    elem.addEventListener('touchend', function (e) {
-        e.stopPropagation();
-    });
-}
+document.addEventListener('touchcancel', function (e) {
+    selection = {};
+    e.stopPropagation();
+});
