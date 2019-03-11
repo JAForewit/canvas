@@ -19,10 +19,12 @@
 
         var el = selection.el,
             lastTouchY = selection.lastTouchY;
-
+        
         var touchY = e.changedTouches[0].clientY,
             atTop = (el.scrollTop === 0),
             atBottom = (el.scrollTop === (el.scrollHeight - el.offsetHeight));
+
+        log ("scroll: " + el.scrollTop + " atTop: " + atTop);
 
         if ((atTop && touchY > lastTouchY && e.cancelable) ||
             (atBottom && touchY < lastTouchY && e.cancelable)) {
