@@ -28,6 +28,7 @@
 
         if ((atTop && touchY > lastTouchY && e.cancelable) ||
             (atBottom && touchY < lastTouchY && e.cancelable)) {
+            log("stopped!")
             e.preventDefault();
             e.stopPropagation();
         }
