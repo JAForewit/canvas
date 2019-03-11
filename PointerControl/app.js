@@ -6,8 +6,6 @@ function log(msg) {
 
 // prevent chain scrolling and pull-to-refresh
 // all scrollable nodes need the .scrollable class
-// TODO: prevent horizontal scroll
-// TODO: prevent zoom
 (function() {
     var selection = {};
     document.addEventListener('touchstart', function (e) {

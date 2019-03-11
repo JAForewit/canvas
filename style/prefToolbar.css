@@ -10,12 +10,9 @@
     overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    /* Firefox 64 and later */
-    pointer-events: auto;
 }
 
 #pref-toolbar::-webkit-scrollbar {
-    /* Chrome */
     width: 0 !important;
     height: 0 !important;
 }
