@@ -4,6 +4,7 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
+/*
 // prevent chain scrolling and pull-to-refresh
 // all scrollable nodes need the .scrollable class
 (function() {
@@ -38,4 +39,4 @@ function log(msg) {
 
     document.addEventListener('touchend', function (e) { selection = {}; });
     document.addEventListener('touchcancel', function (e) { selection = {}; });
-})();
+})();*/
