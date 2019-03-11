@@ -13,6 +13,7 @@
         if (!selection.el || e.touches.length != 1) { 
             e.preventDefault(); 
             e.stopPropagation(); 
+            log("cancled");
             return; 
         }
 
@@ -30,7 +31,7 @@
         }
     }, { passive: false });
 
-    document.addEventListener('touchend', function (e) { selection = {}; });
+    document.addEventListener('touchend', function (e) { selection = {}; log(""); });
     document.addEventListener('touchcancel', function (e) { selection = {}; });
 })();
 
