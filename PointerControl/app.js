@@ -12,13 +12,13 @@ function log(msg) {
     var selection = {};
     document.addEventListener('touchstart', function (e) {
         selection.el = e.target.closest('.scrollable');
-        if (!selection.el) return;
+        if (!selection.el || e.touches.length != 1) return;
         selection.lastTouchY = e.changedTouches[0].clientY;
         e.stopPropagation();
     });
 
     document.addEventListener('touchmove', function (e) {
-        if (!selection.el || e.changedTouches.length != 1) { 
+        if (!selection.el || e.touches.length != 1) { 
             e.preventDefault(); 
             e.stopPropagation(); 
             return; 
