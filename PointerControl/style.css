@@ -6,7 +6,7 @@ html body {
 
 body {
     margin: 0;
-    background: lightgreen;
+    background: lightseagreen;
 }
 
 #scrollableBox {
@@ -15,10 +15,11 @@ body {
     background: grey;
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     user-select: none;
+    overscroll-behavior: contain;
 }
 
 #scrollableBox2 {
@@ -27,8 +28,9 @@ body {
     background: grey;
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: -100px;
     user-select: none;
+    overscroll-behavior: contain;
 }

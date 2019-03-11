@@ -40,3 +40,20 @@ function log(msg) {
     document.addEventListener('touchend', function (e) { selection = {}; });
     document.addEventListener('touchcancel', function (e) { selection = {}; });
 })();*/
+function handleOverscroll(event) {
+    const delta = -event.deltaY;
+    if (delta < 0 && elem.offsetHeight - delta > elem.scrollHeight - elem.scrollTop) {
+      elem.scrollTop = elem.scrollHeight;
+      event.preventDefault();
+      return false;
+    }
+    if (delta > elem.scrollTop) {
+      elem.scrollTop = 0;
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  document.getElementById('scrollableBox').addEventListener('wheel', handleOverscroll, { passive: false });
+  document.getElementById('scrollableBox2').addEventListener('wheel', handleOverscroll, { passive: false });
