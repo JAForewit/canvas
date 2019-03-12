@@ -8,7 +8,7 @@ function log(msg) {
     var ongoingTouches = [];
     function handleStart(evt) {
 
-        var el = e.target.closest('.scrollable');
+        var el = evt.target.closest('.scrollable');
         if (!el) return;
 
         evt.preventDefault();
@@ -16,13 +16,13 @@ function log(msg) {
 
         for (var i = 0; i < touches.length; i++) {
             ongoingTouches.push(copyTouch(touches[i]));
-            log("start touch " + i + evt.srcElement.id);
+            log("start touch " + i + " " + el.id);
         }
     }
 
     function handleMove(evt) {
 
-        var el = e.target.closest('.scrollable');
+        var el = evt.target.closest('.scrollable');
         if (!el) return;
 
         evt.preventDefault();
@@ -32,7 +32,7 @@ function log(msg) {
             var idx = ongoingTouchIndexById(touches[i].identifier);
 
             if (idx >= 0) {
-                log("continuing touch " + idx);
+                log("continuing touch " + idx + " " + el.id);
                 ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
             } else {
                 log("can't figure out which touch to continue");
@@ -40,8 +40,8 @@ function log(msg) {
         }
     }
     function handleEnd(evt) {
-        
-        var el = e.target.closest('.scrollable');
+
+        var el = evt.target.closest('.scrollable');
         if (!el) return;
 
         evt.preventDefault();
@@ -52,7 +52,7 @@ function log(msg) {
 
             if (idx >= 0) {
                 ongoingTouches.splice(idx, 1);  // remove it; we're done
-                log("end touch " + idx)
+                log("end touch " + idx + " " + el.id)
             } else {
                 log("can't figure out which touch to end");
             }
@@ -60,7 +60,7 @@ function log(msg) {
     }
     function handleCancel(evt) {
 
-        var el = e.target.closest('.scrollable');
+        var el = evt.target.closest('.scrollable');
         if (!el) return;
 
         evt.preventDefault();
@@ -86,24 +86,11 @@ function log(msg) {
         return -1;    // not found
     }
 
-    document.addEventListener("touchstart", handleStart, false);
-    document.addEventListener("touchend", handleEnd, false);
-    document.addEventListener("touchcancel", handleCancel, false);
-    document.addEventListener("touchmove", handleMove, false);
+    document.addEventListener("touchstart", handleStart, { passive: false });
+    document.addEventListener("touchend", handleEnd, { passive: false });
+    document.addEventListener("touchcancel", handleCancel, { passive: false });
+    document.addEventListener("touchmove", handleMove, { passive: false });
     log("initialized.");
-
-    /*
-    var scrollables = document.getElementsByClassName('scrollable');
-    for (var i = 0; i < scrollables.length; i++) {
-
-        var el = scrollables[i];
-        el.addEventListener("touchstart", handleStart, false);
-        el.addEventListener("touchend", handleEnd, false);
-        el.addEventListener("touchcancel", handleCancel, false);
-        el.addEventListener("touchmove", handleMove, false);
-        log("initialized.");
-    }
-    */
 })();
 
 
