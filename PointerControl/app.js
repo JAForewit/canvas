@@ -4,7 +4,6 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
-/*
 // prevent chain scrolling and pull-to-refresh
 // all scrollable nodes need the .scrollable class
 (function() {
@@ -27,11 +26,11 @@ function log(msg) {
             lastTouchY = selection.lastTouchY;
 
         var touchY = e.changedTouches[0].clientY,
-            atTop = (el.scrollTop === 0),
-            atBottom = (el.scrollTop === (el.scrollHeight - el.offsetHeight));
+            atTop = (el.scrollTop == 0),
+            atBottom = (el.scrollTop == (el.scrollHeight - el.offsetHeight));
 
-        if ((atTop && touchY > lastTouchY && e.cancelable) ||
-            (atBottom && touchY < lastTouchY && e.cancelable)) {
+        if ((atTop && touchY >= lastTouchY) ||
+            (atBottom && touchY <= lastTouchY)) {
             e.preventDefault();
             e.stopPropagation();
         }
@@ -39,21 +38,4 @@ function log(msg) {
 
     document.addEventListener('touchend', function (e) { selection = {}; });
     document.addEventListener('touchcancel', function (e) { selection = {}; });
-})();*/
-function handleOverscroll(event) {
-    const delta = -event.deltaY;
-    if (delta < 0 && elem.offsetHeight - delta > elem.scrollHeight - elem.scrollTop) {
-      elem.scrollTop = elem.scrollHeight;
-      event.preventDefault();
-      return false;
-    }
-    if (delta > elem.scrollTop) {
-      elem.scrollTop = 0;
-      event.preventDefault();
-      return false;
-    }
-    return true;
-  }
-
-  document.getElementById('scrollableBox').addEventListener('wheel', handleOverscroll, { passive: false });
-  document.getElementById('scrollableBox2').addEventListener('wheel', handleOverscroll, { passive: false });
+})();
