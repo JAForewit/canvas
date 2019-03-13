@@ -9,7 +9,7 @@ function log(msg) {
 (function () {
     var ongoingTouches = [];
     function handleStart(evt) {
-        evt.stopPropagation();
+        //evt.preventDefault();
         var touches = evt.changedTouches;
 
         for (var i = 0; i < touches.length; i++) {
@@ -19,7 +19,7 @@ function log(msg) {
     }
 
     function handleMove(evt) {
-        evt.stopPropagation();
+        evt.preventDefault();
         var touches = evt.changedTouches;
 
         for (var i = 0; i < touches.length; i++) {
@@ -35,7 +35,7 @@ function log(msg) {
     }
 
     function handleEnd(evt) {
-        evt.stopPropagation();
+        //evt.preventDefault();
         var touches = evt.changedTouches;
 
         for (var i = 0; i < touches.length; i++) {
@@ -51,7 +51,7 @@ function log(msg) {
     }
 
     function handleCancel(evt) {
-        evt.stopPropagation();
+        //evt.preventDefault();
         log("touchcancel.");
         var touches = evt.changedTouches;
 
@@ -79,13 +79,12 @@ function log(msg) {
     var scrollables = document.getElementsByClassName("scrollable");
     for (var i = 0; i < scrollables.length; i++) {
         var el = scrollables[i];
-        el.addEventListener("touchstart", handleStart, { passive: true });
-        el.addEventListener("touchend", handleEnd, { passive: true });
-        el.addEventListener("touchcancel", handleCancel, { passive: true });
-        el.addEventListener("touchmove", handleMove, { passive: true });
+        el.addEventListener("touchstart", handleStart, { passive: false });
+        el.addEventListener("touchend", handleEnd, { passive: false });
+        el.addEventListener("touchcancel", handleCancel, { passive: false });
+        el.addEventListener("touchmove", handleMove, { passive: false });
     }
     log("initialized.");
-
 })();
 
 

@@ -54,7 +54,6 @@
   };
 
   var util = {
-
     assign: function () {
 
       var obj = arguments[0];
@@ -166,7 +165,7 @@
           mouseup: stop,
           touchmove: drag,
           touchend: stop
-        }
+        },
       },
 
       // options
@@ -292,12 +291,21 @@
 
       // attach mousedown event
       util.on(me.handle, me.handlers.start);
-
     },
 
     start: function (e) {
-
       var me = this;
+
+      //ADDED BY MARC ANDERSON
+      me.ongoingTouches = []; //ADDED BY MARC ANDERSON
+      if (e.targetTouches) {
+        var touches = e.targetTouches;
+        for (var i = 0; i < touches.length; i++) {
+          me.ongoingTouches.push(touches[i].identifier);
+        }
+      }
+      //*********************
+
       var cursor = me.getCursor(e);
       var element = me.element;
 
@@ -305,10 +313,11 @@
       if (!me.useTarget(e.target || e.srcElement)) {
         return;
       }
-      
+
       // prevent browsers from visually dragging the element's outline
       if (e.preventDefault && !e.target.getAttribute('contenteditable')) {
         e.preventDefault();
+        e.stopPropagation(); //ADDED BY MARC ANDERSON
       } else if (!e.target.getAttribute('contenteditable')) {
         e.returnValue = false; // IE10
       }
@@ -321,6 +330,7 @@
       me.setCursor(cursor);
       me.setPosition();
       me.setZoom();
+
 
       // add event listeners
       util.on(document, me.handlers.move);
@@ -449,7 +459,28 @@
     },
 
     getCursor: function (e) {
+      //ADDED BY MARC ANDERSON
+      // returns x and y for current touch
+      var me = this;
 
+      if (me.ongoingTouches && e.targetTouches) {
+        var touches = e.targetTouches,
+          id = me.ongoingTouches[0];
+
+        for (var i = 0; i < touches.length; i++) {
+          if (touches[i].identifier == id) {
+            return {
+              x: touches[i].clientX,
+              y: touches[i].clientY
+            }
+          }
+        }
+        return {
+          x: e.clientX,
+          y: e.clientY
+        };
+      }
+      //*********************
       return {
         x: (e.targetTouches ? e.targetTouches[0] : e).clientX,
         y: (e.targetTouches ? e.targetTouches[0] : e).clientY
