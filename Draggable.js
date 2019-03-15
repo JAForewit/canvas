@@ -81,24 +81,23 @@ endHandler()
     */
     function Draggable(element, handle, options) {
         var me = this;
+        if (!options) options = {};
 
         me.el = element;
         me.handle = handle;
         me.handlers = {
-            onStart: noop,
-            onMove: noop,
-            onEnd: noop
+            onStart: (options.onStart) ? options.onStart : noop,
+            onMove: (options.onMove) ? options.onMove : noop,
+            onEnd: (options.onEnd) ? options.onEnd : noop
         };
 
-        // setup options
-
-        var start = function (e) {
+        function start(e) {
             if (e.type === 'mousedown') {
                 mouse = { x: e.clientX, y: e.clientY };
-                me.handle.addEventListener('mousemove', drag, { passive: false });
-                me.handle.addEventListener('mouseup', end);
+                window.addEventListener('mousemove', drag, { passive: false });
+                window.addEventListener('mouseup', end);
                 console.log('mousedown');
-                // handle mousedown
+                // TODO: handle mousedown
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
@@ -106,78 +105,76 @@ endHandler()
                 for (var i = 0; i < touches.length; i++) {
                     ongoingTouches.push(copyTouch(touches[i]));
                     console.log("start touch " + i);
-                    // handle touchstart
+                    // TODO: handle touchstart
 
                 }
 
                 me.handle.addEventListener('touchmove', drag, { passive: false });
                 me.handle.addEventListener('touchend', end);
+                me.handle.addEventListener('touchcancel', end);
             }
 
             me.handlers.onStart();
-        },
-            drag = function (e) {
+        }
 
-                if (e.type === 'mousemove') {
-                    console.log('mousemove')
-                    // handle mouse move
+        function drag(e) {
 
-                } else if (e.targetTouches) {
-                    var touches = e.targetTouches;
+            if (e.type === 'mousemove') {
+                console.log('mousemove')
+                // TODO: handle mouse move
 
-                    for (var i = 0; i < touches.length; i++) {
-                        var idx = ongoingTouchIndexById(touches[i].identifier);
+            } else if (e.targetTouches) {
+                var touches = e.targetTouches;
 
-                        if (idx >= 0) {
-                            ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-                            console.log("continuing touch " + idx);
-                            // handle touch move
+                for (var i = 0; i < touches.length; i++) {
+                    var idx = ongoingTouchIndexById(touches[i].identifier);
 
-                        } else {
-                            console.log("can't figure out which touch to continue");
-                        }
+                    if (idx >= 0) {
+                        ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+                        console.log("continuing touch " + idx);
+                        // TODO: handle touch move
+
+                    } else {
+                        console.log("can't figure out which touch to continue");
                     }
                 }
+            }
 
-                // check for the correct touch.identifier (same as touchstart)
+            me.handlers.onMove();
+        }
+        
+        function end(e) {
+            if (e.type === 'mouseup') {
+                console.log('mouseup, removed mouse listeners');
+                window.removeEventListener('mousemove', drag);
+                window.removeEventListener('mouseup', end);
+                // TODO: handle mouseup
 
-                // move draggable parentd
-                //  - preventDefault()
-                //  - stopPropagation()
+            } else if (e.targetTouches) {
+                var touches = e.changedTouches;
 
-                me.handlers.onMove();
-            },
-            end = function (e) {
-                if (e.type === 'mouseup') {
-                    console.log('mouseup, removed mouse listeners');
-                    me.handle.removeEventListener('mousemove', drag);
-                    me.handle.removeEventListener('mouseup', end);
-                    // handle mouseup
+                for (var i = 0; i < touches.length; i++) {
+                    var idx = ongoingTouchIndexById(touches[i].identifier);
 
-                } else if (e.targetTouches) {
-                    var touches = e.changedTouches;
+                    if (idx >= 0) {
+                        ongoingTouches.splice(idx, 1);  // remove it; we're done
+                        console.log("end touch " + idx)
+                        // TODO: handle touchend/cancel
 
-                    for (var i = 0; i < touches.length; i++) {
-                        var idx = ongoingTouchIndexById(touches[i].identifier);
-
-                        if (idx >= 0) {
-                            ongoingTouches.splice(idx, 1);  // remove it; we're done
-                            console.log("end touch " + idx)
-                            // handle touchend/cancel
-
-                        } else {
-                            console.log("can't figure out which touch to end");
-                        }
-                    }
-                    if (touches.length == 1) {
-                        me.handle.removeEventListener('touchmove', drag);
-                        me.handle.removeEventListener('touchend', end);
-                        console.log('removed touch listeners');
+                    } else {
+                        console.log("can't figure out which touch to end");
                     }
                 }
+                if (touches.length == 1) {
+                    me.handle.removeEventListener('touchmove', drag);
+                    me.handle.removeEventListener('touchend', end);
+                    me.handle.removeEventListener('touchcancel', end);
+                    console.log('removed touch listeners');
+                }
+            }
 
-                me.handlers.onEnd();
-            };
+            me.handlers.onEnd();
+        }
 
         // INITIALIZE
         me.handle.addEventListener('touchstart', start);
