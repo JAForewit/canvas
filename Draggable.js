@@ -54,18 +54,24 @@ endHandler()
     'use strict';
 
     // PRIVATE VARIABLES
+    var ongoingTouches = [],
+        mouse = {};
 
     // PRIVATE FUNCTIONS
-    var util = {
-        addEvent: ('attachEvent' in Element.prototype)
-            ? function (element, e, fn) { element.attachEvent('on' + e, fn) }
-            : function (element, e, fn) { element.addEventListener(e, fn, false) },
-
-        removeEvent: ('attachEvent' in Element.prototype)
-            ? function (element, e, fn) { element.detachEvent('on' + e, fn) }
-            : function (element, e, fn) { element.removeEventListener(e, fn) }
+    function noop() { };
+    function copyTouch(touch) {
+        return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
     }
+    function ongoingTouchIndexById(idToFind) {
+        for (var i = 0; i < ongoingTouches.length; i++) {
+            var id = ongoingTouches[i].identifier;
 
+            if (id == idToFind) {
+                return i;
+            }
+        }
+        return -1;    // not found
+    }
     /*
     usage:
 
@@ -78,39 +84,104 @@ endHandler()
 
         me.el = element;
         me.handle = handle;
-        me.ongoingPointers = [];
-        me.status = 'init';
         me.handlers = {
-            start: function () {
-                // record touch.identifier
+            onStart: noop,
+            onMove: noop,
+            onEnd: noop
+        };
 
-                // add appropriate move, end, and cancel eventListeners
+        // setup options
 
-                // set isDragging to true
+        var start = function (e) {
+            if (e.type === 'mousedown') {
+                mouse = { x: e.clientX, y: e.clientY };
+                me.handle.addEventListener('mousemove', drag, { passive: false });
+                me.handle.addEventListener('mouseup', end);
+                console.log('mousedown');
+                // handle mousedown
 
-            },
-            move: function () {
+            } else if (e.targetTouches) {
+                var touches = e.targetTouches;
+
+                for (var i = 0; i < touches.length; i++) {
+                    ongoingTouches.push(copyTouch(touches[i]));
+                    console.log("start touch " + i);
+                    // handle touchstart
+
+                }
+
+                me.handle.addEventListener('touchmove', drag, { passive: false });
+                me.handle.addEventListener('touchend', end);
+            }
+
+            me.handlers.onStart();
+        },
+            drag = function (e) {
+
+                if (e.type === 'mousemove') {
+                    console.log('mousemove')
+                    // handle mouse move
+
+                } else if (e.targetTouches) {
+                    var touches = e.targetTouches;
+
+                    for (var i = 0; i < touches.length; i++) {
+                        var idx = ongoingTouchIndexById(touches[i].identifier);
+
+                        if (idx >= 0) {
+                            ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+                            console.log("continuing touch " + idx);
+                            // handle touch move
+
+                        } else {
+                            console.log("can't figure out which touch to continue");
+                        }
+                    }
+                }
+
                 // check for the correct touch.identifier (same as touchstart)
 
-                // move draggable parent
+                // move draggable parentd
                 //  - preventDefault()
                 //  - stopPropagation()
 
+                me.handlers.onMove();
             },
-            end: function () {
-                // check for correct touch.identifier (same as touchstart)
+            end = function (e) {
+                if (e.type === 'mouseup') {
+                    console.log('mouseup, removed mouse listeners');
+                    me.handle.removeEventListener('mousemove', drag);
+                    me.handle.removeEventListener('mouseup', end);
+                    // handle mouseup
 
-                // remove touch from tracked touches list
+                } else if (e.targetTouches) {
+                    var touches = e.changedTouches;
 
-                // remove move, end, and cancel eventListeners
+                    for (var i = 0; i < touches.length; i++) {
+                        var idx = ongoingTouchIndexById(touches[i].identifier);
 
-            }
-        };
+                        if (idx >= 0) {
+                            ongoingTouches.splice(idx, 1);  // remove it; we're done
+                            console.log("end touch " + idx)
+                            // handle touchend/cancel
+
+                        } else {
+                            console.log("can't figure out which touch to end");
+                        }
+                    }
+                    if (touches.length == 1) {
+                        me.handle.removeEventListener('touchmove', drag);
+                        me.handle.removeEventListener('touchend', end);
+                        console.log('removed touch listeners');
+                    }
+                }
+
+                me.handlers.onEnd();
+            };
 
         // INITIALIZE
-        util.addEvent(handle, 'touchmove', me.handlers.start);
-        util.addEvent(handle, 'mousedown', me.handlers.start);
-        me.status = 'start'; 
+        me.handle.addEventListener('touchstart', start);
+        me.handle.addEventListener('mousedown', start);
     }
 
     return Draggable;
