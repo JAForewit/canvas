@@ -107,7 +107,7 @@ endHandler()
         function drag(e) {
 
             if (e.type === 'mousemove') {
-                console.log('mousemove')
+                console.log('mousemove');
                 // TODO: handle mouse move
 
             } else if (e.targetTouches) {
@@ -164,7 +164,7 @@ endHandler()
         }
 
         function copyTouch(touch) {
-            return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+            return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
 
         function ongoingTouchIndexById(idToFind) {
