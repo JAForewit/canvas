@@ -53,22 +53,64 @@ endHandler()
 
     'use strict';
 
-    // PROPERTIES
-    var defaults = {
-    }
+    // PRIVATE VARIABLES
 
     // PRIVATE FUNCTIONS
+    var util = {
+        addEvent: ('attachEvent' in Element.prototype)
+            ? function (element, e, fn) { element.attachEvent('on' + e, fn) }
+            : function (element, e, fn) { element.addEventListener(e, fn, false) },
+
+        removeEvent: ('attachEvent' in Element.prototype)
+            ? function (element, e, fn) { element.detachEvent('on' + e, fn) }
+            : function (element, e, fn) { element.removeEventListener(e, fn) }
+    }
 
     /*
     usage:
 
-    new Draggable (element, options)
+    new Draggable (element, handle, options)
       - or -
-    new Draggable (element)
+    new Draggable (element, handle)
     */
-    function Draggable(element, options) {
+    function Draggable(element, handle, options) {
         var me = this;
 
+        me.el = element;
+        me.handle = handle;
+        me.ongoingPointers = [];
+        me.status = 'init';
+        me.handlers = {
+            start: function () {
+                // record touch.identifier
+
+                // add appropriate move, end, and cancel eventListeners
+
+                // set isDragging to true
+
+            },
+            move: function () {
+                // check for the correct touch.identifier (same as touchstart)
+
+                // move draggable parent
+                //  - preventDefault()
+                //  - stopPropagation()
+
+            },
+            end: function () {
+                // check for correct touch.identifier (same as touchstart)
+
+                // remove touch from tracked touches list
+
+                // remove move, end, and cancel eventListeners
+
+            }
+        };
+
+        // INITIALIZE
+        util.addEvent(handle, 'touchmove', me.handlers.start);
+        util.addEvent(handle, 'mousedown', me.handlers.start);
+        me.status = 'start'; 
     }
 
     return Draggable;

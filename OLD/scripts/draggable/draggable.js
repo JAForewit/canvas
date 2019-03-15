@@ -113,13 +113,7 @@
       return n;
     },
 
-    addEvent: ('attachEvent' in Element.prototype)
-      ? function (element, e, fn) { element.attachEvent('on' + e, fn) }
-      : function (element, e, fn) { element.addEventListener(e, fn, false) },
-
-    removeEvent: ('attachEvent' in Element.prototype)
-      ? function (element, e, fn) { element.detachEvent('on' + e, fn) }
-      : function (element, e, fn) { element.removeEventListener(e, fn) }
+    
 
   };
 
