@@ -54,24 +54,10 @@ endHandler()
     'use strict';
 
     // PRIVATE VARIABLES
-    var ongoingTouches = [],
-        mouse = {};
 
     // PRIVATE FUNCTIONS
     function noop() { };
-    function copyTouch(touch) {
-        return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
-    }
-    function ongoingTouchIndexById(idToFind) {
-        for (var i = 0; i < ongoingTouches.length; i++) {
-            var id = ongoingTouches[i].identifier;
 
-            if (id == idToFind) {
-                return i;
-            }
-        }
-        return -1;    // not found
-    }
     /*
     usage:
 
@@ -88,12 +74,13 @@ endHandler()
         me.handlers = {
             onStart: (options.onStart) ? options.onStart : noop,
             onMove: (options.onMove) ? options.onMove : noop,
-            onEnd: (options.onEnd) ? options.onEnd : noop
-        };
+            onEnd: (options.onEnd) ? options.onEnd : noop };
+        me.ongoingTouches = [];
+        me.mouse = {};
 
         function start(e) {
             if (e.type === 'mousedown') {
-                mouse = { x: e.clientX, y: e.clientY };
+                me.mouse = { x: e.clientX, y: e.clientY };
                 window.addEventListener('mousemove', drag, { passive: false });
                 window.addEventListener('mouseup', end);
                 console.log('mousedown');
@@ -103,7 +90,7 @@ endHandler()
                 var touches = e.targetTouches;
 
                 for (var i = 0; i < touches.length; i++) {
-                    ongoingTouches.push(copyTouch(touches[i]));
+                    me.ongoingTouches.push(copyTouch(touches[i]));
                     console.log("start touch " + i);
                     // TODO: handle touchstart
 
@@ -130,7 +117,7 @@ endHandler()
                     var idx = ongoingTouchIndexById(touches[i].identifier);
 
                     if (idx >= 0) {
-                        ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+                        me.ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
                         console.log("continuing touch " + idx);
                         // TODO: handle touch move
 
@@ -142,7 +129,7 @@ endHandler()
 
             me.handlers.onMove();
         }
-        
+
         function end(e) {
             if (e.type === 'mouseup') {
                 console.log('mouseup, removed mouse listeners');
@@ -157,7 +144,7 @@ endHandler()
                     var idx = ongoingTouchIndexById(touches[i].identifier);
 
                     if (idx >= 0) {
-                        ongoingTouches.splice(idx, 1);  // remove it; we're done
+                        me.ongoingTouches.splice(idx, 1);  // remove it; we're done
                         console.log("end touch " + idx)
                         // TODO: handle touchend/cancel
 
@@ -174,6 +161,21 @@ endHandler()
             }
 
             me.handlers.onEnd();
+        }
+
+        function copyTouch(touch) {
+            return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+        }
+
+        function ongoingTouchIndexById(idToFind) {
+            for (var i = 0; i < me.ongoingTouches.length; i++) {
+                var id = me.ongoingTouches[i].identifier;
+    
+                if (id == idToFind) {
+                    return i;
+                }
+            }
+            return -1; // not found
         }
 
         // INITIALIZE

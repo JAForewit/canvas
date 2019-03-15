@@ -16,6 +16,7 @@ body {
     height: 300px;
     border-radius: 10px 0;
 }
+
 .widget-handle {
     cursor: move;
     height: 25px;
