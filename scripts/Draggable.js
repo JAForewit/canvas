@@ -94,6 +94,8 @@ endHandler()
                 me.handle.addEventListener('touchcancel', endHandler);
                 me.pointer = copyTouch(e.targetTouches[0]);
                 // TODO: handle touchstart specifics
+                e.preventDefault();
+                e.stopPropagation();
 
             } else {
                 return;
@@ -111,6 +113,8 @@ endHandler()
         }
 
         function moveHandler(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
             if (e.type === 'mousemove') {
                 me.pointer = { x: e.clientX, y: e.clientY };
@@ -179,7 +183,7 @@ endHandler()
         }
 
         // INITIALIZE
-        me.handle.addEventListener('touchstart', startHandler);
+        me.handle.addEventListener('touchstart', startHandler, { passive: false });
         me.handle.addEventListener('mousedown', startHandler);
     }
 
