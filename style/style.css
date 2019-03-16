@@ -3,7 +3,8 @@
     -khtml-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
-    user-select: none;}
+    user-select: none;
+}
 
 html, body {
     width: 100%;
@@ -11,7 +12,7 @@ html, body {
     overflow: hidden;
 }
 
-body { 
+body {
     margin: 0;
     background: lightcyan;
 }
@@ -27,9 +28,19 @@ body {
 .widget-handle {
     cursor: move;
     height: 25px;
-    width: 100%;
+    width: calc(100% - 25px);
     border-radius: 20px 0px 0px 0px;
-    background-color: #2c2f33;
+    background: #2c2f33;
+}
+
+.widget-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    background: darkred;
 }
 
 #widget-toolbar {
@@ -39,7 +50,7 @@ body {
     top: 0;
     left: -300px;
     background: rgb(117, 117, 131);
-    transition: 0.7s ease;
+    transition: 0.1s ease;
     overflow-y: scroll;
     scrollbar-width: none;
 }
@@ -61,7 +72,7 @@ body {
     top: 20px;
     position: absolute;
     z-index: 100;
-    transition: .2s 0.2s ease;
+    transition: .1s 0.1s ease;
     cursor: pointer;
     background: #d3531a;
 }

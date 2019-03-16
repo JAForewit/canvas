@@ -109,12 +109,14 @@ endHandler()
                 x: rect.left - me.pointer.x,
                 y: rect.top - me.pointer.y,
                 width: me.el.style.width,
-                height: me.el.style.height
+                height: me.el.style.height,
+                zIndex: me.el.style.zIndex
             };
 
             document.body.appendChild(me.el);
             me.el.style.width = rect.width + 'px';
             me.el.style.height = rect.height + 'px';
+            me.el.style.zIndex = 1000;
 
             updatePosition();
             me.handlers.onStart();
@@ -177,7 +179,7 @@ endHandler()
             _parent.appendChild(me.el);
             me.el.style.width = _dimensions.width;
             me.el.style.height = _dimensions.height;
-
+            me.el.style.zIndex = _dimensions.zIndex;
             me.handlers.onEnd();
         }
 
