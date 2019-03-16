@@ -74,113 +74,114 @@ endHandler()
         me.handlers = {
             onStart: (options.onStart) ? options.onStart : noop,
             onMove: (options.onMove) ? options.onMove : noop,
-            onEnd: (options.onEnd) ? options.onEnd : noop };
-        me.ongoingTouches = [];
-        me.mouse = {};
+            onEnd: (options.onEnd) ? options.onEnd : noop
+        };
+        me.pointer = {};
 
-        function start(e) {
+        var _posDelta = {},
+            _parent = me.el.parentNode;
+
+        function startHandler(e) {
             if (e.type === 'mousedown') {
-                me.mouse = { x: e.clientX, y: e.clientY };
-                window.addEventListener('mousemove', drag, { passive: false });
-                window.addEventListener('mouseup', end);
-                console.log('mousedown');
-                // TODO: handle mousedown
+                window.addEventListener('mousemove', moveHandler, { passive: false });
+                window.addEventListener('mouseup', endHandler);
+                me.pointer = { x: e.clientX, y: e.clientY };
+                // TODO: handle mousedown specifics
 
             } else if (e.targetTouches) {
-                var touches = e.targetTouches;
+                me.handle.addEventListener('touchmove', moveHandler, { passive: false });
+                me.handle.addEventListener('touchend', endHandler);
+                me.handle.addEventListener('touchcancel', endHandler);
+                me.pointer = copyTouch(e.targetTouches[0]);
+                // TODO: handle touchstart specifics
 
-                for (var i = 0; i < touches.length; i++) {
-                    me.ongoingTouches.push(copyTouch(touches[i]));
-                    console.log("start touch " + i);
-                    // TODO: handle touchstart
-
-                }
-
-                me.handle.addEventListener('touchmove', drag, { passive: false });
-                me.handle.addEventListener('touchend', end);
-                me.handle.addEventListener('touchcancel', end);
+            } else {
+                return;
             }
 
+            var rect = me.el.getBoundingClientRect();
+            _posDelta = {
+                x: rect.left - me.pointer.x,
+                y: rect.top - me.pointer.y
+            };
+
+            document.body.appendChild(me.el);
+            updatePosition();
             me.handlers.onStart();
         }
 
-        function drag(e) {
+        function moveHandler(e) {
 
             if (e.type === 'mousemove') {
-                console.log('mousemove');
-                // TODO: handle mouse move
+                me.pointer = { x: e.clientX, y: e.clientY };
+                // TODO: handle mousemove
+                updatePosition();
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
 
                 for (var i = 0; i < touches.length; i++) {
-                    var idx = ongoingTouchIndexById(touches[i].identifier);
+                    if (touches[i].identifier == me.pointer.identifier) {
+                        me.pointer = copyTouch(touches[i]);
+                        // TODO: handle touchmove
+                        updatePosition();
 
-                    if (idx >= 0) {
-                        me.ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-                        console.log("continuing touch " + idx);
-                        // TODO: handle touch move
-
-                    } else {
-                        console.log("can't figure out which touch to continue");
+                        break;
                     }
                 }
+            } else {
+                return;
             }
 
             me.handlers.onMove();
         }
 
-        function end(e) {
+        function endHandler(e) {
             if (e.type === 'mouseup') {
-                console.log('mouseup, removed mouse listeners');
-                window.removeEventListener('mousemove', drag);
-                window.removeEventListener('mouseup', end);
+                window.removeEventListener('mousemove', moveHandler);
+                window.removeEventListener('mouseup', endHandler);
                 // TODO: handle mouseup
 
             } else if (e.targetTouches) {
-                var touches = e.changedTouches;
+                var touches = e.changedTouches,
+                    isDone = (touches.length <= 1);
 
                 for (var i = 0; i < touches.length; i++) {
-                    var idx = ongoingTouchIndexById(touches[i].identifier);
-
-                    if (idx >= 0) {
-                        me.ongoingTouches.splice(idx, 1);  // remove it; we're done
-                        console.log("end touch " + idx)
-                        // TODO: handle touchend/cancel
-
-                    } else {
-                        console.log("can't figure out which touch to end");
+                    if (touches[i].identifier == me.pointer.identifier) {
+                        isDone = true;
+                        break;
                     }
                 }
-                if (touches.length == 1) {
-                    me.handle.removeEventListener('touchmove', drag);
-                    me.handle.removeEventListener('touchend', end);
-                    me.handle.removeEventListener('touchcancel', end);
-                    console.log('removed touch listeners');
-                }
+
+                if (!isDone) return;
+                me.handle.removeEventListener('touchmove', moveHandler);
+                me.handle.removeEventListener('touchend', endHandler);
+                me.handle.removeEventListener('touchcancel', endHandler);
+                // TODO: handle touchend specifics
+
+            } else {
+                return;
             }
 
+            _parent.appendChild(me.el);
+            me.pointer = {};
             me.handlers.onEnd();
         }
+
+        function updatePosition() {
+            console.log(me.pointer);
+            me.el.style.left = _posDelta.x + me.pointer.x + 'px';
+            me.el.style.top = _posDelta.y + me.pointer.y + 'px';
+        }
+
 
         function copyTouch(touch) {
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
 
-        function ongoingTouchIndexById(idToFind) {
-            for (var i = 0; i < me.ongoingTouches.length; i++) {
-                var id = me.ongoingTouches[i].identifier;
-    
-                if (id == idToFind) {
-                    return i;
-                }
-            }
-            return -1; // not found
-        }
-
         // INITIALIZE
-        me.handle.addEventListener('touchstart', start);
-        me.handle.addEventListener('mousedown', start);
+        me.handle.addEventListener('touchstart', startHandler);
+        me.handle.addEventListener('mousedown', startHandler);
     }
 
     return Draggable;

@@ -33,7 +33,7 @@ body {
     top: 0;
     left: -300px;
     background: rgb(117, 117, 131);
-    transition: 0.2s ease;
+    transition: 0.7s ease;
     overflow-y: scroll;
     scrollbar-width: none;
     user-select: none;
