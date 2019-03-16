@@ -78,10 +78,13 @@ endHandler()
         };
         me.pointer = {};
 
-        var _posDelta = {},
+        var _dimensions = {},
             _parent = me.el.parentNode;
 
         function startHandler(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             if (e.type === 'mousedown') {
                 window.addEventListener('mousemove', moveHandler, { passive: false });
                 window.addEventListener('mouseup', endHandler);
@@ -102,12 +105,17 @@ endHandler()
             }
 
             var rect = me.el.getBoundingClientRect();
-            _posDelta = {
+            _dimensions = {
                 x: rect.left - me.pointer.x,
-                y: rect.top - me.pointer.y
+                y: rect.top - me.pointer.y,
+                width: me.el.style.width,
+                height: me.el.style.height
             };
 
             document.body.appendChild(me.el);
+            me.el.style.width = rect.width + 'px';
+            me.el.style.height = rect.height + 'px';
+
             updatePosition();
             me.handlers.onStart();
         }
@@ -135,8 +143,6 @@ endHandler()
                 return;
             }
 
-            e.preventDefault();
-            e.stopPropagation();
             updatePosition();
             me.handlers.onMove();
         }
@@ -169,13 +175,15 @@ endHandler()
             }
 
             _parent.appendChild(me.el);
-            me.pointer = {};
+            me.el.style.width = _dimensions.width;
+            me.el.style.height = _dimensions.height;
+
             me.handlers.onEnd();
         }
 
         function updatePosition() {
-            me.el.style.left = _posDelta.x + me.pointer.x + 'px';
-            me.el.style.top = _posDelta.y + me.pointer.y + 'px';
+            me.el.style.left = _dimensions.x + me.pointer.x + 'px';
+            me.el.style.top = _dimensions.y + me.pointer.y + 'px';
         }
 
         function copyTouch(touch) {
