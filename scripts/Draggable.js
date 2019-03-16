@@ -115,7 +115,6 @@ endHandler()
             if (e.type === 'mousemove') {
                 me.pointer = { x: e.clientX, y: e.clientY };
                 // TODO: handle mousemove
-                updatePosition();
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
@@ -124,7 +123,6 @@ endHandler()
                     if (touches[i].identifier == me.pointer.identifier) {
                         me.pointer = copyTouch(touches[i]);
                         // TODO: handle touchmove
-                        updatePosition();
 
                         break;
                     }
@@ -133,6 +131,9 @@ endHandler()
                 return;
             }
 
+            e.preventDefault();
+            e.stopPropagation();
+            updatePosition();
             me.handlers.onMove();
         }
 
@@ -169,11 +170,9 @@ endHandler()
         }
 
         function updatePosition() {
-            console.log(me.pointer);
             me.el.style.left = _posDelta.x + me.pointer.x + 'px';
             me.el.style.top = _posDelta.y + me.pointer.y + 'px';
         }
-
 
         function copyTouch(touch) {
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
