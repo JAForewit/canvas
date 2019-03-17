@@ -7,18 +7,19 @@ function toggleWidgetToolbar() {
 // prevent all un-handled touchmove events
 window.addEventListener('touchstart', touchstartHandler);
 function touchstartHandler(e) {
-    window.addEventListener('touchmove', touchmoveHandler, { passive: false });
-    window.addEventListener('touchend', touchendHandler);
-    window.addEventListener('touchcancel', touchendHandler);
+
+    document.addEventListener('touchmove', touchmoveHandler, { passive: false });
+    document.addEventListener('touchend', touchendHandler);
+    document.addEventListener('touchcancel', touchendHandler);
 }
 function touchmoveHandler(e) {
     e.preventDefault();
     e.stopPropagation();
 }
 function touchendHandler(e) {
-    window.removeEventListener('touchmove', touchmoveHandler);
-    window.removeEventListener('touchend', touchendHandler);
-    window.removeEventListener('touchcancel', touchendHandler);
+    document.removeEventListener('touchmove', touchmoveHandler);
+    document.removeEventListener('touchend', touchendHandler);
+    document.removeEventListener('touchcancel', touchendHandler);
 }
 
 // init draggable elements
