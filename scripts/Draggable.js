@@ -61,16 +61,16 @@ endHandler()
     /*
     usage:
 
-    new Draggable (element, handle, options)
+    new Draggable (element, options)
       - or -
-    new Draggable (element, handle)
+    new Draggable (element)
     */
-    function Draggable(element, handle, options) {
+    function Draggable(element, options) {
         var me = this;
         if (!options) options = {};
 
         me.el = element;
-        me.handle = handle;
+        me.handle = (options.handle) ? options.handle : me.el;
         me.handlers = {
             onStart: (options.onStart) ? options.onStart : noop,
             onMove: (options.onMove) ? options.onMove : noop,
