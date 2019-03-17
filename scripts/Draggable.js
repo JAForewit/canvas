@@ -157,9 +157,7 @@ endHandler()
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
-
-                if (touches.length > 1) return;
-
+                
                 for (var i = 0; i < touches.length; i++) {
                     if (touches[i].identifier == me.pointer.identifier) {
                         return;
