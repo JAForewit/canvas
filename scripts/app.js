@@ -5,22 +5,22 @@ function toggleWidgetToolbar() {
 }
 
 // prevent all un-handled touchmove events
-document.addEventListener('touchstart', touchstartHandler);
+document.body.addEventListener('touchstart', touchstartHandler);
 function touchstartHandler(e) {
     e.preventDefault();
     e.stopPropagation();
-    document.addEventListener('touchmove', touchmoveHandler, { passive: false });
-    document.addEventListener('touchend', touchendHandler);
-    document.addEventListener('touchcancel', touchendHandler);
+    document.body.addEventListener('touchmove', touchmoveHandler, { passive: false });
+    document.body.addEventListener('touchend', touchendHandler);
+    document.body.addEventListener('touchcancel', touchendHandler);
 }
 function touchmoveHandler(e) {
     e.preventDefault();
     e.stopPropagation();
 }
 function touchendHandler(e) {
-    document.removeEventListener('touchmove', touchmoveHandler);
-    document.removeEventListener('touchend', touchendHandler);
-    document.removeEventListener('touchcancel', touchendHandler);
+    document.body.removeEventListener('touchmove', touchmoveHandler);
+    document.body.removeEventListener('touchend', touchendHandler);
+    document.body.removeEventListener('touchcancel', touchendHandler);
 }
 
 // init draggable elements
