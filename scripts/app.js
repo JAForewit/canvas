@@ -7,7 +7,8 @@ function toggleWidgetToolbar() {
 // prevent all un-handled touchmove events
 window.addEventListener('touchstart', touchstartHandler);
 function touchstartHandler(e) {
-
+    e.preventDefault();
+    e.stopPropagation();
     document.addEventListener('touchmove', touchmoveHandler, { passive: false });
     document.addEventListener('touchend', touchendHandler);
     document.addEventListener('touchcancel', touchendHandler);
