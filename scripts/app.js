@@ -7,7 +7,7 @@ function toggleWidgetToolbar() {
 // prevent all un-handled touchmove events
 document.body.addEventListener('touchmove', function(d) {
     e.preventDefault();
-    e.stopPropagation;
+    e.stopPropagation();
 }, { passive: false });
 
 // init draggable elements
