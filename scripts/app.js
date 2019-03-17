@@ -5,21 +5,10 @@ function toggleWidgetToolbar() {
 }
 
 // prevent all un-handled touchmove events
-document.body.addEventListener('touchstart', touchstartHandler, { passive: false });
-function touchstartHandler(e) {
-
-    document.body.addEventListener('touchmove', touchmoveHandler, { passive: false });
-    document.body.addEventListener('touchend', touchendHandler);
-    document.body.addEventListener('touchcancel', touchendHandler);
-}
+document.body.addEventListener('touchmove', touchmoveHandler, { passive: false });
 function touchmoveHandler(e) {
     e.preventDefault();
     e.stopPropagation();
-}
-function touchendHandler(e) {
-    document.body.removeEventListener('touchmove', touchmoveHandler);
-    document.body.removeEventListener('touchend', touchendHandler);
-    document.body.removeEventListener('touchcancel', touchendHandler);
 }
 
 // init draggable elements
