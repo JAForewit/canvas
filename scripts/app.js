@@ -5,11 +5,10 @@ function toggleWidgetToolbar() {
 }
 
 // prevent all un-handled touchmove events
-document.body.addEventListener('touchmove', touchmoveHandler, { passive: false });
-function touchmoveHandler(e) {
+document.body.addEventListener('touchmove', function(d) {
     e.preventDefault();
-    e.stopPropagation();
-}
+    e.stopPropagation;
+}, { passive: false });
 
 // init draggable elements
 var el = document.getElementsByClassName('draggable')[0],
@@ -18,5 +17,3 @@ var el = document.getElementsByClassName('draggable')[0],
     };
  
 var drag = new Draggable(el, options);
-
-

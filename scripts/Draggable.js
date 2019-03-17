@@ -156,17 +156,16 @@ endHandler()
                 // TODO: handle mouseup
 
             } else if (e.targetTouches) {
-                var touches = e.changedTouches,
-                    isDone = (touches.length <= 1);
+                var touches = e.targetTouches;
+
+                if (touches.length > 1) return;
 
                 for (var i = 0; i < touches.length; i++) {
                     if (touches[i].identifier == me.pointer.identifier) {
-                        isDone = true;
-                        break;
+                        return;
                     }
                 }
 
-                if (!isDone) return;
                 me.handle.removeEventListener('touchmove', moveHandler);
                 me.handle.removeEventListener('touchend', endHandler);
                 me.handle.removeEventListener('touchcancel', endHandler);
