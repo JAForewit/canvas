@@ -78,6 +78,8 @@
                 me.handle.removeEventListener('touchmove', moveHandler);
                 me.handle.removeEventListener('touchend', endHandler);
                 me.handle.removeEventListener('touchcancel', endHandler);
+            } else {
+                return;
             }
 
             _parent.appendChild(me.el);
