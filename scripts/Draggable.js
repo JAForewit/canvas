@@ -54,8 +54,6 @@
             me.el.style.height = rect.height + 'px';
             me.el.style.zIndex = 1000;
 
-            e.preventDefault();
-            e.stopPropagation();
             updatePosition();
             me.handlers.onStart();
         }
