@@ -14,7 +14,7 @@ html, body {
 
 body {
     margin: 0;
-    background: lightcoral;
+    background: lightgreen;
 }
 
 .widget {
@@ -50,7 +50,7 @@ body {
     top: 0;
     left: -300px;
     background: rgb(117, 117, 131);
-    transition: 0.1s ease;
+    transition: 0.15s ease;
     overflow-y: scroll;
     scrollbar-width: none;
 }
@@ -72,7 +72,7 @@ body {
     top: 20px;
     position: absolute;
     z-index: 100;
-    transition: .1s 0.1s ease;
+    transition: .15s 0.15s ease;
     cursor: pointer;
     background: #d3531a;
 }

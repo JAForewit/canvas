@@ -128,19 +128,13 @@ endHandler()
 
             if (e.type === 'mousemove') {
                 me.pointer = { x: e.clientX, y: e.clientY };
-                // TODO: handle mousemove
+                // TODO: handle mousemove specifics
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
+                me.pointer = copyTouch(touches[0]);
+                // TODO: handle touchmove specifics
 
-                for (var i = 0; i < touches.length; i++) {
-                    if (touches[i].identifier == me.pointer.identifier) {
-                        me.pointer = copyTouch(touches[i]);
-                        // TODO: handle touchmove
-
-                        break;
-                    }
-                }
             } else {
                 return;
             }
@@ -157,7 +151,7 @@ endHandler()
 
             } else if (e.targetTouches) {
                 var touches = e.targetTouches;
-                
+
                 for (var i = 0; i < touches.length; i++) {
                     if (touches[i].identifier == me.pointer.identifier) {
                         return;
