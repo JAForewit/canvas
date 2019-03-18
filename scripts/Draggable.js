@@ -8,8 +8,6 @@
     }
 }(this, function () {
     'use strict';
-    function noop() { };
-
     function Draggable(element, options) {
         var me = this;
         if (!options) options = {};
@@ -96,6 +94,8 @@
         function copyTouch(touch) {
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
+
+        function noop() { };
 
         me.handle.addEventListener('touchstart', startHandler, { passive: false });
         me.handle.addEventListener('mousedown', startHandler);
