@@ -23,7 +23,7 @@
         };
         me.pointer = {};
 
-        var _state = {},
+        var _dimensions = {},
             _parent = me.el.parentNode;
 
         function startHandler(e) {
@@ -41,7 +41,7 @@
             }
 
             var rect = me.el.getBoundingClientRect();
-            _state = {
+            _dimensions = {
                 x: rect.left - me.pointer.x,
                 y: rect.top - me.pointer.y,
                 width: me.el.style.width,
@@ -83,15 +83,15 @@
             }
 
             _parent.appendChild(me.el);
-            me.el.style.width = _state.width;
-            me.el.style.height = _state.height;
-            me.el.style.zIndex = _state.zIndex;
-            me.handlers.onEnd();
+            me.el.style.width = _dimensions.width;
+            me.el.style.height = _dimensions.height;
+            me.el.style.zIndex = _dimensions.zIndex;
+            me.handlers.onEnd(); 
         }
 
         function updatePosition() {
-            me.el.style.left = _state.x + me.pointer.x + 'px';
-            me.el.style.top = _state.y + me.pointer.y + 'px';
+            me.el.style.left = _dimensions.x + me.pointer.x + 'px';
+            me.el.style.top = _dimensions.y + me.pointer.y + 'px';
         }
 
         function copyTouch(touch) {
