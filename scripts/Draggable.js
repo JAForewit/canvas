@@ -1,46 +1,3 @@
-/*
-Draggable Class
-
-Expected: 
----------------------------------------------------------------------------
-<div style="position: absolute">    absolutely positioned draggable parent
-    <div></div>                     1st child = handle
-
-    whatever...
-</div>
-
-Dragging the handler should result in modifying the parent's top and
-left style relative to the viewpoert position of the pointer.
----------------------------------------------------------------------------
-
-Properties:
--------------------------------------------------------------------------
-ongoingTouches - [] - list  of tracked touch identifiers
-isDragging - BOOLEAN - false until touchstart and after touchend/cancel
--------------------------------------------------------------------------
-
-functions:
--------------------------------------------------------------------------------
-Constructor - add eventListeners for all touchstart events using startHandler()
-
-startHandler()
-    1. record touch.identifier
-    2. add appropriate move, end, and cancel eventListeners
-    3. set isDragging to true
-
-dragHandler()
-    1. check for the correct touch.identifier (same as touchstart)
-    2. move draggable parent
-        - preventDefault()
-        - stopPropagation()
-
-endHandler()
-    1. check for correct touch.identifier (same as touchstart)
-    2. remove touch from tracked touches list
-    3. remove move, end, and cancel eventListeners
--------------------------------------------------------------------------------
-*/
-
 (function (root, factory) {
     if (typeof exports === 'object') {
         module.exports = factory();
@@ -50,21 +7,9 @@ endHandler()
         root.Draggable = factory();
     }
 }(this, function () {
-
     'use strict';
-
-    // PRIVATE VARIABLES
-
-    // PRIVATE FUNCTIONS
     function noop() { };
 
-    /*
-    usage:
-
-    new Draggable (element, options)
-      - or -
-    new Draggable (element)
-    */
     function Draggable(element, options) {
         var me = this;
         if (!options) options = {};
@@ -78,34 +23,25 @@ endHandler()
         };
         me.pointer = {};
 
-        var _dimensions = {},
+        var _state = {},
             _parent = me.el.parentNode;
 
         function startHandler(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
             if (e.type === 'mousedown') {
                 window.addEventListener('mousemove', moveHandler, { passive: false });
                 window.addEventListener('mouseup', endHandler);
                 me.pointer = { x: e.clientX, y: e.clientY };
-                // TODO: handle mousedown specifics
-
-            } else if (e.targetTouches) {
+            } else {
                 me.handle.addEventListener('touchmove', moveHandler, { passive: false });
                 me.handle.addEventListener('touchend', endHandler);
                 me.handle.addEventListener('touchcancel', endHandler);
                 me.pointer = copyTouch(e.targetTouches[0]);
-                // TODO: handle touchstart specifics
                 e.preventDefault();
                 e.stopPropagation();
-
-            } else {
-                return;
             }
 
             var rect = me.el.getBoundingClientRect();
-            _dimensions = {
+            _state = {
                 x: rect.left - me.pointer.x,
                 y: rect.top - me.pointer.y,
                 width: me.el.style.width,
@@ -118,27 +54,18 @@ endHandler()
             me.el.style.height = rect.height + 'px';
             me.el.style.zIndex = 1000;
 
+            e.preventDefault();
+            e.stopPropagation();
             updatePosition();
             me.handlers.onStart();
         }
 
         function moveHandler(e) {
+            me.pointer = (e.type === 'mousemove') ? { x: e.clientX, y: e.clientY } 
+                : (e.targetTouches) ?  copyTouch(e.targetTouches[0]) : me.pointer;
+
             e.preventDefault();
             e.stopPropagation();
-
-            if (e.type === 'mousemove') {
-                me.pointer = { x: e.clientX, y: e.clientY };
-                // TODO: handle mousemove specifics
-
-            } else if (e.targetTouches) {
-                var touches = e.targetTouches;
-                me.pointer = copyTouch(touches[0]);
-                // TODO: handle touchmove specifics
-
-            } else {
-                return;
-            }
-
             updatePosition();
             me.handlers.onMove();
         }
@@ -147,43 +74,28 @@ endHandler()
             if (e.type === 'mouseup') {
                 window.removeEventListener('mousemove', moveHandler);
                 window.removeEventListener('mouseup', endHandler);
-                // TODO: handle mouseup
-
-            } else if (e.targetTouches) {
-                var touches = e.targetTouches;
-
-                for (var i = 0; i < touches.length; i++) {
-                    if (touches[i].identifier == me.pointer.identifier) {
-                        return;
-                    }
-                }
-
+            } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
                 me.handle.removeEventListener('touchmove', moveHandler);
                 me.handle.removeEventListener('touchend', endHandler);
                 me.handle.removeEventListener('touchcancel', endHandler);
-                // TODO: handle touchend specifics
-
-            } else {
-                return;
             }
 
             _parent.appendChild(me.el);
-            me.el.style.width = _dimensions.width;
-            me.el.style.height = _dimensions.height;
-            me.el.style.zIndex = _dimensions.zIndex;
+            me.el.style.width = _state.width;
+            me.el.style.height = _state.height;
+            me.el.style.zIndex = _state.zIndex;
             me.handlers.onEnd();
         }
 
         function updatePosition() {
-            me.el.style.left = _dimensions.x + me.pointer.x + 'px';
-            me.el.style.top = _dimensions.y + me.pointer.y + 'px';
+            me.el.style.left = _state.x + me.pointer.x + 'px';
+            me.el.style.top = _state.y + me.pointer.y + 'px';
         }
 
         function copyTouch(touch) {
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
 
-        // INITIALIZE
         me.handle.addEventListener('touchstart', startHandler, { passive: false });
         me.handle.addEventListener('mousedown', startHandler);
     }
