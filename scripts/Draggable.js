@@ -8,6 +8,12 @@
     }
 }(this, function () {
     'use strict';
+    // FOR DEBUGGING
+    function log(msg) {
+        var p = document.getElementById('log');
+        p.innerHTML = msg;
+    }
+
     function Draggable(element, options) {
         var me = this;
         if (!options) options = {};
@@ -30,6 +36,8 @@
                 window.addEventListener('mouseup', endHandler);
                 me.pointer = { x: e.clientX, y: e.clientY };
             } else {
+                log("start");
+
                 me.handle.addEventListener('touchmove', moveHandler, { passive: false });
                 me.handle.addEventListener('touchend', endHandler);
                 me.handle.addEventListener('touchcancel', endHandler);
@@ -57,8 +65,9 @@
         }
 
         function moveHandler(e) {
-            me.pointer = (e.type == 'mousemove') 
-                ? { x: e.clientX, y: e.clientY } 
+            log("move");
+            me.pointer = (e.type == 'mousemove')
+                ? { x: e.clientX, y: e.clientY }
                 : copyTouch(e.targetTouches[0]);
 
             e.preventDefault();
@@ -72,6 +81,8 @@
                 window.removeEventListener('mousemove', moveHandler);
                 window.removeEventListener('mouseup', endHandler);
             } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
+                log("end");
+
                 me.handle.removeEventListener('touchmove', moveHandler);
                 me.handle.removeEventListener('touchend', endHandler);
                 me.handle.removeEventListener('touchcancel', endHandler);
@@ -83,7 +94,7 @@
             me.el.style.width = _dimensions.width;
             me.el.style.height = _dimensions.height;
             me.el.style.zIndex = _dimensions.zIndex;
-            me.handlers.onEnd(); 
+            me.handlers.onEnd();
         }
 
         function updatePosition() {

@@ -1,3 +1,9 @@
+// FOR DEBUGGING
+function log(msg) {
+    var p = document.getElementById('log');
+    p.innerHTML = msg;
+}
+
 // toggle for widget toolbar
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
