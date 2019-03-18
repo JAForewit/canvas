@@ -31,6 +31,8 @@
             _parent = me.el.parentNode;
 
         function startHandler(e) {
+            log("start");
+
             if (e.type === 'mousedown') {
                 window.addEventListener('mousemove', moveHandler, { passive: false });
                 window.addEventListener('mouseup', endHandler);
