@@ -59,8 +59,9 @@
         }
 
         function moveHandler(e) {
-            me.pointer = (e.type === 'mousemove') ? { x: e.clientX, y: e.clientY } 
-                : (e.targetTouches) ?  copyTouch(e.targetTouches[0]) : me.pointer;
+            me.pointer = (e.type == 'mousemove') 
+                ? { x: e.clientX, y: e.clientY } 
+                : copyTouch(e.targetTouches[0]);
 
             e.preventDefault();
             e.stopPropagation();
