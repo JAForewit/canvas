@@ -22,4 +22,4 @@ var el = document.getElementsByClassName('draggable')[0],
         handle: el.children[0]
     };
  
-var drag = new Draggable(el, options);
+var drag = new Drag(el, options);
