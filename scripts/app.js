@@ -17,9 +17,13 @@ document.body.addEventListener('touchmove', function (e) {
 }, { passive: false });
 
 // init draggable elements
-var el = document.getElementsByClassName('draggable')[0],
+var dragEl = document.getElementsByClassName('draggable')[1],
     options = {
-        handle: el.children[0]
+        handle: dragEl.children[0]
     };
+var drag = new Drag(dragEl, options);
 
-var drag = new Drag(el, options);
+// init scrollable elements
+var scrollEl = document.getElementsByClassName('scrollable')[0],
+    options = {};
+var scroll = new Scroll(scrollEl, options);

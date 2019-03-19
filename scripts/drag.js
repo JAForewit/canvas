@@ -83,6 +83,7 @@
             me.el.style.width = _dimensions.width;
             me.el.style.height = _dimensions.height;
             me.el.style.zIndex = _dimensions.zIndex;
+            me.el.style.top = parseInt(me.el.style.top, 10) + _parent.scrollTop + 'px';
             me.handlers.onEnd();
         }
 
