@@ -33,6 +33,7 @@
 
         function touchmoveHandler(e) {
             var touch = copyTouch(e.targetTouches[0]);
+            log(touch.identifier);
             if (touch.identifier != _initialTap.identifier) return;
 
             var scrollDelta = _initialTap.y - touch.y,
