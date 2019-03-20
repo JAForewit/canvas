@@ -50,8 +50,10 @@
         }
 
         function touchendHandler(e) {
-            if (e.changedTouches[0].identifier != _initialTap.identifier) return;
+            if (e.changedTouches[0].identifier != _initialTap.identifier &&
+                e.targetTouches.length != 0) return;
 
+            log('ended');
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
             me.el.removeEventListener('touchcancel', touchendHandler);
