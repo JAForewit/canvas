@@ -16,9 +16,11 @@
 
         var _initialTap = {},
             _initialScroll,
-            _velocity;
+            _velocity,
+            _scrolling = false;
 
         function touchstartHandler(e) {
+            if (_scrolling) return;
             me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
             me.el.addEventListener('touchend', touchendHandler);
             me.el.addEventListener('touchcancel', touchendHandler);
@@ -26,6 +28,7 @@
             me.touch = copyTouch(e.targetTouches[0]);
             _initialTap = me.touch;
             _initialScroll = me.el.scrollTop;
+            _scrolling = true;
         }
 
         function touchmoveHandler(e) {
@@ -50,7 +53,7 @@
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
             me.el.removeEventListener('touchcancel', touchendHandler);
-
+            _scrolling = false;
             autoScroll();
         }
 
