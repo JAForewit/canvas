@@ -30,8 +30,8 @@
 
         function touchmoveHandler(e) {
             var touch = copyTouch(e.targetTouches[0]);
-            if (touch.identifier != me.touch.identifier) return;
-            
+            if (touch.identifier != _initialTap.identifier) return;
+
             var scrollDelta = _initialTap.y - touch.y,
                 dy = touch.y - me.touch.y,
                 dt = touch.time - me.touch.time;
@@ -46,7 +46,7 @@
         }
 
         function touchendHandler(e) {
-            if (e.targetTouches.length != 0 && e.targetTouches[0].identifier == me.touch.identifier) return;
+            if (e.targetTouches.length != 0 && e.targetTouches[0].identifier == _initialTap.identifier) return;
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
             me.el.removeEventListener('touchcancel', touchendHandler);
