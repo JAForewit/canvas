@@ -23,7 +23,7 @@
             if (_scrolling) return;
             me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
             me.el.addEventListener('touchend', touchendHandler);
-            me.el.addEventListener('touchcancel', touchendHandler);
+            me.el.addEventListener('touchcancel', touchcancelHandler);
 
             me.touch = copyTouch(e.targetTouches[0]);
             _initialTap = me.touch;
@@ -50,15 +50,22 @@
         }
 
         function touchendHandler(e) {
-            if (e.changedTouches[0].identifier != _initialTap.identifier &&
-                e.targetTouches.length != 0) return;
+            log(e.targetTouches.length);
+            if (e.changedTouches[0].identifier != _initialTap.identifier) return;
 
-            log('ended');
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
-            me.el.removeEventListener('touchcancel', touchendHandler);
+            me.el.removeEventListener('touchcancel', touchcancelHandler);
             _scrolling = false;
             autoScroll();
+        }
+        
+        function touchcancelHandler(e) {
+            log('cancelled');
+            me.el.removeEventListener('touchmove', touchmoveHandler);
+            me.el.removeEventListener('touchend', touchendHandler);
+            me.el.removeEventListener('touchcancel', touchcancelHandler);
+            _scrolling = false;
         }
 
         function autoScroll() {
