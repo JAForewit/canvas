@@ -23,17 +23,16 @@
             if (_scrolling) return;
             me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
             me.el.addEventListener('touchend', touchendHandler);
-            me.el.addEventListener('touchcancel', touchcancelHandler);
+            me.el.addEventListener('touchcancel', touchendHandler);
 
-            me.touch = copyTouch(e.targetTouches[0]);
+            me.touch = copyTouch(e.touches[0]);
             _initialTap = me.touch;
             _initialScroll = me.el.scrollTop;
             _scrolling = true;
         }
 
         function touchmoveHandler(e) {
-            var touch = copyTouch(e.targetTouches[0]);
-            log(touch.identifier);
+            var touch = copyTouch(e.touches[0]);
             if (touch.identifier != _initialTap.identifier) return;
 
             var scrollDelta = _initialTap.y - touch.y,
@@ -50,22 +49,15 @@
         }
 
         function touchendHandler(e) {
-            log(e.targetTouches.length);
-            if (e.changedTouches[0].identifier != _initialTap.identifier) return;
+            if (e.changedTouches[0].identifier == _initialTap.identifier
+                || e.touches.length == 0 || e.type == 'touchcancel') {
 
-            me.el.removeEventListener('touchmove', touchmoveHandler);
-            me.el.removeEventListener('touchend', touchendHandler);
-            me.el.removeEventListener('touchcancel', touchcancelHandler);
-            _scrolling = false;
-            autoScroll();
-        }
-        
-        function touchcancelHandler(e) {
-            log('cancelled');
-            me.el.removeEventListener('touchmove', touchmoveHandler);
-            me.el.removeEventListener('touchend', touchendHandler);
-            me.el.removeEventListener('touchcancel', touchcancelHandler);
-            _scrolling = false;
+                me.el.removeEventListener('touchmove', touchmoveHandler);
+                me.el.removeEventListener('touchend', touchendHandler);
+                me.el.removeEventListener('touchcancel', touchendHandler);
+                _scrolling = false;
+                autoScroll();
+            }
         }
 
         function autoScroll() {
