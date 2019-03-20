@@ -16,12 +16,9 @@
 
         var _initialTap = {},
             _initialScroll,
-            _velocity,
-            _scrolling = false;
+            _velocity;
 
         function touchstartHandler(e) {
-            if (_scrolling) return;
-
             me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
             me.el.addEventListener('touchend', touchendHandler);
             me.el.addEventListener('touchcancel', touchendHandler);
@@ -29,16 +26,12 @@
             me.touch = copyTouch(e.targetTouches[0]);
             _initialTap = me.touch;
             _initialScroll = me.el.scrollTop;
-            _scrolling = true;
-
-            e.preventDefault();
-            e.stopPropagation();
         }
 
         function touchmoveHandler(e) {
             var touch = copyTouch(e.targetTouches[0]);
-            if (touch.y == me.touch.y) return;
-
+            if (touch.identifier != me.touch.identifier) return;
+            
             var scrollDelta = _initialTap.y - touch.y,
                 dy = touch.y - me.touch.y,
                 dt = touch.time - me.touch.time;
@@ -50,16 +43,13 @@
 
             e.preventDefault();
             e.stopPropagation();
-
         }
-
 
         function touchendHandler(e) {
             if (e.targetTouches.length != 0 && e.targetTouches[0].identifier == me.touch.identifier) return;
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
             me.el.removeEventListener('touchcancel', touchendHandler);
-            _scrolling = false;
 
             autoScroll();
         }
@@ -69,7 +59,6 @@
             // implement easing function
             // (0.25, 0.1, 0.25, 1) ease function
             // cubic-beizer: f(t) = a(1 - t)^3 + 3b(1 - t)^2 + 3c(1 - t)t^2 + dt^3
-            if (Date.now() - me.touch.time > 20) _velocity = 0;
             console.log('v: ' + _velocity);
         }
 
@@ -82,7 +71,7 @@
             };
         }
 
-        me.el.addEventListener('touchstart', touchstartHandler, { passive: false });
+        me.el.addEventListener('touchstart', touchstartHandler);
     }
 
     return Scroll;
