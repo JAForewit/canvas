@@ -49,12 +49,13 @@
         }
 
         function touchendHandler(e) {
-            if (e.targetTouches.length != 0 && e.targetTouches[0].identifier == _initialTap.identifier) return;
-            me.el.removeEventListener('touchmove', touchmoveHandler);
-            me.el.removeEventListener('touchend', touchendHandler);
-            me.el.removeEventListener('touchcancel', touchendHandler);
-            _scrolling = false;
-            autoScroll();
+            if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != _initialTap.identifier) {
+                me.el.removeEventListener('touchmove', touchmoveHandler);
+                me.el.removeEventListener('touchend', touchendHandler);
+                me.el.removeEventListener('touchcancel', touchendHandler);
+                _scrolling = false;
+                autoScroll();
+            }
         }
 
         function autoScroll() {
