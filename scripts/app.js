@@ -16,13 +16,14 @@ document.body.addEventListener('touchmove', function (e) {
     e.stopPropagation();
 }, { passive: false });
 
+/*
 // init draggable elements
 var dragEl = document.getElementsByClassName('draggable')[1],
     options = {
         handle: dragEl.children[0]
     };
 var drag = new Drag(dragEl, options);
-
+*/
 // init scrollable elements
 var scrollEl = document.getElementsByClassName('scrollable')[0],
     options = {};
