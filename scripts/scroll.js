@@ -50,7 +50,7 @@
 
         function touchendHandler(e) {
             for (var i = 0; i < e.targetTouches.length; i++) {
-                if (e.targetTouches[i].identifier == _initialTap.identifier) return;
+                if (e.targetTouches[i].identifier === _initialTap.identifier) return;
             }
             me.el.removeEventListener('touchmove', touchmoveHandler);
             me.el.removeEventListener('touchend', touchendHandler);
