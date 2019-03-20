@@ -20,11 +20,12 @@
             _scrolling = false;
 
         function touchstartHandler(e) {
-            if(_scrolling) return;
+            if (_scrolling) return;
+
             me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
             me.el.addEventListener('touchend', touchendHandler);
             me.el.addEventListener('touchcancel', touchendHandler);
-            
+
             me.touch = copyTouch(e.targetTouches[0]);
             _initialTap = me.touch;
             _initialScroll = me.el.scrollTop;
@@ -35,20 +36,23 @@
         }
 
         function touchmoveHandler(e) {
-            var touch = copyTouch(e.targetTouches[0]),
-                scrollDelta = _initialTap.y - touch.y,
+            var touch = copyTouch(e.targetTouches[0]);
+            if (touch.y == me.touch.y) return;
+
+            var scrollDelta = _initialTap.y - touch.y,
                 dy = touch.y - me.touch.y,
                 dt = touch.time - me.touch.time;
 
-            me.el.scrollTop =  _initialScroll + scrollDelta;
-            _velocity = dy/dt;
+            me.el.scrollTop = _initialScroll + scrollDelta;
+            _velocity = dy / dt;
 
             me.touch = touch;
-            console.log(dy + " " + dt);
 
             e.preventDefault();
             e.stopPropagation();
+
         }
+
 
         function touchendHandler(e) {
             if (e.targetTouches.length != 0 && e.targetTouches[0].identifier == me.touch.identifier) return;
@@ -70,9 +74,9 @@
         }
 
         function copyTouch(touch) {
-            return { 
-                identifier: touch.identifier, 
-                x: touch.clientX, 
+            return {
+                identifier: touch.identifier,
+                x: touch.clientX,
                 y: touch.clientY,
                 time: Date.now()
             };
