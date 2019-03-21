@@ -24,7 +24,7 @@
 
         function touchstartHandler(e) {
             if (_scrolling) return;
-            me.el.addEventListener('touchmove', touchmoveHandler, { passive: false });
+            me.el.addEventListener('touchmove', touchmoveHandler);
             me.el.addEventListener('touchend', touchendHandler);
             me.el.addEventListener('touchcancel', touchendHandler);
 
@@ -47,8 +47,6 @@
             _offset += me.touch.y - touch.y;
             me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
             me.touch = touch;
-
-            e.preventDefault();
             e.stopPropagation();
         }
 
