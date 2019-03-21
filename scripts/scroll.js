@@ -45,7 +45,7 @@
             var touch = copyTouch(e.touches[0]);
             _offset = me.touch.y - touch.y;
 
-            me.el.scrollTop += _offset;
+            me.el.scrollTo(0, me.el.scrollTop + _offset);
             me.touch = touch;
         }
 
@@ -73,7 +73,7 @@
             _timestamp = now;
 
             if (_velocity > 0.5 || _velocity < -0.5) {
-                me.el.scrollTop += _velocity;
+                me.el.scrollTo(0, me.el.scrollTop + _velocity);
                 requestAnimationFrame(autoScroll);
             }
         }
