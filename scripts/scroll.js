@@ -66,13 +66,12 @@
             }
         }
 
-        function autoScroll(now) {
-            var elapsed = now - _timestamp;
+        function autoScroll() {
+            _velocity = (_velocity >= 0) 
+                ? Math.min(_velocity * 0.95, _velocity - 0.2)
+                : Math.max(_velocity * 0.95, _velocity + 0.2);
 
-            _velocity *= (1 - 0.1 * elapsed / 16.66);
-            _timestamp = now;
-
-            if (_velocity > 0.5 || _velocity < -0.5) {
+            if (_velocity > 0.2 || _velocity < -0.2) {
                 me.el.scrollTo(0, me.el.scrollTop + _velocity);
                 requestAnimationFrame(autoScroll);
             }
@@ -80,7 +79,7 @@
 
         function track(now) {
             var elapsed = now - _timestamp,
-                v = 100 * _offset / (1+elapsed);
+                v = 128 * _offset / elapsed;
             _velocity = 0.8 * v + 0.2 * _velocity;
             _timestamp = now;
 
