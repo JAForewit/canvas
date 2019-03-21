@@ -8,6 +8,9 @@
     }
 }(this, function () {
     'use strict';
+
+    // TODO: catch scroll event while scrolling
+
     function Scroll(element, options) {
         var me = this;
 
@@ -47,6 +50,7 @@
             _offset += me.touch.y - touch.y;
             me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
             me.touch = touch;
+            e.stopPropagation();
         }
 
         function touchendHandler(e) {
@@ -81,8 +85,8 @@
             elapsed = now - _timestamp;
             _timestamp = now;
 
-            v = 100 * _offset / elapsed;
-            _velocity = Math.round(0.8 * v + 0.2 * _velocity);
+            v = 10 * _offset / elapsed;
+            _velocity = 0.8 * v + 0.2 * _velocity;
             _offset = 0;
         }
 
