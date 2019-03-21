@@ -47,7 +47,6 @@
             _offset += me.touch.y - touch.y;
             me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
             me.touch = touch;
-            e.stopPropagation();
         }
 
         function touchendHandler(e) {
