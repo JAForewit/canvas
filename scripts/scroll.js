@@ -37,7 +37,7 @@
             _offset = 0;
 
             clearInterval(_ticker);
-            _ticker = setInterval(track, 100);
+            _ticker = setInterval(track, 50);
         }
 
         function touchmoveHandler(e) {
@@ -70,11 +70,10 @@
         function autoScroll() {
             // Kinetic Scrolling Tutorial: https://github.com/ariya/kinetic
             var elapsed = Date.now() - _timestamp, 
-                currentScrollTop = me.el.scrollTop,
-                delta = 0.8 * _velocity * Math.exp(-elapsed/200);
+                delta = 0.8 * _velocity * Math.exp(-elapsed/350);
            
             if (delta > 0.5 || delta < -0.5) {
-                me.el.scrollTop = currentScrollTop + delta;
+                me.el.scrollTop += delta;
                 requestAnimationFrame(autoScroll);
             }
         }
@@ -87,8 +86,6 @@
 
             v = 100 * _offset / elapsed;
             _velocity = Math.round(0.8 * v + 0.2 * _velocity);
-            log(_velocity);
-
             _offset = 0;
         }
 
