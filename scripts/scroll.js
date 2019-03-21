@@ -63,7 +63,10 @@
                 _scrolling = false;
                 clearInterval(_ticker);
 
-                if (_velocity > 10 || _velocity < -10) requestAnimationFrame(autoScroll);
+                if (_velocity > 10 || _velocity < -10) {
+                    _timestamp = Date.now();
+                    _ticker = setInterval(autoScroll, 10); 
+                }
             }
         }
 
@@ -74,7 +77,8 @@
            
             if (delta > 0.5 || delta < -0.5) {
                 me.el.scrollTop += delta;
-                requestAnimationFrame(autoScroll);
+            } else {
+                clearInterval(_ticker);
             }
         }
 
