@@ -80,7 +80,7 @@
 
             v = 100 * _offset / elapsed;
             _velocity = Math.round(0.8 * v + 0.2 * _velocity);
-            console.log(_velocity);
+            log(_velocity);
 
             _offset = 0;
         }
