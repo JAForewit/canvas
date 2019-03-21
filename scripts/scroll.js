@@ -18,12 +18,11 @@
         me.touch = {};
 
         var _initialTouch = {},
-            _initialScrollTop,
             _scrolling = false,
-            _ticker,
             _offset,
             _velocity,
-            _timestamp;
+            _timestamp,
+            _ticker;
 
         function touchstartHandler(e) {
             if (_scrolling) return;
@@ -33,22 +32,20 @@
 
             me.touch = copyTouch(e.touches[0]);
             _initialTouch = me.touch;
-            _initialScrollTop = me.el.scrollTop;
             _scrolling = true;
-            _timestamp = Date.now();
+            _timestamp = performance.now();
             _velocity = 0;
             _offset = 0;
-
-            clearInterval(_ticker);
-            _ticker = setInterval(track, 100);
+            _ticker = requestAnimationFrame(track);
         }
 
         function touchmoveHandler(e) {
             if (e.touches[0].identifier != _initialTouch.identifier) return;
 
             var touch = copyTouch(e.touches[0]);
-            _offset += me.touch.y - touch.y;
-            me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
+            _offset = me.touch.y - touch.y;
+
+            me.el.scrollTop += _offset;
             me.touch = touch;
         }
 
@@ -61,36 +58,33 @@
                 me.el.removeEventListener('touchcancel', touchendHandler);
 
                 _scrolling = false;
-                clearInterval(_ticker);
+                cancelAnimationFrame(_ticker);
 
                 if (_velocity > 10 || _velocity < -10) {
-                    _timestamp = Date.now();
-                    _ticker = setInterval(autoScroll, 10); 
+                    requestAnimationFrame(autoScroll)
                 }
             }
         }
 
-        function autoScroll() {
-            // Kinetic Scrolling Tutorial: https://github.com/ariya/kinetic
-            var elapsed = Date.now() - _timestamp, 
-                delta = 0.8 * _velocity * Math.exp(-elapsed/350);
-           
-            if (delta > 0.5 || delta < -0.5) {
-                me.el.scrollTop += delta;
-            } else {
-                clearInterval(_ticker);
+        function autoScroll(now) {
+            var elapsed = now - _timestamp;
+
+            _velocity *= (1 - 0.1 * elapsed / 16.66);
+            _timestamp = now;
+
+            if (_velocity > 0.5 || _velocity < -0.5) {
+                me.el.scrollTop += _velocity;
+                requestAnimationFrame(autoScroll);
             }
         }
 
-        function track() {
-            var now, elapsed, v;
-            now = Date.now();
-            elapsed = now - _timestamp;
+        function track(now) {
+            var elapsed = now - _timestamp,
+                v = 100 * _offset / (1+elapsed);
+            _velocity = 0.8 * v + 0.2 * _velocity;
             _timestamp = now;
 
-            v = 100 * _offset / elapsed;
-            _velocity = 0.8 * v + 0.2 * _velocity;
-            _offset = 0;
+            if (_scrolling) requestAnimationFrame(track);
         }
 
         function cubicBezier(t, p1, p2) {
