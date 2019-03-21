@@ -14,7 +14,7 @@ html, body {
 
 body {
     margin: 0;
-    background: darkred;
+    background: darkblue;
 }
 
 .widget {
@@ -53,6 +53,7 @@ body {
     transition: 0.15s ease;
     overflow-y: scroll;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 #widget-toolbar::-webkit-scrollbar {
