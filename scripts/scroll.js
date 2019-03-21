@@ -84,7 +84,7 @@
             elapsed = now - _timestamp;
             _timestamp = now;
 
-            v = 10 * _offset / elapsed;
+            v = 100 * _offset / elapsed;
             _velocity = 0.8 * v + 0.2 * _velocity;
             _offset = 0;
         }
