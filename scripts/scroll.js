@@ -42,7 +42,7 @@
 
         function touchmoveHandler(e) {
             if (e.touches[0].identifier != _initialTouch.identifier) return;
-            
+
             var touch = copyTouch(e.touches[0]);
             _offset += me.touch.y - touch.y;
             me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
@@ -59,17 +59,24 @@
                 me.el.removeEventListener('touchmove', touchmoveHandler);
                 me.el.removeEventListener('touchend', touchendHandler);
                 me.el.removeEventListener('touchcancel', touchendHandler);
-                
+
                 _scrolling = false;
                 clearInterval(_ticker);
-                requestAnimationFrame(autoScroll);
+
+                if (_velocity > 10 || _velocity < -10) requestAnimationFrame(autoScroll);
             }
         }
 
         function autoScroll() {
             // Kinetic Scrolling Tutorial: https://github.com/ariya/kinetic
-            // see: https://stackoverflow.com/questions/1810742/algorithm-to-implement-kinetic-scrolling
-
+            var elapsed = Date.now() - _timestamp, 
+                currentScrollTop = me.el.scrollTop,
+                delta = 0.8 * _velocity * Math.exp(-elapsed/200);
+           
+            if (delta > 0.5 || delta < -0.5) {
+                me.el.scrollTop = currentScrollTop + delta;
+                requestAnimationFrame(autoScroll);
+            }
         }
 
         function track() {

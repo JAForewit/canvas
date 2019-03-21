@@ -18,7 +18,7 @@ document.body.addEventListener('touchmove', function (e) {
 
 
 // init draggable elements
-var dragEl = document.getElementsByClassName('draggable')[1],
+var dragEl = document.getElementsByClassName('draggable')[0],
     options = {
         handle: dragEl.children[0]
     };
