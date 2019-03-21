@@ -14,10 +14,13 @@
         me.el = element;
         me.touch = {};
 
-        var _initialTap = {},
-            _initialScroll,
+        var _initialTouch = {},
+            _initialScrollTop,
+            _scrolling = false,
+            _ticker,
+            _offset,
             _velocity,
-            _scrolling = false;
+            _timestamp;
 
         function touchstartHandler(e) {
             if (_scrolling) return;
@@ -26,22 +29,23 @@
             me.el.addEventListener('touchcancel', touchendHandler);
 
             me.touch = copyTouch(e.touches[0]);
-            _initialTap = me.touch;
-            _initialScroll = me.el.scrollTop;
+            _initialTouch = me.touch;
+            _initialScrollTop = me.el.scrollTop;
             _scrolling = true;
+            _timestamp = Date.now();
+            _velocity = 0;
+            _offset = 0;
+
+            clearInterval(_ticker);
+            _ticker = setInterval(track, 100);
         }
 
         function touchmoveHandler(e) {
+            if (e.touches[0].identifier != _initialTouch.identifier) return;
+            
             var touch = copyTouch(e.touches[0]);
-            if (touch.identifier != _initialTap.identifier) return;
-
-            var scrollDelta = _initialTap.y - touch.y,
-                dy = touch.y - me.touch.y,
-                dt = touch.time - me.touch.time;
-
-            me.el.scrollTop = _initialScroll + scrollDelta;
-            _velocity = dy / dt;
-
+            _offset += me.touch.y - touch.y;
+            me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
             me.touch = touch;
 
             e.preventDefault();
@@ -49,43 +53,48 @@
         }
 
         function touchendHandler(e) {
-            if (e.changedTouches[0].identifier == _initialTap.identifier
+            if (e.changedTouches[0].identifier == _initialTouch.identifier
                 || e.touches.length == 0 || e.type == 'touchcancel') {
 
                 me.el.removeEventListener('touchmove', touchmoveHandler);
                 me.el.removeEventListener('touchend', touchendHandler);
                 me.el.removeEventListener('touchcancel', touchendHandler);
+                
                 _scrolling = false;
-                autoScroll();
+                clearInterval(_ticker);
+                requestAnimationFrame(autoScroll);
             }
         }
 
         function autoScroll() {
+            // Kinetic Scrolling Tutorial: https://github.com/ariya/kinetic
             // see: https://stackoverflow.com/questions/1810742/algorithm-to-implement-kinetic-scrolling
-            // implement easing function
-            // http://cubic-bezier.com/#.25,.1,.25,1
-            // cubic-beizer: f(t) = a(1 - t)^3 + 3b(1 - t)^2 + 3c(1 - t)t^2 + dt^3
-            console.log('v: ' + _velocity);
- 
-            // P0 and P3 are anchors. P1Y = 0.1, P2Y = P3Y = 1
-            // B(t) = 3*(1-t)*(1-t)*t*P1Y + 3*(1-t)*t*t + t*t*t
+
         }
 
-        function cubicBezier (t, p1, p2) {
-            return 3*p1*(1 - 2*t + t*t) + 3*p2*t*t*(1-t) + t*t*t;
+        function track() {
+            var now, elapsed, v;
+            now = Date.now();
+            elapsed = now - _timestamp;
+            _timestamp = now;
+
+            v = 100 * _offset / elapsed;
+            _velocity = Math.round(0.8 * v + 0.2 * _velocity);
+            console.log(_velocity);
+
+            _offset = 0;
         }
 
-        function ease (t) {
-            return 0.3*t + 2.4*t*t - 1.7*t*t*t;
+        function cubicBezier(t, p1, p2) {
+            return 3 * p1 * (1 - 2 * t + t * t) + 3 * p2 * t * t * (1 - t) + t * t * t;
+        }
+
+        function ease(t) {
+            return 0.3 * t + 2.4 * t * t - 1.7 * t * t * t;
         }
 
         function copyTouch(touch) {
-            return {
-                identifier: touch.identifier,
-                x: touch.clientX,
-                y: touch.clientY,
-                time: Date.now()
-            };
+            return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
 
         me.el.addEventListener('touchstart', touchstartHandler);
