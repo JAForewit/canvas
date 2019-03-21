@@ -18,7 +18,6 @@
         me.touch = {};
 
         var _initialTouch = {},
-            _initialScrollTop,
             _scrolling = false,
             _ticker,
             _offset,
@@ -33,7 +32,6 @@
 
             me.touch = copyTouch(e.touches[0]);
             _initialTouch = me.touch;
-            _initialScrollTop = me.el.scrollTop;
             _scrolling = true;
             _timestamp = Date.now();
             _velocity = 0;
@@ -48,7 +46,7 @@
 
             var touch = copyTouch(e.touches[0]);
             _offset += me.touch.y - touch.y;
-            me.el.scrollTop = _initialScrollTop + _initialTouch.y - touch.y;
+            me.el.scrollBy(0, me.touch.y - touch.y);
             me.touch = touch;
             e.stopPropagation();
         }
@@ -74,7 +72,7 @@
                 delta = 0.8 * _velocity * Math.exp(-elapsed/350);
            
             if (delta > 0.5 || delta < -0.5) {
-                me.el.scrollTop += delta;
+                me.el.scrollBy(0, delta);
                 requestAnimationFrame(autoScroll);
             }
         }
