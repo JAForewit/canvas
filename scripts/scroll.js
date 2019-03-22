@@ -21,7 +21,6 @@
             _scrolling = false,
             _offset,
             _velocity,
-            _timestamp,
             _ticker;
 
         function touchstartHandler(e) {
@@ -33,7 +32,6 @@
             me.touch = copyTouch(e.touches[0]);
             _initialTouch = me.touch;
             _scrolling = true;
-            _timestamp = performance.now();
             _velocity = 0;
             _offset = 0;
             _ticker = requestAnimationFrame(track);
@@ -60,29 +58,24 @@
                 _scrolling = false;
                 cancelAnimationFrame(_ticker);
 
-                if (_velocity > 10 || _velocity < -10) {
+                if (_velocity > 10 || _velocity < 10) {
                     requestAnimationFrame(autoScroll)
                 }
             }
         }
 
         function autoScroll() {
-            _velocity = (_velocity >= 0) 
-                ? Math.min(_velocity * 0.95, _velocity - 0.2)
-                : Math.max(_velocity * 0.95, _velocity + 0.2);
+            _velocity *= 0.9;
 
-            if (_velocity > 0.2 || _velocity < -0.2) {
+            if (_velocity > 0.5 || _velocity < -0.5) {
                 me.el.scrollTo(0, me.el.scrollTop + _velocity);
                 requestAnimationFrame(autoScroll);
             }
         }
 
-        function track(now) {
-            var elapsed = now - _timestamp,
-                v = 128 * _offset / elapsed;
-            _velocity = 0.8 * v + 0.2 * _velocity;
-            _timestamp = now;
-
+        function track() {
+            _velocity = 0.8 * _offset + 0.2 * _velocity;
+            console.log(_velocity);
             if (_scrolling) requestAnimationFrame(track);
         }
 
