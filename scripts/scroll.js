@@ -18,6 +18,7 @@
         me.touch = {};
 
         var _initialTouch = {},
+            _initialScrollTop,
             _scrolling = false,
             _offset;
 
@@ -27,18 +28,14 @@
             me.el.addEventListener('touchend', touchendHandler);
             me.el.addEventListener('touchcancel', touchendHandler);
 
-            me.touch = copyTouch(e.touches[0]);
-            _initialTouch = me.touch;
+            _initialTouch = copyTouch(e.touches[0]);
+            _initialScrollTop = me.el.scrollTop;
             _scrolling = true;
         }
 
         function touchmoveHandler(e) {
             if (e.touches[0].identifier != _initialTouch.identifier) return;
-
-            var touch = copyTouch(e.touches[0]);
-            _offset = me.touch.y - touch.y;
-            me.el.scrollTop += _offset;
-            me.touch = touch;
+            me.el.scrollTop = _initialScrollTop + _initialTouch.y - e.touches[0].clientY;
         }
 
         function touchendHandler(e) {
@@ -48,11 +45,7 @@
                 me.el.removeEventListener('touchmove', touchmoveHandler);
                 me.el.removeEventListener('touchend', touchendHandler);
                 me.el.removeEventListener('touchcancel', touchendHandler);
-
                 _scrolling = false;
-
-                var event = new MouseEvent( "scroll",{delta: -650} );
-                me.el.dispatchEvent(event);
             }
         }
         function cubicBezier(t, p1, p2) {
