@@ -21,7 +21,8 @@
             _scrolling = false,
             _offset,
             _velocity,
-            _ticker;
+            _ticker,
+            _frame;
 
         function touchstartHandler(e) {
             if (_scrolling) return;
@@ -34,7 +35,10 @@
             _scrolling = true;
             _velocity = 0;
             _offset = 0;
-            _ticker = requestAnimationFrame(track);
+            _frame = 0;
+
+            clearInterval(_ticker);
+            _ticker = setInterval(track, 100);
         }
 
         function touchmoveHandler(e) {
@@ -56,7 +60,7 @@
                 me.el.removeEventListener('touchcancel', touchendHandler);
 
                 _scrolling = false;
-                cancelAnimationFrame(_ticker);
+                clearInterval(_ticker)
 
                 if (_velocity > 10 || _velocity < 10) {
                     requestAnimationFrame(autoScroll)
@@ -66,15 +70,15 @@
 
         function autoScroll() {
             _velocity *= 0.9;
-            me.el.scrollTo(0, me.el.scrollTop + _velocity);
+            me.el.scrollTop += Math.round(_velocity);
+            console.log(me.el.scrollTop);
 
             if (_velocity > 0.5 || _velocity < -0.5) requestAnimationFrame(autoScroll);
         }
-
+ 
         function track() {
-            _velocity = 0.8 * _offset + 0.2 * _velocity;
-            console.log(_velocity);
-            if (_scrolling) requestAnimationFrame(track);
+            _velocity = (_frame == _offset) ? 0 : 4 * _offset + 0.2 * _velocity;
+            _frame = _offset;
         }
 
         function cubicBezier(t, p1, p2) {
