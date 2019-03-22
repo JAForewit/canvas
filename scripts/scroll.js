@@ -19,10 +19,7 @@
 
         var _initialTouch = {},
             _scrolling = false,
-            _offset,
-            _velocity,
-            _ticker,
-            _frame;
+            _offset;
 
         function touchstartHandler(e) {
             if (_scrolling) return;
@@ -33,12 +30,6 @@
             me.touch = copyTouch(e.touches[0]);
             _initialTouch = me.touch;
             _scrolling = true;
-            _velocity = 0;
-            _offset = 0;
-            _frame = 0;
-
-            clearInterval(_ticker);
-            _ticker = setInterval(track, 100);
         }
 
         function touchmoveHandler(e) {
@@ -46,8 +37,7 @@
 
             var touch = copyTouch(e.touches[0]);
             _offset = me.touch.y - touch.y;
-
-            me.el.scrollTo(0, me.el.scrollTop + _offset);
+            me.el.scrollTop += _offset;
             me.touch = touch;
         }
 
@@ -60,27 +50,11 @@
                 me.el.removeEventListener('touchcancel', touchendHandler);
 
                 _scrolling = false;
-                clearInterval(_ticker)
 
-                if (_velocity > 10 || _velocity < 10) {
-                    requestAnimationFrame(autoScroll)
-                }
+                var event = new MouseEvent( "scroll",{delta: -650} );
+                me.el.dispatchEvent(event);
             }
         }
-
-        function autoScroll() {
-            _velocity *= 0.9;
-            me.el.scrollTop += Math.round(_velocity);
-            console.log(me.el.scrollTop);
-
-            if (_velocity > 0.5 || _velocity < -0.5) requestAnimationFrame(autoScroll);
-        }
- 
-        function track() {
-            _velocity = (_frame == _offset) ? 0 : 4 * _offset + 0.2 * _velocity;
-            _frame = _offset;
-        }
-
         function cubicBezier(t, p1, p2) {
             return 3 * p1 * (1 - 2 * t + t * t) + 3 * p2 * t * t * (1 - t) + t * t * t;
         }
