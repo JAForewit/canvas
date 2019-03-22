@@ -30,7 +30,6 @@
         requestAnimationFrame(autoScroll);
         function autoScroll() {
             velocity *= 0.95;
-            console.log(velocity);
             me.el.scrollTop += velocity;
             if (velocity < 0.2) {
                 me.el.scrollTop = 0;
