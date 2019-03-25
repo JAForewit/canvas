@@ -53,7 +53,7 @@
             me.el.style.zIndex = 1000;
 
             updatePosition();
-            me.handlers.onStart();
+            me.handlers.onStart(me, me.pointer.x, me.pointer.y);
         }
 
         function moveHandler(e) {
@@ -64,7 +64,7 @@
             e.preventDefault();
             e.stopPropagation();
             updatePosition();
-            me.handlers.onMove();
+            me.handlers.onMove(me, me.pointer.x, me.pointer.y);
         }
 
         function endHandler(e) {
@@ -84,7 +84,7 @@
             me.el.style.height = _dimensions.height;
             me.el.style.zIndex = _dimensions.zIndex;
             me.el.style.top = parseInt(me.el.style.top, 10) + _parent.scrollTop + 'px';
-            me.handlers.onEnd();
+            me.handlers.onEnd(me);
         }
 
         function updatePosition() {
