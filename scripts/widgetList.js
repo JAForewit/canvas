@@ -6,9 +6,9 @@ function WidgetList(el) {
     me.items = [];          // draggable items
     me.gap = 10;            // gap between items on drag
 
-    me._left = el.clientLeft;
-    me._width = el.clientWidth;
-    me._dropZones = [];
+    var _left = el.clientLeft,
+        _width = el.clientWidth,
+        _dropZones = [];
 
     // Initialize el children as items in the list
     for (var i = 0; i < me.el.children.length; i++) {
@@ -29,7 +29,7 @@ function WidgetList(el) {
     // create placeholder element
     var placeholder = document.createElement('div');
     placeholder.classList.add('placeholder');
-    placeholder.style.left = me._left + 'px';
+    placeholder.style.left = _left + 'px';
     placeholder.style.height = me.gap + 'px';
 
     function onGrab(item) {
@@ -40,13 +40,13 @@ function WidgetList(el) {
 
         // insert placeholder
         placeholder.index = itemIndex;
-        placeholder.style.top = me._dropZones[itemIndex] + 'px';
+        placeholder.style.top = _dropZones[itemIndex] + 'px';
         me.el.appendChild(placeholder);
     }
 
     function onDrag(item, x, y) {
         function inDropZone(top, above, below) {
-            return (x < me._left + me._width &&
+            return (x < _left + _width &&
                 y > top - above / 2 && //me.threshold = above
                 y < top + below / 2); //me.threshold = below
         }
@@ -57,10 +57,10 @@ function WidgetList(el) {
             // check first drop zone
             if (placeholder.index != 0 &&
                 inDropZone(
-                    me._dropZones[0] - me.el.scrollTop,
+                    _dropZones[0] - me.el.scrollTop,
                     1000,
                     me.items[0].el.clientHeight)) {
-                placeholder.style.top = me._dropZones[0] + 'px';
+                placeholder.style.top = _dropZones[0] + 'px';
                 placeholder.index = 0;
                 me.el.scrollTop = 0;
                 return;
@@ -69,10 +69,10 @@ function WidgetList(el) {
             for (var i = 1; i < me.items.length; i++) {
                 if (placeholder.index != i &&
                     inDropZone(
-                        me._dropZones[i] - me.el.scrollTop,
+                        _dropZones[i] - me.el.scrollTop,
                         me.items[i - 1].el.clientHeight,
                         me.items[i].el.clientHeight)) {
-                    placeholder.style.top = me._dropZones[i] + 'px';
+                    placeholder.style.top = _dropZones[i] + 'px';
                     placeholder.index = i;
                     if (y < 0 || y > me.el.clientHeight) {
                         placeholder.scrollIntoView();
@@ -83,10 +83,10 @@ function WidgetList(el) {
             // check last drop zone
             if (placeholder.index != me.items.length &&
                 inDropZone(
-                    me._dropZones[me._dropZones.length - 1] - me.el.scrollTop,
+                    _dropZones[_dropZones.length - 1] - me.el.scrollTop,
                     me.items[me.items.length - 1].el.clientHeight,
                     1000)) {
-                placeholder.style.top = me._dropZones[me._dropZones.length - 1] + 'px';
+                placeholder.style.top = _dropZones[_dropZones.length - 1] + 'px';
                 placeholder.index = me.items.length;
                 me.el.scrollTop = me.el.scrollHeight;
                 return;
@@ -97,7 +97,7 @@ function WidgetList(el) {
     function onRelease(item) {
         // add item to list
         me.items.splice(placeholder.index, 0, item);
-        
+
         // update positions
         updatePositions();
 
@@ -107,14 +107,14 @@ function WidgetList(el) {
 
     function updatePositions(gap) {
         var newZone = 0;
-        me._dropZones = [newZone];
+        _dropZones = [newZone];
         for (var i in me.items) {
             newZone += me.items[i].el.clientHeight + me.gap;
-            me._dropZones.push(newZone);
+            _dropZones.push(newZone);
 
             var top = (i > 0) ? top + me.items[i - 1].el.clientHeight + (gap || 0) : (gap || 0);
 
-            me.items[i].el.style.left = me._left + 'px';
+            me.items[i].el.style.left = _left + 'px';
             me.items[i].el.style.top = top + 'px';
 
             if (gap == null) me.items[i].el.style.marginBottom = '0px';

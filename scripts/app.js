@@ -4,7 +4,7 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
-// toggle for widget toolbar
+// toggle for toolbars
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
     document.getElementById("nav-icon").classList.toggle("open");
