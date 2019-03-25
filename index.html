@@ -12,26 +12,43 @@
 <body>
     <div id="log" style="position: absolute; right: 0; top: 0;"></div>
 
-    <div id="nav-icon" class="open" onclick="toggleWidgetToolbar()"></div>
-    <div id="widget-toolbar" class="scrollable open">
-        <div style="background: lightblue; height: 300px"></div>
-        <div style="background: lightcoral; height: 300px"></div>
-        <div style="background: lightseagreen; height: 300px"></div>
-        <div style="background: lightskyblue; height: 300px"></div>
-        <div style="background: lightsalmon; height: 300px"></div>
-        <div style="background: lightblue; height: 300px"></div>
-        <div style="background: lightgreen; height: 300px"></div>
-        <div style="background: pink; height: 100px"></div>
+    <!--canvas-->
+    <canvas id="canvas">
+        Your browser does not support canvas element.
+    </canvas>
+    <div id="log" style="position: absolute; right: 0; top: 0;"></div>
 
+    <!--widget toolbar-->
+    <div id="nav-icon" onclick="toggleWidgetToolbar()"></div>
+    <div id="widget-toolbar" class="scrollable">
         <div class="widget draggable" style="height: 300px; background: lightseagreen">
+            <div class="widget-handle"></div>
+            <div class="widget-close"></div>
+        </div>
+        <div class="widget draggable" style="height: 300px; background: lightgreen">
+            <div class="widget-handle"></div>
+            <div class="widget-close"></div>
+        </div>
+        <div class="widget draggable" style="height: 300px; background: lightskyblue">
             <div class="widget-handle"></div>
             <div class="widget-close"></div>
         </div>
     </div>
 
-    <script src="./scripts/scroll.js"></script>
-    <script src="./scripts/drag.js"></script>
-    <script src="./scripts/app.js"></script>
+    <!--preferences toolbar-->
+    <div id="nav-icon2" onclick="togglePrefToolbar()"></div>
+    <div id="pref-toolbar" class="scrollable">
+        <div style="height: 300px; background: lightseagreen"></div>
+        <div style="height: 300px; background: lightcoral"></div>
+        <div style="height: 300px; background: lightgreen"></div>
+        <div style="height: 300px; background: lightskyblue"></div>
+    </div>
+
+    <!--scripts-->
+    <!--<script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>-->
+    <script type='text/javascript' src="./scripts/scroll.js"></script>
+    <script type='text/javascript' src="./scripts/drag.js"></script>
+    <script type='text/javascript' src="./scripts/app.js"></script>
 </body>
 
 </html>

@@ -9,7 +9,15 @@
 }(this, function () {
     'use strict';
 
-    // TODO: catch scroll event while scrolling
+    /*
+    function cubicBezier(t, p1, p2) {
+        return 3 * p1 * (1 - 2 * t + t * t) + 3 * p2 * t * t * (1 - t) + t * t * t;
+    }
+
+    function ease(t) {
+        return 0.3 * t + 2.4 * t * t - 1.7 * t * t * t;
+    }
+    */
 
     function Scroll(element, options) {
         var me = this;
@@ -19,8 +27,7 @@
 
         var _initialTouch = {},
             _initialScrollTop,
-            _scrolling = false,
-            _offset;
+            _scrolling = false;
 
         function touchstartHandler(e) {
             if (_scrolling) return;
@@ -47,13 +54,6 @@
                 me.el.removeEventListener('touchcancel', touchendHandler);
                 _scrolling = false;
             }
-        }
-        function cubicBezier(t, p1, p2) {
-            return 3 * p1 * (1 - 2 * t + t * t) + 3 * p2 * t * t * (1 - t) + t * t * t;
-        }
-
-        function ease(t) {
-            return 0.3 * t + 2.4 * t * t - 1.7 * t * t * t;
         }
 
         function copyTouch(touch) {
