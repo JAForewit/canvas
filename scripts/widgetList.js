@@ -122,5 +122,3 @@ function WidgetList(el) {
         }
     }
 };
-
-mylist = new WidgetList(document.getElementById("widget-toolbar"));

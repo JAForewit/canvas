@@ -20,15 +20,8 @@ document.body.addEventListener('touchmove', function (e) {
     e.stopPropagation();
 }, { passive: false });
 
-
-// init draggable elements
-for (var i = 0; i < document.getElementsByClassName('draggable').length; i++) {
-    var dragEl = document.getElementsByClassName('draggable')[i],
-        options = {
-            handle: dragEl.children[0]
-        };
-    var drag = new Drag(dragEl, options);
-}
+// init widget list with draggable elements
+mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 // init scrollable elements
 for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
