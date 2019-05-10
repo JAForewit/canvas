@@ -21,7 +21,7 @@ document.body.addEventListener('touchmove', function (e) {
 }, { passive: false });
 
 //init widget list with draggable elements
-mylist = new WidgetList(document.getElementById("widget-toolbar"));
+var mylist = new WidgetList(document.getElementById("widget-toolbar"));
 
 //init scrollable elements
 for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
@@ -29,3 +29,6 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
         options = {};
     var scroll = new Scroll(scrollEl, options);
 }
+
+//init canvas
+var canvas = new Canvas(document.getElementById('canvas'));

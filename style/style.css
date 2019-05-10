@@ -14,7 +14,7 @@ html, body {
 
 body {
     margin: 0;
-    background: slategray;
+    background: white;
 }
 
 .widget {
@@ -138,4 +138,8 @@ body {
 
 #nav-icon2.open {
     transform: translateX(-300px);
+}
+
+#canvas {
+    background: slateblue;
 }
