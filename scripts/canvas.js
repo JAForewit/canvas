@@ -20,27 +20,138 @@
       - or -
     new Canvas (element)
     */
-    function Canvas(element, options) {
+    function Canvas(canvas, options) {
         var me = this;
 
-        me.pointer = {};
-        me.el = element;
-        me.scene = new Scene(me.el); // REQUIRES: gl-scene
+        //Setup scene
+        var scene = new Scene(canvas); // REQUIRES: gl-scene
 
-        //initialize event handlers
-        me.el.addEventListener('touchstart', startHandler, { passive: false });
-        me.el.addEventListener('mousedown', startHandler);
-    
+        var camera = new Camera(
+            glMatrix.toRadian(45) * (canvas.clientHeight / 800),
+            canvas.clientWidth / canvas.clientHeight,
+            0.1,
+            100.0
+        );
+        camera.orient(
+            [-5, 0, 10],
+            [0, 0, 0],
+            [0, 1, 0]
+        );
+
+        var pointLight = new PointLight(
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 1, 0],
+            [1, 1, 0],
+            [1.0, 0.045, 0.0075]
+        );
+        scene.Add(pointLight);
+        var sphere = new Model(
+            './models/sphere.json',
+            './models/sphere.png',
+            './models/sphere_specular.png',
+            function () {
+                scene.Add(sphere);
+                sphere.setPosition(pointLight.position);
+            }
+        );
+
+        var pointLight2 = new PointLight(
+            [3, 0, -3],
+            [0, 0, 0],
+            [0, 1, 1],
+            [0, 1, 1],
+            [1.0, 0.045, 0.0075]
+        );
+        scene.Add(pointLight2);
+        var sphere2 = new Model(
+            './models/sphere.json',
+            './models/sphere.png',
+            './models/sphere_specular.png',
+            function () {
+                scene.Add(sphere2);
+                sphere2.setPosition(pointLight2.position);
+            }
+        );
+
+        var c1 = new Model(
+            './models/cube.json',
+            './models/cube.png',
+            './models/cube_specular.png',
+            function () {
+                scene.Add(c1);
+                c1.setPosition([0, -3, 0]);
+                c1.shine = 100;
+            }
+        );
+        var c2 = new Model(
+            './models/cube.json',
+            './models/cube.png',
+            './models/cube_specular.png',
+            function () {
+                scene.Add(c2);
+                c2.setPosition([3, 0, 0]);
+                c2.shine = 100;
+            }
+        );
+
+        var t0 = performance.now();
+        var loop = function (dt) {
+            if (canvas.width != canvas.clientWidth ||
+                canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+
+                console.log("resizing");
+                camera.update(
+                    glMatrix.toRadian(45) * (canvas.clientHeight / 800),
+                    canvas.clientWidth / canvas.clientHeight,
+                    0.1,
+                    100.0
+                );
+            }
+
+            var perSec = (performance.now() - t0) / 1000;
+
+            mat4.rotate(
+                c1.world,
+                c1.world,
+                glMatrix.toRadian(20) * perSec,
+                [1, 0, 0]
+            )
+            mat4.rotate(
+                c2.world,
+                c2.world,
+                glMatrix.toRadian(20) * perSec,
+                [0, 1, 0]
+            )
+            if (camera.position[2] > -10) {
+                camera.position[2] -= 1 * perSec;
+                camera.orient(camera.position, [0, 0, 0], [0, 1, 0]);
+            }
+
+            scene.Render(camera);
+            t0 = performance.now();
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+
+
+        //initialize pointer control
+        me.pointer = {}; 
+
+        canvas.addEventListener('touchstart', startHandler, { passive: false });
+        canvas.addEventListener('mousedown', startHandler);
 
         function startHandler(e) {
             if (e.type === 'mousedown') {
-                me.el.addEventListener('mousemove', moveHandler, { passive: false });
-                me.el.addEventListener('mouseup', endHandler);
+                canvas.addEventListener('mousemove', moveHandler, { passive: false });
+                canvas.addEventListener('mouseup', endHandler);
                 me.pointer = { x: e.clientX, y: e.clientY };
             } else {
-                me.el.addEventListener('touchmove', moveHandler, { passive: false });
-                me.el.addEventListener('touchend', endHandler);
-                me.el.addEventListener('touchcancel', endHandler);
+                canvas.addEventListener('touchmove', moveHandler, { passive: false });
+                canvas.addEventListener('touchend', endHandler);
+                canvas.addEventListener('touchcancel', endHandler);
                 me.pointer = copyTouch(e.targetTouches[0]);
                 e.preventDefault();
                 e.stopPropagation();
@@ -68,12 +179,12 @@
 
         function endHandler(e) {
             if (e.type === 'mouseup') {
-                me.el.removeEventListener('mousemove', moveHandler);
-                me.el.removeEventListener('mouseup', endHandler);
+                canvas.removeEventListener('mousemove', moveHandler);
+                canvas.removeEventListener('mouseup', endHandler);
             } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
-                me.el.removeEventListener('touchmove', moveHandler);
-                me.el.removeEventListener('touchend', endHandler);
-                me.el.removeEventListener('touchcancel', endHandler);
+                canvas.removeEventListener('touchmove', moveHandler);
+                canvas.removeEventListener('touchend', endHandler);
+                canvas.removeEventListener('touchcancel', endHandler);
             } else {
                 return;
             }
