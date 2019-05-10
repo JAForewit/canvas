@@ -25,6 +25,7 @@
 
         me.pointer = {};
         me.el = element;
+        me.scene = new Scene(me.el); // REQUIRES: gl-scene
 
         //initialize event handlers
         me.el.addEventListener('touchstart', startHandler, { passive: false });

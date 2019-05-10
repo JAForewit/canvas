@@ -32,3 +32,5 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
 
 //init canvas
 var canvas = new Canvas(document.getElementById('canvas'));
+canvas.gl.width = window.innerWidth;
+canvas.gl.height = window.innerHeight;
