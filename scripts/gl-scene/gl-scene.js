@@ -45,6 +45,21 @@ const MAX_DIR_LIGHTS = 4; // Minimum of 1
 const MATERIAL_SHINE = 100;
 /*************************/
 
+const outlineVertexShaderText = `
+uniform float offset;
+
+void main() {
+    vec4 pos = modelViewMatrix * vec4(position + normal * offset, 1.0);
+    gl_Position = projectionMatrix * pos;
+}
+`;
+
+const outlineFragmentShaderText = `
+void main() {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}
+`;
+
 const vertexShaderText = `
 precision mediump float;
 attribute vec3 a_vertPosition;
@@ -303,7 +318,8 @@ var Scene = function (canvas, options) {
 	me.pointLights = [];
 	me.dirLights = [];
     me.spotLights = [];
-   
+    me.renderFunctions = [];
+
     // Global uniform locations
     me.uniforms = {
 		mProj: gl.getUniformLocation(me.program, 'u_proj'),
@@ -321,7 +337,22 @@ var Scene = function (canvas, options) {
 		vNorm: gl.getAttribLocation(me.program, 'a_vertNormal'),
 		vTexCoord: gl.getAttribLocation(me.program, 'a_vertTexCoord'),
 	};
-}
+};
+
+Scene.prototype.ToggleOutline = function (object, thickness, color) {
+
+    for (i=0, len=me.models.length; i<len; i++) {
+        if (object == me.models[i].data) {
+            if (model.hasOwnProperty('outline')) {
+                // remove outline (remove render function)
+            }
+            else {
+                // add outline (add render function)
+            }
+        }
+    }
+};
+
 
 /**
  * Adds a model to the scene by generating buffers and uniform data
@@ -748,5 +779,8 @@ Scene.prototype.Render = function (camera) {
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.models[i].buffers.ibo);
 		gl.drawElements(gl.TRIANGLES, me.models[i].data.indices.length, gl.UNSIGNED_SHORT, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    }
+    for (i=0, len=me.renderFunctions.length; i<len; i++) {
+        me.renderFunctions[i]();
     }
 };

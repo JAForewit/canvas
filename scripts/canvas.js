@@ -95,14 +95,12 @@
             }
         );
 
-        var t0 = performance.now();
-        var loop = function (dt) {
+        function resize() {
             if (canvas.width != canvas.clientWidth ||
                 canvas.height != canvas.clientHeight) {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
 
-                console.log("resizing");
                 camera.update(
                     glMatrix.toRadian(45) * (canvas.clientHeight / 800),
                     canvas.clientWidth / canvas.clientHeight,
@@ -110,8 +108,12 @@
                     100.0
                 );
             }
+        }
 
+        var t0 = performance.now();
+        var animate = function (time) {
             var perSec = (performance.now() - t0) / 1000;
+            resize();
 
             mat4.rotate(
                 c1.world,
@@ -132,9 +134,9 @@
 
             scene.Render(camera);
             t0 = performance.now();
-            requestAnimationFrame(loop);
+            requestAnimationFrame(animate);
         };
-        requestAnimationFrame(loop);
+        requestAnimationFrame(animate);
 
 
         //initialize pointer control
