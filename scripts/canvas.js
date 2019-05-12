@@ -23,121 +23,41 @@
     function Canvas(canvas, options) {
         var me = this;
 
-        //Setup scene
-        var scene = new Scene(canvas); // REQUIRES: gl-scene
+        //scene
+        var scene = new THREE.Scene();
+        
+        //camera
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
 
-        var camera = new Camera(
-            glMatrix.toRadian(45) * (canvas.clientHeight / 800),
-            canvas.clientWidth / canvas.clientHeight,
-            0.1,
-            100.0
-        );
-        camera.orient(
-            [-5, 0, 10],
-            [0, 0, 0],
-            [0, 1, 0]
-        );
+        //lights
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0,0,1);
+        scene.add(directionalLight);
+        
+        //renderer
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            canvas: document.getElementById('canvas'),
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-        var pointLight = new PointLight(
-            [0, 0, 0],
-            [0, 0, 0],
-            [1, 1, 0],
-            [1, 1, 0],
-            [1.0, 0.045, 0.0075]
-        );
-        scene.Add(pointLight);
-        var sphere = new Model(
-            './models/sphere.json',
-            './models/sphere.png',
-            './models/sphere_specular.png',
-            function () {
-                scene.Add(sphere);
-                sphere.setPosition(pointLight.position);
-            }
-        );
+        //geometry
+        var geometry = new THREE.BoxGeometry(1,1,1);
+        var material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+        var cube = new THREE.Mesh( geometry, material );
+        scene.add(cube);
 
-        var pointLight2 = new PointLight(
-            [3, 0, -3],
-            [0, 0, 0],
-            [0, 1, 1],
-            [0, 1, 1],
-            [1.0, 0.045, 0.0075]
-        );
-        scene.Add(pointLight2);
-        var sphere2 = new Model(
-            './models/sphere.json',
-            './models/sphere.png',
-            './models/sphere_specular.png',
-            function () {
-                scene.Add(sphere2);
-                sphere2.setPosition(pointLight2.position);
-            }
-        );
+        //render loop
+        function animate() {
+            requestAnimationFrame( animate );
 
-        var c1 = new Model(
-            './models/cube.json',
-            './models/cube.png',
-            './models/cube_specular.png',
-            function () {
-                scene.Add(c1);
-                c1.setPosition([0, -3, 0]);
-                c1.shine = 100;
-            }
-        );
-        var c2 = new Model(
-            './models/cube.json',
-            './models/cube.png',
-            './models/cube_specular.png',
-            function () {
-                scene.Add(c2);
-                c2.setPosition([3, 0, 0]);
-                c2.shine = 100;
-            }
-        );
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
 
-        function resize() {
-            if (canvas.width != canvas.clientWidth ||
-                canvas.height != canvas.clientHeight) {
-                canvas.width = canvas.clientWidth;
-                canvas.height = canvas.clientHeight;
-
-                camera.update(
-                    glMatrix.toRadian(45) * (canvas.clientHeight / 800),
-                    canvas.clientWidth / canvas.clientHeight,
-                    0.1,
-                    100.0
-                );
-            }
+            renderer.render( scene, camera );
         }
-
-        var t0 = performance.now();
-        var animate = function (time) {
-            var perSec = (performance.now() - t0) / 1000;
-            resize();
-
-            mat4.rotate(
-                c1.world,
-                c1.world,
-                glMatrix.toRadian(20) * perSec,
-                [1, 0, 0]
-            )
-            mat4.rotate(
-                c2.world,
-                c2.world,
-                glMatrix.toRadian(20) * perSec,
-                [0, 1, 0]
-            )
-            if (camera.position[2] > -10) {
-                camera.position[2] -= 1 * perSec;
-                camera.orient(camera.position, [0, 0, 0], [0, 1, 0]);
-            }
-
-            scene.Render(camera);
-            t0 = performance.now();
-            requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate);
-
+        animate();
 
         //initialize pointer control
         me.pointer = {}; 
