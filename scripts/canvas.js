@@ -23,18 +23,31 @@
     function Canvas(canvas, options) {
         var me = this;
 
-        //scene
+        //shaders
+        var outlineVS = `
+        uniform float offset;
+        void main() {
+            vec4 pos = modelViewMatrix * vec4(position + normal * offset, 1.0);
+            gl_Position = projectionMatrix * pos;
+        }`;
+        var outlineFS = `
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }`;
+
+        //scenes
         var scene = new THREE.Scene();
-        
+        var outlineScene = new THREE.Scene();
+
         //camera
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
         //lights
         var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(0,0,1);
+        directionalLight.position.set(0, 0, 1);
         scene.add(directionalLight);
-        
+
         //renderer
         var renderer = new THREE.WebGLRenderer({
             antialias: true,
@@ -43,83 +56,66 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         //geometry
-        var geometry = new THREE.BoxGeometry(1,1,1);
-        var material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-        var cube = new THREE.Mesh( geometry, material );
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
+
+        //raycaster
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+        var selectedObjects = [];
+
+        window.addEventListener('mousemove', onTouchMove);
+        window.addEventListener('touchmove', onTouchMove);
+
+        function onTouchMove(e) {
+            
+            var x, y;
+            if (event.changedTouches) {
+                x = e.changedTouches[0].pageX;
+                y = e.changedTouches[0].pageY;
+            } else {
+                x = event.clientX;
+                y = event.clientY;
+            }
+            mouse.x = (x / window.innerWidth) * 2 - 1;
+            mouse.y = - (y / window.innerHeight) * 2 + 1;
+            checkIntersection();
+        }
+        function addSelectedObject(object) {
+            selectedObjects = [];
+            selectedObjects.push(object);
+        }
+        function checkIntersection() {
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects([scene], true);
+            if (intersects.length > 0) {
+                var selectedObject = intersects[0].object;
+                addSelectedObject(selectedObject);
+            }
+        }
+
+        //window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
 
         //render loop
         function animate() {
-            requestAnimationFrame( animate );
+            requestAnimationFrame(animate);
 
+            cube.rotation.z += 0.01;
             cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
 
-            renderer.render( scene, camera );
+            renderer.render(scene, camera);
         }
         animate();
-
-        //initialize pointer control
-        me.pointer = {}; 
-
-        canvas.addEventListener('touchstart', startHandler, { passive: false });
-        canvas.addEventListener('mousedown', startHandler);
-
-        function startHandler(e) {
-            if (e.type === 'mousedown') {
-                canvas.addEventListener('mousemove', moveHandler, { passive: false });
-                canvas.addEventListener('mouseup', endHandler);
-                me.pointer = { x: e.clientX, y: e.clientY };
-            } else {
-                canvas.addEventListener('touchmove', moveHandler, { passive: false });
-                canvas.addEventListener('touchend', endHandler);
-                canvas.addEventListener('touchcancel', endHandler);
-                me.pointer = copyTouch(e.targetTouches[0]);
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            //handle pointer start
-
-            //FOR DEBUGGING
-            log('startHnadler');
-        }
-
-        function moveHandler(e) {
-            me.pointer = (e.type == 'mousemove')
-                ? { x: e.clientX, y: e.clientY }
-                : copyTouch(e.targetTouches[0]);
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            //handle pointer move
-
-            //FOR DEBUGGING
-            log('moveHandler');
-        }
-
-        function endHandler(e) {
-            if (e.type === 'mouseup') {
-                canvas.removeEventListener('mousemove', moveHandler);
-                canvas.removeEventListener('mouseup', endHandler);
-            } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
-                canvas.removeEventListener('touchmove', moveHandler);
-                canvas.removeEventListener('touchend', endHandler);
-                canvas.removeEventListener('touchcancel', endHandler);
-            } else {
-                return;
-            }
-
-            //handle pointer end
-
-            //FOR DEBUGGING
-            log('endHandler');
-        }
-
-        function copyTouch(touch) {
-            return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
-        }
     }
 
     return Canvas;
