@@ -99,8 +99,18 @@
         }
 
 
-// START SCENE
+        // ***************START SCENE**********************
 
+        //lights
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 0, 1);
+        scene.add(directionalLight);
+
+        //geometry
+        let geometry = new THREE.CubeGeometry(1, 1, 1);
+        let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        let cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
 
         //pointer control
         canvas.addEventListener('touchstart', startHandler, { passive: false });
@@ -148,18 +158,6 @@
         function copyTouch(touch) {
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
-
-        //lights
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(0, 0, 1);
-        scene.add(directionalLight);
-
-        //geometry
-        let geometry = new THREE.CubeGeometry(1, 1, 1);
-        let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-        let cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
 
         //render loop
         function animate(time) {
