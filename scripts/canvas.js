@@ -20,46 +20,89 @@
       - or -
     new Canvas (element)
     */
+
     function Canvas(canvas, options) {
         var me = this;
 
-
-        //TODO: move vars here
-        var selectedObject,
-            scene,
-            effectsScene,
-            camera,
-            directionalLight,
-            renderer,
-            preRenderFunctions,
-            raycaster,
-            mouse;
-
         //scenes
-        scene = new THREE.Scene();
-        effectsScene = new THREE.Scene();
+        let scene = new THREE.Scene(),
+            effectsScene = new THREE.Scene();
 
         //camera
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
-        //lights
-        directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(0, 0, 1);
-        scene.add(directionalLight);
-
         //renderer
-        renderer = new THREE.WebGLRenderer({
+        let renderer = new THREE.WebGLRenderer({
             antialias: true,
             canvas: canvas,
             alpha: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.autoClear = false;
-        preRenderFunctions = [];
+        let preRenderFunctions = [];
+
+        //raycaster
+        let raycaster = new THREE.Raycaster();
+        let clipMouse = new THREE.Vector2(1, -1);
+        let mouse = { x: 1, y: -1 };
+        function checkIntersection() {
+            //tranlate to clipspace
+            clipMouse.x = (mouse.x / window.innerWidth) * 2 - 1;
+            clipMouse.y = -(mouse.y / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(clipMouse, camera);
+            var intersects = raycaster.intersectObjects([scene], true);
+            return (intersects.length > 0) ? intersects[0].object : false;
+        }
+
+        //outline object
+        let outlineMat = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.BackSide });
+        let outlineGeo = new THREE.Geometry();
+        let outline = new THREE.Mesh(outlineGeo, outlineMat);
+        outline.scale.multiplyScalar(1.1);
+        let outlinedObjects = [];
+        let selectedObject; //TODO: remove
+        function updateOutlines() {
+            //TODO: change to "for i in selectedObjects"
+            for (var i = 0; i < outlinedObjects.length; i++) {
+
+            }
+
+            if (selectedObject) {
+                outline.geometry = selectedObject.geometry;
+                effectsScene.add(outline);
+                outline.rotation.set(
+                    selectedObject.rotation.x,
+                    selectedObject.rotation.y,
+                    selectedObject.rotation.z
+                );
+                outline.position.set(
+                    selectedObject.position.x,
+                    selectedObject.position.y,
+                    selectedObject.position.z
+                );
+            } else {
+                effectsScene.remove(outline);
+            }
+        }
+        preRenderFunctions.push(updateOutlines);
+
+        //window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+
+// START SCENE
+
 
         //pointer control
-        mouse = {x:1, y:-1}; 
         canvas.addEventListener('touchstart', startHandler, { passive: false });
         canvas.addEventListener('mousedown', startHandler);
         function startHandler(e) {
@@ -106,60 +149,17 @@
             return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
         }
 
-        //raycaster
-        raycaster = new THREE.Raycaster();
-        var clipMouse = new THREE.Vector2(1,-1);
-        function checkIntersection() {
-            //tranlate to clipspace
-            clipMouse.x = (mouse.x / window.innerWidth) * 2 - 1;
-            clipMouse.y = -(mouse.y / window.innerHeight) * 2 + 1;
-
-            raycaster.setFromCamera(clipMouse, camera);
-            var intersects = raycaster.intersectObjects([scene], true);
-            return (intersects.length > 0) ? intersects[0].object : false;
-        }
-
-        //window resize
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
-            var width = window.innerWidth;
-            var height = window.innerHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        }
+        //lights
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 0, 1);
+        scene.add(directionalLight);
 
         //geometry
-        var geometry = new THREE.CubeGeometry( 1, 1, 1 );
-        var material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-        var cube = new THREE.Mesh(geometry, material);
+        let geometry = new THREE.CubeGeometry(1, 1, 1);
+        let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        let cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 
-        //outline object
-        var outlineMat = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.BackSide});
-        var outlineGeo = new THREE.Geometry();
-        var outline = new THREE.Mesh(outlineGeo, outlineMat);
-        outline.scale.multiplyScalar(1.1);
-        function updateOutlines() {
-            //TODO: change to "for i in selectedObjects"
-            if (selectedObject) {
-                outline.geometry = selectedObject.geometry;
-                effectsScene.add(outline);
-                outline.rotation.set(
-                    selectedObject.rotation.x, 
-                    selectedObject.rotation.y, 
-                    selectedObject.rotation.z
-                );
-                outline.position.set(
-                    selectedObject.position.x,
-                    selectedObject.position.y,
-                    selectedObject.position.z
-                );
-            } else {
-                effectsScene.remove(outline);
-            }
-        }
-        preRenderFunctions.push(updateOutlines);
 
         //render loop
         function animate(time) {
@@ -175,15 +175,7 @@
             renderer.render(scene, camera);
         }
         animate();
-
-
-
-
-        
-
-
-
-    } 
+    }
 
     return Canvas;
 }));
