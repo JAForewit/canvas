@@ -23,21 +23,8 @@
     function Canvas(canvas, options) {
         var me = this;
 
-        //shaders
-        var outlineVS = `
-        uniform float offset;
-        void main() {
-            vec4 pos = modelViewMatrix * vec4(position + normal * offset, 1.0);
-            gl_Position = projectionMatrix * pos;
-        }`;
-        var outlineFS = `
-        void main() {
-            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }`;
-
         //scenes
         var scene = new THREE.Scene();
-        var outlineScene = new THREE.Scene();
 
         //camera
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -51,15 +38,12 @@
         //renderer
         var renderer = new THREE.WebGLRenderer({
             antialias: true,
-            canvas: document.getElementById('canvas'),
+            canvas: canvas,
+            alpha: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
-
-        //geometry
-        var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-        var cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        renderer.autoClear = false;
+        var preRenderFunctions = [];
 
         //raycaster
         var raycaster = new THREE.Raycaster();
@@ -70,7 +54,7 @@
         window.addEventListener('touchmove', onTouchMove);
 
         function onTouchMove(e) {
-            
+
             var x, y;
             if (event.changedTouches) {
                 x = e.changedTouches[0].pageX;
@@ -106,6 +90,24 @@
             renderer.setSize(width, height);
         }
 
+        //geometry
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        //outline object
+        var outlineMat = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.BackSide});
+        var outlineMesh = new THREE.Mesh(cube.geometry, outlineMat);
+        outlineMesh.scale.multiplyScalar(1.1);
+        scene.add(outlineMesh);
+        function updateOutlines() {
+            outlineMesh.rotation.x = cube.rotation.x;
+            outlineMesh.rotation.z = cube.rotation.z;
+        }
+        preRenderFunctions.push(updateOutlines);
+        //TODO: make outline function generic (click to outline?)
+
         //render loop
         function animate() {
             requestAnimationFrame(animate);
@@ -113,10 +115,13 @@
             cube.rotation.z += 0.01;
             cube.rotation.x += 0.01;
 
+            //pre render functions
+            for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
+
             renderer.render(scene, camera);
         }
         animate();
-    }
+    } 
 
     return Canvas;
 }));
