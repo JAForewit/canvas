@@ -48,7 +48,7 @@
         //raycaster
         var raycaster = new THREE.Raycaster();
         var mouse = new THREE.Vector2();
-        var selectedObjects = [];
+        var touchedObject = null;
 
         window.addEventListener('mousemove', onTouchMove);
         window.addEventListener('touchmove', onTouchMove);
@@ -67,16 +67,14 @@
             mouse.y = - (y / window.innerHeight) * 2 + 1;
             checkIntersection();
         }
-        function addSelectedObject(object) {
-            selectedObjects = [];
-            selectedObjects.push(object);
-        }
         function checkIntersection() {
             raycaster.setFromCamera(mouse, camera);
             var intersects = raycaster.intersectObjects([scene], true);
             if (intersects.length > 0) {
                 var selectedObject = intersects[0].object;
-                addSelectedObject(selectedObject);
+                touchedObject = selectedObject;
+            } else {
+                touchedObject = null;
             }
         }
 
@@ -100,8 +98,12 @@
         var outlineMat = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.BackSide});
         var outlineMesh = new THREE.Mesh(cube.geometry, outlineMat);
         outlineMesh.scale.multiplyScalar(1.1);
-        scene.add(outlineMesh);
         function updateOutlines() {
+            if (touchedObject) {
+                scene.add(outlineMesh);
+            } else {
+                scene.remove(outlineMesh);
+            }
             outlineMesh.rotation.x = cube.rotation.x;
             outlineMesh.rotation.z = cube.rotation.z;
         }
