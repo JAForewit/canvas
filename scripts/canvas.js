@@ -101,11 +101,14 @@
         function updateOutlines() {
             if (touchedObject) {
                 scene.add(outlineMesh);
+                outlineMesh.rotation.set(
+                    touchedObject.rotation.x, 
+                    touchedObject.rotation.y, 
+                    touchedObject.rotation.z
+                );
             } else {
                 scene.remove(outlineMesh);
             }
-            outlineMesh.rotation.x = cube.rotation.x;
-            outlineMesh.rotation.z = cube.rotation.z;
         }
         preRenderFunctions.push(updateOutlines);
         //TODO: make outline function generic (click to outline?)
