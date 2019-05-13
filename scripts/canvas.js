@@ -25,6 +25,7 @@
 
         //scenes
         var scene = new THREE.Scene();
+        var effectsScene = new THREE.Scene();
 
         //camera
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -47,7 +48,7 @@
 
         //raycaster
         var raycaster = new THREE.Raycaster();
-        var mouse = new THREE.Vector2();
+        var mouse = new THREE.Vector2(1,-1);
         var touchedObject = null;
 
         window.addEventListener('mousemove', onTouchMove);
@@ -65,7 +66,6 @@
             }
             mouse.x = (x / window.innerWidth) * 2 - 1;
             mouse.y = - (y / window.innerHeight) * 2 + 1;
-            checkIntersection();
         }
         function checkIntersection() {
             raycaster.setFromCamera(mouse, camera);
@@ -73,10 +73,11 @@
             if (intersects.length > 0) {
                 var selectedObject = intersects[0].object;
                 touchedObject = selectedObject;
-            } else {
+            } else if (touchedObject != null) {
                 touchedObject = null;
             }
         }
+        preRenderFunctions.push(checkIntersection);
 
         //window resize
         window.addEventListener('resize', onWindowResize, false);
@@ -95,23 +96,23 @@
         scene.add(cube);
 
         //outline object
+        //CURRENTLY: outline any item hovered over
         var outlineMat = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.BackSide});
         var outlineMesh = new THREE.Mesh(cube.geometry, outlineMat);
         outlineMesh.scale.multiplyScalar(1.1);
         function updateOutlines() {
             if (touchedObject) {
-                scene.add(outlineMesh);
+                effectsScene.add(outlineMesh);
                 outlineMesh.rotation.set(
                     touchedObject.rotation.x, 
                     touchedObject.rotation.y, 
                     touchedObject.rotation.z
                 );
-            } else {
-                scene.remove(outlineMesh);
+            } else if (outlineMesh.parent === effectsScene) {
+                effectsScene.remove(outlineMesh);
             }
         }
         preRenderFunctions.push(updateOutlines);
-        //TODO: make outline function generic (click to outline?)
 
         //render loop
         function animate() {
@@ -123,6 +124,7 @@
             //pre render functions
             for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
 
+            renderer.render(effectsScene, camera);
             renderer.render(scene, camera);
         }
         animate();
