@@ -6,10 +6,7 @@
     } else {
         root.Drag = factory();
     }
-}(this, function () {
-
-    //TODO: add if (not dragging) to starthandler
-    
+}(this, function () {    
     'use strict';
     function Drag(element, options) {
         var me = this;
@@ -25,9 +22,11 @@
         me.pointer = {};
 
         var _dimensions = {},
-            _parent = me.el.parentNode;
+            _parent = me.el.parentNode,
+            _dragging = false;
 
         function startHandler(e) {
+            if (_dragging) return;
             if (e.type === 'mousedown') {
                 window.addEventListener('mousemove', moveHandler, { passive: false });
                 window.addEventListener('mouseup', endHandler);
@@ -57,6 +56,15 @@
 
             updatePosition();
             me.handlers.onStart(me, me.pointer.x, me.pointer.y);
+
+            _dragging = true;
+
+            // prevent iFrames from stealing pointer events
+            var frames = document.getElementsByTagName('iframe');
+            for (var i = 0; i < frames.length; i++) {
+                frames[i].style.pointerEvents = "none";
+                console.log("hi");
+            }
         }
 
         function moveHandler(e) {
@@ -88,6 +96,14 @@
             me.el.style.zIndex = _dimensions.zIndex;
             me.el.style.top = parseInt(me.el.style.top, 10) + _parent.scrollTop + 'px';
             me.handlers.onEnd(me);
+
+            _dragging = false;
+
+            // allow iframes to steal pointer events again
+            var frames = document.getElementsByTagName('iframe');
+            for (var i = 0; i < frames.length; i++) {
+                frames[i].style.pointerEvents = "auto";
+            }
         }
 
         function updatePosition() {
