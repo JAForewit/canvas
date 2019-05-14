@@ -4,7 +4,7 @@ function log(msg) {
     p.innerHTML = msg;
 }
 
-//setup toolbar toggles
+//setup toolbar toggle buttons
 function toggleWidgetToolbar() {
     document.getElementById("widget-toolbar").classList.toggle("open");
     document.getElementById("nav-icon").classList.toggle("open");
@@ -21,14 +21,11 @@ document.body.addEventListener('touchmove', function (e) {
 }, { passive: false });
 
 //init widget list with draggable elements
-var mylist = new WidgetList(document.getElementById("widget-toolbar"));
+var widgetToolbar = new widgetToolbar(document.getElementById("widget-toolbar"));
 
 //init scrollable elements
 for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
     var scrollEl = document.getElementsByClassName('scrollable')[i],
         options = {};
-    var scroll = new Scroll(scrollEl, options);
+    var scrollable = new Scroll(scrollEl, options);
 }
-
-//init canvas
-var canvas = new Canvas(document.getElementById('canvas'));
