@@ -7,6 +7,9 @@
         root.Drag = factory();
     }
 }(this, function () {
+
+    //TODO: add if (not dragging) to starthandler
+    
     'use strict';
     function Drag(element, options) {
         var me = this;
