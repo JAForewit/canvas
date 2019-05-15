@@ -45,7 +45,7 @@ let selectedObject; //TODO: remove
 function updateOutlines() {
     //TODO: change to "for i in selectedObjects"
     for (var i = 0; i < outlinedObjects.length; i++) {
-
+        //outline objects
     }
 
     if (selectedObject) {
