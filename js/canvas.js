@@ -36,7 +36,7 @@ function checkIntersection() {
 }
 
 //outline object
-let outlineMat = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.BackSide });
+let outlineMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
 let outlineGeo = new THREE.Geometry();
 let outline = new THREE.Mesh(outlineGeo, outlineMat);
 outline.scale.multiplyScalar(1.1);
@@ -84,12 +84,12 @@ function onWindowResize() {
 
 //lights
 let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-directionalLight.position.set(0, 0, 1);
+directionalLight.position.set(0.5, 0.5, 1);
 scene.add(directionalLight);
 
 //geometry
-let geometry = new THREE.CubeGeometry(1, 1, 1);
-let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+let geometry = new THREE.IcosahedronGeometry(1, 0);
+let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
@@ -151,6 +151,7 @@ function animate() {
 
     cube.rotation.z += 0.01;
     cube.rotation.x += 0.01;
+    cube.rotation.y -= 0.013;
 
     //pre render functions
     for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
