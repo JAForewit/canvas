@@ -93,6 +93,16 @@ let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
+let grid =new THREE.GridHelper(2,10);
+grid.setColors(0xffffff, 0xffffff);
+grid.geometry.rotateX( Math.PI / 2 );
+scene.add(grid);
+
+var axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
+
+//scene.fog = new THREE.FogExp2(0x000000, 0.128)
+
 
 //**********************************
 // render loop and game functions
