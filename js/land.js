@@ -46,8 +46,8 @@ img.onload = function () {
         plane.geometry.vertices[i].z = data[i] - 5;
     }
     plane.geometry.computeVertexNormals();
-    scene.add(plane);
 
+    scene.add(plane);
 };
 // load img source
 img.src = "./resources/heightmap.png";
