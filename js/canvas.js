@@ -94,7 +94,6 @@ let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 let grid =new THREE.GridHelper(2,10);
-grid.setColors(0xffffff, 0xffffff);
 grid.geometry.rotateX( Math.PI / 2 );
 scene.add(grid);
 
@@ -103,11 +102,14 @@ scene.add(axesHelper);
 
 //scene.fog = new THREE.FogExp2(0x000000, 0.128)
 
+//controls
+var controls = new THREE.OrbitControls( camera );
+controls.update();
 
 //**********************************
 // render loop and game functions
 //**********************************
-
+/*
 //pointer control
 canvas.addEventListener('touchstart', startHandler, { passive: false });
 canvas.addEventListener('mousedown', startHandler);
@@ -154,7 +156,7 @@ function endHandler(e) {
 function copyTouch(touch) {
     return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
 }
-
+*/
 //render loop
 function animate() {
     requestAnimationFrame(animate);
@@ -165,6 +167,9 @@ function animate() {
 
     //pre render functions
     for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
+
+    //orbital controls
+    controls.update();
 
     renderer.render(effectsScene, camera);
     renderer.render(scene, camera);
