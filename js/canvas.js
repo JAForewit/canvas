@@ -25,14 +25,18 @@ let preRenderFunctions = [];
 let raycaster = new THREE.Raycaster();
 let clipMouse = new THREE.Vector2(1, -1);
 let mouse = { x: 1, y: -1 };
-function checkIntersection() {
+function checkIntersection(object) {
     //tranlate to clipspace
     clipMouse.x = (mouse.x / window.innerWidth) * 2 - 1;
     clipMouse.y = -(mouse.y / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(clipMouse, camera);
-    var intersects = raycaster.intersectObjects([scene], true);
-    return (intersects.length > 0) ? intersects[0].object : false;
+
+    var intersects = (object != undefined)
+        ? [raycaster.intersectObject(object, false)]
+        : raycaster.intersectObjects([scene], true);
+
+    return (intersects.length > 0) ? intersects[0] : false;
 }
 
 //outline object
@@ -93,23 +97,17 @@ let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
-let grid =new THREE.GridHelper(2,10);
-grid.geometry.rotateX( Math.PI / 2 );
-scene.add(grid);
-
-var axesHelper = new THREE.AxesHelper(5);
-scene.add(axesHelper);
 
 //scene.fog = new THREE.FogExp2(0x000000, 0.128)
 
 //controls
-var controls = new THREE.OrbitControls( camera );
-controls.update();
+//var controls = new THREE.OrbitControls( camera );
+//controls.update();
 
 //**********************************
 // render loop and game functions
 //**********************************
-/*
+
 //pointer control
 canvas.addEventListener('touchstart', startHandler, { passive: false });
 canvas.addEventListener('mousedown', startHandler);
@@ -127,7 +125,9 @@ function startHandler(e) {
         e.stopPropagation();
     }
     //handle pointer start
-    selectedObject = checkIntersection();
+    var intersection = checkIntersection();
+    selectedObject = (intersection.object == cube) ? cube : undefined;
+
 }
 function moveHandler(e) {
     mouse = (e.type == 'mousemove')
@@ -137,7 +137,8 @@ function moveHandler(e) {
     e.preventDefault();
     e.stopPropagation();
     //handle pointer move
-    selectedObject = checkIntersection();
+    var intersection = checkIntersection();
+    selectedObject = (intersection.object == cube) ? cube : undefined;
 }
 function endHandler(e) {
     if (e.type === 'mouseup') {
@@ -156,7 +157,7 @@ function endHandler(e) {
 function copyTouch(touch) {
     return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
 }
-*/
+
 //render loop
 function animate() {
     requestAnimationFrame(animate);
@@ -169,7 +170,7 @@ function animate() {
     for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
 
     //orbital controls
-    controls.update();
+    //controls.update();
 
     renderer.render(effectsScene, camera);
     renderer.render(scene, camera);
