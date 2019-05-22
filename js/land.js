@@ -1,3 +1,4 @@
+/*
 //return array with height data from img
 function getHeightData(img, scale) {
 
@@ -51,3 +52,4 @@ img.onload = function () {
 };
 // load img source
 img.src = "./resources/heightmap.png";
+*/

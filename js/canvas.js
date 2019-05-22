@@ -10,6 +10,9 @@ let scene = new THREE.Scene(),
 //camera
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
+camera.position.x = -1;
+camera.position.y = -1;
+camera.lookAt(0,0,0);
 
 //renderer
 let renderer = new THREE.WebGLRenderer({
@@ -97,12 +100,16 @@ let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
+var geometry2 = new THREE.PlaneGeometry(10, 10, 9, 9);
+var material2 = new THREE.MeshStandardMaterial({ color: 0x00aa00 });
+plane = new THREE.Mesh(geometry2, material2);
+scene.add(plane);
 
 //scene.fog = new THREE.FogExp2(0x000000, 0.128)
 
 //controls
-//var controls = new THREE.OrbitControls( camera );
-//controls.update();
+var controls = new THREE.OrbitControls( camera );
+controls.update();
 
 //**********************************
 // render loop and game functions
@@ -113,11 +120,11 @@ canvas.addEventListener('touchstart', startHandler, { passive: false });
 canvas.addEventListener('mousedown', startHandler);
 function startHandler(e) {
     if (e.type === 'mousedown') {
-        canvas.addEventListener('mousemove', moveHandler, { passive: false });
+        //canvas.addEventListener('mousemove', moveHandler, { passive: false });
         canvas.addEventListener('mouseup', endHandler);
         mouse = { x: e.clientX, y: e.clientY };
     } else {
-        canvas.addEventListener('touchmove', moveHandler, { passive: false });
+        //canvas.addEventListener('touchmove', moveHandler, { passive: false });
         canvas.addEventListener('touchend', endHandler);
         canvas.addEventListener('touchcancel', endHandler);
         mouse = copyTouch(e.targetTouches[0]);
@@ -127,7 +134,14 @@ function startHandler(e) {
     //handle pointer start
     var intersection = checkIntersection();
     selectedObject = (intersection.object == cube) ? cube : undefined;
+    if (intersection.object == plane) {
+        plane.geometry.vertices[intersection.face.a].z += 0.1;
+        plane.geometry.vertices[intersection.face.b].z += 0.1;
+        plane.geometry.vertices[intersection.face.c].z += 0.1;
+        plane.geometry.computeFlatVertexNormals();
+        plane.geometry.elementsNeedUpdate = true;
 
+    };
 }
 function moveHandler(e) {
     mouse = (e.type == 'mousemove')
@@ -170,7 +184,7 @@ function animate() {
     for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
 
     //orbital controls
-    //controls.update();
+    controls.update();
 
     renderer.render(effectsScene, camera);
     renderer.render(scene, camera);
