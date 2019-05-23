@@ -101,8 +101,7 @@ let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 var geometry2 = new THREE.PlaneGeometry(10, 10, 9, 9);
-var texture2 = new THREE.TextureLoader().load('./resources/square.png');
-var material2 = new THREE.MeshStandardMaterial({ color: 0xffffff, map: texture2 });
+var material2 = new THREE.MeshStandardMaterial({ color: 0xffffff });
 plane = new THREE.Mesh(geometry2, material2);
 scene.add(plane);
 
