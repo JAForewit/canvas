@@ -378,7 +378,7 @@ vg.SqrGrid.prototype = {
 				r: c.r,
 				s: c.s,
 				h: c.h,
-				walkable: c.walkable,
+				//walkable: c.walkable,
 				userData: c.userData
 			});
 		}

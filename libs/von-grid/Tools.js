@@ -166,7 +166,7 @@ vg.Tools = {
 		var cache = typeof config.cache === 'undefined' ? false : config.cache;
 		var uri = cache ? config.url : config.url + '?t=' + Math.floor(Math.random() * 10000) + Date.now();
 		xhr.onreadystatechange = function() {
-			if (this.status === 200) {
+			if (this.readyState === 4 && this.status === 200) {
 				var json = null;
 				try {
 					json = JSON.parse(this.responseText);
@@ -177,9 +177,6 @@ vg.Tools = {
 				}
 				config.callback.call(config.scope || null, json);
 				return;
-			}
-			else if (this.status !== 0) {
-				console.warn('[Tools.getJSON] Error: '+this.status+' ('+this.statusText+') :: '+config.url);
 			}
 		}
 		xhr.open('GET', uri, true);

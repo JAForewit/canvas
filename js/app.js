@@ -1,3 +1,5 @@
+//TODO: load resources
+
 //FOR DEBUGGING
 function log(msg) {
     var p = document.getElementById('log');
@@ -31,4 +33,10 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
 }
 
 //init canvas
-var newCanvas = new gg.Canvas();
+vg.Tools.getJSON({
+    url: "./resources/pref.json",
+    callback: function(json) {
+        var newCanvas = new gg.Canvas(json);
+        console.log(newCanvas.board.grid.toJSON());
+    }
+});

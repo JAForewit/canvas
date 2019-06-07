@@ -2,7 +2,8 @@ var gg = {
     //GLOBAL properties
 };
 
-gg.Canvas = function (config) {
+//url to a canvas options JSON file
+gg.Canvas = function (options) {
     //must include <canvas id="canvas"></canavs>
     this.canvas = document.getElementById('canvas');
 
@@ -28,13 +29,12 @@ gg.Canvas = function (config) {
     this.mouse = { x: 1, y: -1 };
     this.clipMouse = new THREE.Vector2(1, -1);
 
-    //outline object
+    //outlining
     this.outlineMesh = new THREE.Mesh(
         new THREE.Geometry(),
         new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide })
     );
     this.outlineMesh.scale.multiplyScalar(1.1);
-    this.selectedObject; //TODO: replace with OutlinedObjects
 
     //AxesHelper
     this.axesHelper = new THREE.AxesHelper(100);
@@ -46,8 +46,15 @@ gg.Canvas = function (config) {
     this.controls.enableKeys = false;
     this.controls.update();
 
+    //Board
+    let grid = new vg.SqrGrid();
+    grid.fromJSON(options.grid);
+    this.board = new vg.Board(grid);
+    this.board.generateTilemap({ tileScale: 0.96 });
+    this.scene.add(this.board.group);
+
     //setup scene
-    this.init(config);
+    this.init(options.pref);
 };
 
 gg.Canvas.prototype = {
@@ -65,27 +72,8 @@ gg.Canvas.prototype = {
         return (intersects.length > 0) ? intersects[0] : false;
     },
 
-    updateOutlines: function () {
-        if (this.selectedObject) {
-            this.outlineMesh.geometry = this.selectedObject.geometry;
-            this.effectsScene.add(this.outlineMesh);
-            this.outlineMesh.rotation.set(
-                this.selectedObject.rotation.x,
-                this.selectedObject.rotation.y,
-                this.selectedObject.rotation.z
-            );
-            this.outlineMesh.position.set(
-                this.selectedObject.position.x,
-                this.selectedObject.position.y,
-                this.selectedObject.position.z
-            );
-        } else {
-            this.effectsScene.remove(this.outlineMesh);
-        }
-    },
-
-    init: function (config) {
-        //TODO: use config to initialize
+    init: function (pref) {
+        //TODO: use options to initialize
         let me = this;
 
         //lights
@@ -99,61 +87,6 @@ gg.Canvas.prototype = {
         let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
         me.cube = new THREE.Mesh(geometry, material);
         me.scene.add(me.cube);
-
-        let grid = new vg.SqrGrid({ cellSize: 11 });
-        grid.generate({ size: 5 });
-        let board = new vg.Board(grid);
-        board.generateTilemap({ tileScale: 0.96 });
-        me.scene.add(board.group);
-
-        //pointer control
-        me.canvas.addEventListener('touchstart', startHandler, { passive: false });
-        me.canvas.addEventListener('mousedown', startHandler);
-        function startHandler(e) {
-            if (e.type === 'mousedown') {
-                //canvas.addEventListener('mousemove', moveHandler, { passive: false });
-                me.canvas.addEventListener('mouseup', endHandler);
-                me.mouse = { x: e.clientX, y: e.clientY };
-            } else {
-                //canvas.addEventListener('touchmove', moveHandler, { passive: false });
-                me.canvas.addEventListener('touchend', endHandler);
-                me.canvas.addEventListener('touchcancel', endHandler);
-                me.mouse = copyTouch(e.targetTouches[0]);
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            //handle pointer start
-            let intersection = me.checkIntersection();
-            me.selectedObject = (intersection.object == me.cube) ? me.cube : undefined;
-        }
-        function moveHandler(e) {
-            me.mouse = (e.type == 'mousemove')
-                ? { x: e.clientX, y: e.clientY }
-                : copyTouch(e.targetTouches[0]);
-
-            e.preventDefault();
-            e.stopPropagation();
-            //handle pointer move
-            let intersection = me.checkIntersection();
-            me.selectedObject = (intersection.object == me.cube) ? me.cube : undefined;
-        }
-        function endHandler(e) {
-            if (e.type === 'mouseup') {
-                me.canvas.removeEventListener('mousemove', moveHandler);
-                me.canvas.removeEventListener('mouseup', endHandler);
-            } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.mouse.identifier) {
-                me.canvas.removeEventListener('touchmove', moveHandler);
-                me.canvas.removeEventListener('touchend', endHandler);
-                me.canvas.removeEventListener('touchcancel', endHandler);
-            } else {
-                return;
-            }
-            //handle pointer end
-            me.selectedObject = false;
-        }
-        function copyTouch(touch) {
-            return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
-        }
 
         //handle resize
         function resize() {
@@ -169,9 +102,7 @@ gg.Canvas.prototype = {
         //render loop
         function render() {
             requestAnimationFrame(render);
-            
             me.update();
-
             me.renderer.render(me.effectsScene, me.camera);
             me.renderer.render(me.scene, me.camera);
         }
@@ -182,8 +113,6 @@ gg.Canvas.prototype = {
         this.cube.rotation.z += 0.01;
         this.cube.rotation.x += 0.01;
         this.cube.rotation.y -= 0.013;
-
-        this.updateOutlines();
 
         this.controls.update();
     },
