@@ -1,186 +1,192 @@
-//**********************************
-// init THREE.js functions
-//**********************************
+var gg = {
+    //GLOBAL properties
+};
 
-//scenes
-let canvas = document.getElementById('canvas');
-let scene = new THREE.Scene(),
-    effectsScene = new THREE.Scene();
+gg.Canvas = function (config) {
+    //must include <canvas id="canvas"></canavs>
+    this.canvas = document.getElementById('canvas');
 
-//camera
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 150, 0);
-camera.lookAt(0,0,0);
+    //scenes
+    this.scene = new THREE.Scene();
+    this.effectsScene = new THREE.Scene();
 
-//renderer
-let renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    canvas: canvas,
-    alpha: true
-});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.autoClear = false;
-let preRenderFunctions = [];
+    //camera
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera.position.set(0, 150, 0);
+    this.camera.lookAt(0, 0, 0);
 
-//raycaster
-let raycaster = new THREE.Raycaster();
-let clipMouse = new THREE.Vector2(1, -1);
-let mouse = { x: 1, y: -1 };
-function checkIntersection(object) {
-    //tranlate to clipspace
-    clipMouse.x = (mouse.x / window.innerWidth) * 2 - 1;
-    clipMouse.y = -(mouse.y / window.innerHeight) * 2 + 1;
+    //renderer
+    this.renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas: canvas
+    });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.autoClear = false;
 
-    raycaster.setFromCamera(clipMouse, camera);
+    //raycaster
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = { x: 1, y: -1 };
+    this.clipMouse = new THREE.Vector2(1, -1);
 
-    var intersects = (object != undefined)
-        ? [raycaster.intersectObject(object, false)]
-        : raycaster.intersectObjects([scene], true);
+    //outline object
+    this.outlineMesh = new THREE.Mesh(
+        new THREE.Geometry(),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide })
+    );
+    this.outlineMesh.scale.multiplyScalar(1.1);
+    this.selectedObject; //TODO: replace with OutlinedObjects
 
-    return (intersects.length > 0) ? intersects[0] : false;
-}
+    //AxesHelper
+    this.axesHelper = new THREE.AxesHelper(100);
+    this.scene.add(this.axesHelper);
 
-//outline object
-let outlineMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
-let outlineGeo = new THREE.Geometry();
-let outline = new THREE.Mesh(outlineGeo, outlineMat);
-outline.scale.multiplyScalar(1.1);
-let outlinedObjects = [];
-let selectedObject; //TODO: remove
-function updateOutlines() {
-    //TODO: change to "for i in selectedObjects"
-    for (var i = 0; i < outlinedObjects.length; i++) {
-        //outline objects
-    }
+    //controls
+    this.controls = new THREE.OrbitControls(this.camera, this.canvas);
+    this.controls.enableRotate = false;
+    this.controls.enableKeys = false;
+    this.controls.update();
 
-    if (selectedObject) {
-        outline.geometry = selectedObject.geometry;
-        effectsScene.add(outline);
-        outline.rotation.set(
-            selectedObject.rotation.x,
-            selectedObject.rotation.y,
-            selectedObject.rotation.z
-        );
-        outline.position.set(
-            selectedObject.position.x,
-            selectedObject.position.y,
-            selectedObject.position.z
-        );
-    } else {
-        effectsScene.remove(outline);
-    }
-}
-preRenderFunctions.push(updateOutlines);
+    //setup scene
+    this.init(config);
+};
 
-//window resize
-window.addEventListener('resize', onWindowResize, false);
-function onWindowResize() {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
-}
+gg.Canvas.prototype = {
+    checkIntersection: function (object) {
+        //tranlate to clipspace
+        this.clipMouse.x = (this.mouse.x / window.innerWidth) * 2 - 1;
+        this.clipMouse.y = -(this.mouse.y / window.innerHeight) * 2 + 1;
 
+        this.raycaster.setFromCamera(this.clipMouse, this.camera);
 
-//**********************************
-// setup scene
-//**********************************
+        var intersects = (object != undefined)
+            ? [this.raycaster.intersectObject(object, false)]
+            : this.raycaster.intersectObjects([this.scene], true);
 
-//lights
-let directionalLight = new THREE.DirectionalLight(0xffffff);
-directionalLight.position.set(0, 1, 0).normalize();
-scene.add(directionalLight);
-//scene.fog = new THREE.FogExp2(0x000000, 0.128)
+        return (intersects.length > 0) ? intersects[0] : false;
+    },
 
-//geometry
-let geometry = new THREE.IcosahedronGeometry(10, 0);
-let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-let cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+    updateOutlines: function () {
+        if (this.selectedObject) {
+            this.outlineMesh.geometry = this.selectedObject.geometry;
+            this.effectsScene.add(this.outlineMesh);
+            this.outlineMesh.rotation.set(
+                this.selectedObject.rotation.x,
+                this.selectedObject.rotation.y,
+                this.selectedObject.rotation.z
+            );
+            this.outlineMesh.position.set(
+                this.selectedObject.position.x,
+                this.selectedObject.position.y,
+                this.selectedObject.position.z
+            );
+        } else {
+            this.effectsScene.remove(this.outlineMesh);
+        }
+    },
 
-var grid = new vg.SqrGrid({ cellSize: 11 });
-grid.generate({ size: 5 });
-var board = new vg.Board(grid);
-board.generateTilemap({ tileScale: 0.96 });
-scene.add(board.group);
+    init: function (config) {
+        //TODO: use config to initialize
+        let me = this;
 
-//AxesHelper
-var axesHelper = new THREE.AxesHelper( 100 );
-scene.add( axesHelper );
+        //lights
+        let directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(0, 1, 0).normalize();
+        me.scene.add(directionalLight);
+        //scene.fog = new THREE.FogExp2(0x000000, 0.128)
 
-//controls
-var controls = new THREE.OrbitControls(camera, canvas);
-controls.update();
+        //geometry
+        let geometry = new THREE.IcosahedronGeometry(10, 0);
+        let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        me.cube = new THREE.Mesh(geometry, material);
+        me.scene.add(me.cube);
 
-//**********************************
-// render loop and game functions
-//**********************************
+        let grid = new vg.SqrGrid({ cellSize: 11 });
+        grid.generate({ size: 5 });
+        let board = new vg.Board(grid);
+        board.generateTilemap({ tileScale: 0.96 });
+        me.scene.add(board.group);
 
-//pointer control
-canvas.addEventListener('touchstart', startHandler, { passive: false });
-canvas.addEventListener('mousedown', startHandler);
-function startHandler(e) {
-    if (e.type === 'mousedown') {
-        //canvas.addEventListener('mousemove', moveHandler, { passive: false });
-        canvas.addEventListener('mouseup', endHandler);
-        mouse = { x: e.clientX, y: e.clientY };
-    } else {
-        //canvas.addEventListener('touchmove', moveHandler, { passive: false });
-        canvas.addEventListener('touchend', endHandler);
-        canvas.addEventListener('touchcancel', endHandler);
-        mouse = copyTouch(e.targetTouches[0]);
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    //handle pointer start
-    var intersection = checkIntersection();
-    selectedObject = (intersection.object == cube) ? cube : undefined;
-}
-function moveHandler(e) {
-    mouse = (e.type == 'mousemove')
-        ? { x: e.clientX, y: e.clientY }
-        : copyTouch(e.targetTouches[0]);
+        //pointer control
+        me.canvas.addEventListener('touchstart', startHandler, { passive: false });
+        me.canvas.addEventListener('mousedown', startHandler);
+        function startHandler(e) {
+            if (e.type === 'mousedown') {
+                //canvas.addEventListener('mousemove', moveHandler, { passive: false });
+                me.canvas.addEventListener('mouseup', endHandler);
+                me.mouse = { x: e.clientX, y: e.clientY };
+            } else {
+                //canvas.addEventListener('touchmove', moveHandler, { passive: false });
+                me.canvas.addEventListener('touchend', endHandler);
+                me.canvas.addEventListener('touchcancel', endHandler);
+                me.mouse = copyTouch(e.targetTouches[0]);
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            //handle pointer start
+            let intersection = me.checkIntersection();
+            me.selectedObject = (intersection.object == me.cube) ? me.cube : undefined;
+        }
+        function moveHandler(e) {
+            me.mouse = (e.type == 'mousemove')
+                ? { x: e.clientX, y: e.clientY }
+                : copyTouch(e.targetTouches[0]);
 
-    e.preventDefault();
-    e.stopPropagation();
-    //handle pointer move
-    var intersection = checkIntersection();
-    selectedObject = (intersection.object == cube) ? cube : undefined;
-}
-function endHandler(e) {
-    if (e.type === 'mouseup') {
-        canvas.removeEventListener('mousemove', moveHandler);
-        canvas.removeEventListener('mouseup', endHandler);
-    } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.pointer.identifier) {
-        canvas.removeEventListener('touchmove', moveHandler);
-        canvas.removeEventListener('touchend', endHandler);
-        canvas.removeEventListener('touchcancel', endHandler);
-    } else {
-        return;
-    }
-    //handle pointer end
-    selectedObject = false;
-}
-function copyTouch(touch) {
-    return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
-}
+            e.preventDefault();
+            e.stopPropagation();
+            //handle pointer move
+            let intersection = me.checkIntersection();
+            me.selectedObject = (intersection.object == me.cube) ? me.cube : undefined;
+        }
+        function endHandler(e) {
+            if (e.type === 'mouseup') {
+                me.canvas.removeEventListener('mousemove', moveHandler);
+                me.canvas.removeEventListener('mouseup', endHandler);
+            } else if (e.targetTouches.length == 0 || e.targetTouches[0].identifier != me.mouse.identifier) {
+                me.canvas.removeEventListener('touchmove', moveHandler);
+                me.canvas.removeEventListener('touchend', endHandler);
+                me.canvas.removeEventListener('touchcancel', endHandler);
+            } else {
+                return;
+            }
+            //handle pointer end
+            me.selectedObject = false;
+        }
+        function copyTouch(touch) {
+            return { identifier: touch.identifier, x: touch.clientX, y: touch.clientY };
+        }
 
-//render loop
-function animate() {
-    requestAnimationFrame(animate);
+        //handle resize
+        function resize() {
+            //TODO: add dynamic FOV
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            me.camera.aspect = width / height;
+            me.camera.updateProjectionMatrix();
+            me.renderer.setSize(width, height);
+        }
+        window.addEventListener('resize', resize);
 
-    cube.rotation.z += 0.01;
-    cube.rotation.x += 0.01;
-    cube.rotation.y -= 0.013;
+        //render loop
+        function render() {
+            requestAnimationFrame(render);
+            
+            me.update();
 
-    //pre render functions
-    for (var i = 0; i < preRenderFunctions.length; i++) preRenderFunctions[i]();
+            me.renderer.render(me.effectsScene, me.camera);
+            me.renderer.render(me.scene, me.camera);
+        }
+        render();
+    },
 
-    //orbital controls
-    controls.update();
+    update: function () {
+        this.cube.rotation.z += 0.01;
+        this.cube.rotation.x += 0.01;
+        this.cube.rotation.y -= 0.013;
 
-    renderer.render(effectsScene, camera);
-    renderer.render(scene, camera);
-}
-animate();
+        this.updateOutlines();
+
+        this.controls.update();
+    },
+};
+
+gg.Canvas.prototype.constructor = gg.Canvas;

@@ -29,3 +29,6 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
         options = {};
     var scrollable = new Scroll(scrollEl, options);
 }
+
+//init canvas
+var newCanvas = new gg.Canvas();

@@ -1,53 +1,51 @@
 {
-    "canvas": {
-        "dice": {},
-        "discord": {},
-        "players": [
-            {
-                "name": "",
-                "can_control": []
-            }
-        ],
-        "tokens": [
-            {
-                "name": "",
-                "url": "",
-                "width": WIDTH,
-                "height": HEIGHT,
-                "x": X_POSITION,
-                "y": Y_POSITION,
-                "light": {
-                    "enabled": true,
-                    "color" : LIGHT_COLOR,
-                    "bright" : BRIGHT_LIGHT_DISTANCE,
-                    "dim": DIM_LIGHT_DISTANCE
-                },
-                "can_view": []
-            }
-        ],
-        "maps": [
-            {
-                "name": "",
-                "url": "",
-                "grid": {
-                    "enabled": false,
-                    "style": "square",
-                    "width": GRID_WIDTH,
-                    "height": GRID_HEIGHT
-                },
-                "tokens": [
-                    {
-                        "id": TOKEN_INDEX
-                    }
-                ],
-                "drawings": [
-                    {
-                        "points": [],
-                        "indices": [],
-                        "opaque": true
-                    }
-                ]
-            }
-        ]
-    }
+    "dice": {},
+    "discord": {},
+    "players": [
+        {
+            "name": "",
+            "can_control": []
+        }
+    ],
+    "tokens": [
+        {
+            "name": "",
+            "url": "",
+            "width": WIDTH,
+            "height": HEIGHT,
+            "x": X_POSITION,
+            "y": Y_POSITION,
+            "light": {
+                "enabled": true,
+                "color": LIGHT_COLOR,
+                "bright": BRIGHT_LIGHT_DISTANCE,
+                "dim": DIM_LIGHT_DISTANCE
+            },
+            "can_view": []
+        }
+    ],
+    "maps": [
+        {
+            "name": "",
+            "url": "",
+            "grid": {
+                "enabled": false,
+                "style": "square",
+                "width": GRID_WIDTH,
+                "height": GRID_HEIGHT
+            },
+            "tokens": [
+                {
+                    "id": TOKEN_INDEX
+                }
+            ],
+            "drawings": [
+                {
+                    "points": [],
+                    "indices": [],
+                    "opaque": true
+                }
+            ]
+        }
+    ]
 }
