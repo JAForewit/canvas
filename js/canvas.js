@@ -9,7 +9,7 @@ let scene = new THREE.Scene(),
 
 //camera
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(5,-1,-1);
+camera.position.set(0, 150, 0);
 camera.lookAt(0,0,0);
 
 //renderer
@@ -88,25 +88,29 @@ function onWindowResize() {
 //**********************************
 
 //lights
-let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-directionalLight.position.set(0.5, 0.5, 1);
+let directionalLight = new THREE.DirectionalLight(0xffffff);
+directionalLight.position.set(0, 1, 0).normalize();
 scene.add(directionalLight);
+//scene.fog = new THREE.FogExp2(0x000000, 0.128)
 
 //geometry
-let geometry = new THREE.IcosahedronGeometry(1, 0);
+let geometry = new THREE.IcosahedronGeometry(10, 0);
 let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
-var geometry2 = new THREE.PlaneGeometry(10, 10, 9, 9);
-var material2 = new THREE.MeshStandardMaterial({ color: 0xffffff });
-plane = new THREE.Mesh(geometry2, material2);
-scene.add(plane);
+var grid = new vg.SqrGrid({ cellSize: 11 });
+grid.generate({ size: 5 });
+var board = new vg.Board(grid);
+board.generateTilemap({ tileScale: 0.96 });
+scene.add(board.group);
 
-//scene.fog = new THREE.FogExp2(0x000000, 0.128)
+//AxesHelper
+var axesHelper = new THREE.AxesHelper( 100 );
+scene.add( axesHelper );
 
 //controls
-var controls = new THREE.OrbitControls( camera );
+var controls = new THREE.OrbitControls(camera, canvas);
 controls.update();
 
 //**********************************
@@ -132,14 +136,6 @@ function startHandler(e) {
     //handle pointer start
     var intersection = checkIntersection();
     selectedObject = (intersection.object == cube) ? cube : undefined;
-    if (intersection.object == plane) {
-        plane.geometry.vertices[intersection.face.a].z += 0.1;
-        plane.geometry.vertices[intersection.face.b].z += 0.1;
-        plane.geometry.vertices[intersection.face.c].z += 0.1;
-        plane.geometry.computeFlatVertexNormals();
-        plane.geometry.elementsNeedUpdate = true;
-
-    };
 }
 function moveHandler(e) {
     mouse = (e.type == 'mousemove')
