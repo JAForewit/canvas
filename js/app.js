@@ -1,5 +1,3 @@
-//TODO: load resources
-
 //FOR DEBUGGING
 function log(msg) {
     var p = document.getElementById('log');
@@ -32,11 +30,17 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
     var scrollable = new Scroll(scrollEl, options);
 }
 
-//init canvas
-vg.Tools.getJSON({
-    url: "./resources/pref.json",
-    callback: function(json) {
-        var newCanvas = new gg.Canvas(json);
-        console.log(newCanvas.board.grid.toJSON());
-    }
-});
+//THREE.Cache.enabled = true;
+var loader = new THREE.FileLoader();
+loader.load('./resources/pref.json', success, progress, error);
+
+function error(err) { console.error('An error happened'); };
+function progress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); };
+function success(data) {
+    var json = null;
+    try { json = JSON.parse(data); }
+    catch (err) { error(err); return; }
+
+    //load Canvas
+    var newCanvas = new gg.Canvas(json);
+};

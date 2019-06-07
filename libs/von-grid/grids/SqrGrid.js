@@ -329,18 +329,19 @@ vg.SqrGrid.prototype = {
 			]
 		}
 	*/
-	load: function(url, callback, scope) {
+	/*load: function(url, cb, scope) {
+		var self = this;
 		vg.Tools.getJSON({
 			url: url,
 			callback: function(json) {
-				this.fromJSON(json);
-				callback.call(scope || null, json);
+				self.fromJSON(json);
+				cb.call(scope || null, json);
 			},
 			cache: false,
-			scope: this
+			scope: self
 		});
-	},
-
+	},*/
+	
 	fromJSON: function(json) {
 		var i, c;
 		var cells = json.cells;
@@ -363,6 +364,7 @@ vg.SqrGrid.prototype = {
 
 	toJSON: function() {
 		var json = {
+			type: "SQUARE",
 			size: this.size,
 			cellSize: this.cellSize,
 			extrudeSettings: this.extrudeSettings,

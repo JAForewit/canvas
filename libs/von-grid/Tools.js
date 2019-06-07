@@ -161,7 +161,7 @@ vg.Tools = {
 		return color;
 	},
 
-	getJSON: function(config) {
+	/*getJSON: function(config) {
 		var xhr = new XMLHttpRequest();
 		var cache = typeof config.cache === 'undefined' ? false : config.cache;
 		var uri = cache ? config.url : config.url + '?t=' + Math.floor(Math.random() * 10000) + Date.now();
@@ -183,5 +183,5 @@ vg.Tools = {
 		xhr.setRequestHeader('Accept', 'application/json');
 		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.send('');
-	}
+	}*/
 };

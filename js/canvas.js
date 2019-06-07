@@ -47,7 +47,7 @@ gg.Canvas = function (options) {
     this.controls.update();
 
     //Board
-    let grid = new vg.SqrGrid();
+    let grid = (options.grid.type == "HEX") ? new vg.HexGrid() : new vg.SqrGrid();
     grid.fromJSON(options.grid);
     this.board = new vg.Board(grid);
     this.board.generateTilemap({ tileScale: 0.96 });
@@ -73,7 +73,7 @@ gg.Canvas.prototype = {
     },
 
     init: function (pref) {
-        //TODO: use options to initialize
+        //TODO: use pref to initialize
         let me = this;
 
         //lights

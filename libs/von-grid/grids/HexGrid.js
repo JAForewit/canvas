@@ -345,7 +345,7 @@ vg.HexGrid.prototype = {
 			]
 		}
 	*/
-	load: function(url, cb, scope) {
+	/*load: function(url, cb, scope) {
 		var self = this;
 		vg.Tools.getJSON({
 			url: url,
@@ -356,7 +356,7 @@ vg.HexGrid.prototype = {
 			cache: false,
 			scope: self
 		});
-	},
+	},*/
 
 	fromJSON: function(json) {
 		var i, c;
@@ -382,6 +382,7 @@ vg.HexGrid.prototype = {
 
 	toJSON: function() {
 		var json = {
+			type: "HEX",
 			size: this.size,
 			cellSize: this.cellSize,
 			extrudeSettings: this.extrudeSettings,
