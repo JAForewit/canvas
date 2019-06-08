@@ -14,11 +14,13 @@ function togglePrefToolbar() {
     document.getElementById("nav-icon2").classList.toggle("open");
 }
 
+/*
 //prevent all un-handled touchmove events
 document.body.addEventListener('touchmove', function (e) {
     e.preventDefault();
     e.stopPropagation();
 }, { passive: false });
+*/
 
 //init widget list with draggable elements
 var widgetToolbar = new widgetToolbar(document.getElementById("widget-toolbar"));
