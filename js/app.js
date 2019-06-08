@@ -34,7 +34,7 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
 
 //THREE.Cache.enabled = true;
 var loader = new THREE.FileLoader();
-loader.load('./resources/pref.json', success, progress, error);
+loader.load('./resources/canvas/pref.json', success, progress, error);
 
 function error(err) { console.error('An error happened'); };
 function progress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); };
