@@ -19,7 +19,7 @@ gg.Canvas = function (options) {
     //renderer
     this.renderer = new THREE.WebGLRenderer({
         antialias: true,
-        canvas: canvas
+        canvas: canvas,
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.autoClear = false;
