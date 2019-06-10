@@ -26,3 +26,4 @@ TODO:
 - player role (Player vs. GM) and player ID
 - drawing tool (draw to effects scene)
 - implement VG.mousecaster??
+- implement map editor

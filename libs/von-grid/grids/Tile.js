@@ -26,7 +26,7 @@ vg.Tile = function(config) {
 	this.material = settings.material;
 	if (!this.material) {
 		this.material = new THREE.MeshPhongMaterial({
-			color: vg.Tools.randomizeRGB('30, 30, 30', 13)
+			color: vg.Tools.randomizeRGB('70, 70, 70', 13)
 		});
 	}
 

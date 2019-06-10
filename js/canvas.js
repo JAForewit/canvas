@@ -42,7 +42,7 @@ gg.Canvas = function (options) {
 
     //controls
     this.controls = new THREE.OrbitControls(this.camera, this.canvas);
-    this.controls.enableRotate = false;
+    //this.controls.enableRotate = false;
     this.controls.enableKeys = false;
     this.controls.update();
 
@@ -77,10 +77,16 @@ gg.Canvas.prototype = {
         let me = this;
 
         //lights
-        let directionalLight = new THREE.DirectionalLight(0xffffff);
-        directionalLight.position.set(0, 1, 0).normalize();
-        me.scene.add(directionalLight);
-        //scene.fog = new THREE.FogExp2(0x000000, 0.128)
+        var hemiLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.6);
+        hemiLight.position.set(0, 500, 0);
+        me.scene.add(hemiLight);
+
+        var dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(-1, 0.75, 1);
+        dirLight.position.multiplyScalar(50);
+
+        me.scene.add(dirLight);
+
 
         //geometry
         let geometry = new THREE.IcosahedronGeometry(10, 0);
