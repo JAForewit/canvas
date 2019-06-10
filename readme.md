@@ -25,4 +25,4 @@ TODO:
 - selection manager (tracks selected items)
 - player role (Player vs. GM) and player ID
 - drawing tool (draw to effects scene)
-
+- implement VG.mousecaster??
