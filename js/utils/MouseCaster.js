@@ -32,7 +32,7 @@ vg.MouseCaster = function(group, camera, element) {
 	this.screenPosition = new THREE.Vector2();
 
 	//TODO: replace
-	this.signal = new vg.Signal();
+	//this.signal = new vg.Signal();
 
 	this.group = group;
 
@@ -78,7 +78,10 @@ vg.MouseCaster.prototype = {
 				if (this.pickedObject) {
 					// it's a new object, notify the old object is going away
 					//TODO: replace
-					this.signal.dispatch(vg.MouseCaster.OUT, this.pickedObject);
+					//this.signal.dispatch(vg.MouseCaster.OUT, this.pickedObject);
+					////////////////////////////
+					// MOUSE.OUT
+					////////////////////////////
 				}
 				/*else {
 					// hit a new object when nothing was there previously
@@ -87,7 +90,10 @@ vg.MouseCaster.prototype = {
 				this.selectedObject = null; // cancel click, otherwise it'll confuse the user
 
 				//TODO: replace
-				this.signal.dispatch(vg.MouseCaster.OVER, this.pickedObject);
+				//this.signal.dispatch(vg.MouseCaster.OVER, this.pickedObject);
+				////////////////////////////
+				// MOUSE.OVER
+				////////////////////////////
 			}
 			this.position.copy(hit.point);
 			this.screenPosition.z = hit.distance;
@@ -98,7 +104,10 @@ vg.MouseCaster.prototype = {
 				// there was though, we just moved out
 
 				//TODO: replace
-				this.signal.dispatch(vg.MouseCaster.OUT, this.pickedObject);
+				//this.signal.dispatch(vg.MouseCaster.OUT, this.pickedObject);
+				////////////////////////////
+				// MOUSE.OUT
+				////////////////////////////
 			}
 			this.pickedObject = null;
 			this.selectedObject = null;
@@ -127,7 +136,10 @@ vg.MouseCaster.prototype = {
 		this.down = evt.which === 1;
 		this.rightDown = evt.which === 3;
 
-		this.signal.dispatch(vg.MouseCaster.DOWN, this.pickedObject);
+		//this.signal.dispatch(vg.MouseCaster.DOWN, this.pickedObject);
+		////////////////////////////
+		// MOUSE.DOWN
+		////////////////////////////
 	},
 
 	_onDocumentMouseUp: function(evt) {
@@ -140,10 +152,16 @@ vg.MouseCaster.prototype = {
 		this.ctrl = evt.ctrlKey;
 
 		//TODO: replace
-		this.signal.dispatch(vg.MouseCaster.UP, this.pickedObject);
+		//this.signal.dispatch(vg.MouseCaster.UP, this.pickedObject);
+		////////////////////////////
+		// MOUSE.UP
+		////////////////////////////
 		if (this.selectedObject && this.pickedObject && this.selectedObject.uniqueID === this.pickedObject.uniqueID) {
 			//TODO: replace
-			this.signal.dispatch(vg.MouseCaster.CLICK, this.pickedObject);
+			//this.signal.dispatch(vg.MouseCaster.CLICK, this.pickedObject);
+			////////////////////////////
+			// MOUSE.CLICK
+			////////////////////////////
 		}
 
 		this.down = evt.which === 1 ? false : this.down;
@@ -179,8 +197,12 @@ vg.MouseCaster.prototype = {
 		// console.log(this.wheel);
 
 		//TODO: replace
-		this.signal.dispatch(vg.MouseCaster.WHEEL, this.wheel);
+		//this.signal.dispatch(vg.MouseCaster.WHEEL, this.wheel);
+		////////////////////////////
+		// MOUSE.WHEEL
+		////////////////////////////
 	}
 };
+
 
 vg.MouseCaster.prototype.constructor = vg.MouseCaster;
