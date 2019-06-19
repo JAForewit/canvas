@@ -87,12 +87,17 @@ gg.Canvas.prototype = {
 
         me.scene.add(dirLight);
 
-
         //geometry
-        let geometry = new THREE.IcosahedronGeometry(10, 0);
-        let material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        //let geometry = new THREE.IcosahedronGeometry(10, 0);
+        let geometry = create_d20_geometry(10);
+        let material = new THREE.MeshStandardMaterial({ 
+            color: 0xCC2551, 
+            shininess: 40,
+            flatShading: true, 
+        });
         me.cube = new THREE.Mesh(geometry, material);
         me.scene.add(me.cube);
+
 
         //handle resize
         function resize() {
