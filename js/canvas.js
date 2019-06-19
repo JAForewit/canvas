@@ -98,7 +98,6 @@ gg.Canvas.prototype = {
         );
         me.scene.add(me.d20);
 
-
         //handle resize
         function resize() {
             //TODO: add dynamic FOV
