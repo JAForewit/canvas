@@ -87,16 +87,16 @@ gg.Canvas.prototype = {
 
         me.scene.add(dirLight);
 
-        //geometry
-        //let geometry = new THREE.IcosahedronGeometry(10, 0);
-        let geometry = create_d20_geometry(10);
-        let material = new THREE.MeshStandardMaterial({ 
-            color: 0xCC2551, 
-            shininess: 40,
-            flatShading: true, 
-        });
-        me.cube = new THREE.Mesh(geometry, material);
-        me.scene.add(me.cube);
+        //geometries
+        me.d20 = new THREE.Mesh(
+            create_d20_geometry(10), 
+            new THREE.MeshStandardMaterial({ 
+                color: 0xCC2551, 
+                shininess: 40,
+                flatShading: true, 
+            })
+        );
+        me.scene.add(me.d20);
 
 
         //handle resize
@@ -121,9 +121,9 @@ gg.Canvas.prototype = {
     },
 
     update: function () {
-        this.cube.rotation.z += 0.01;
-        this.cube.rotation.x += 0.01;
-        this.cube.rotation.y -= 0.013;
+        this.d20.rotation.z += 0.01;
+        this.d20.rotation.x += 0.01;
+        this.d20.rotation.y -= 0.013;
 
         this.controls.update();
     },
