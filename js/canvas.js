@@ -89,11 +89,11 @@ gg.Canvas.prototype = {
 
         //geometries
         me.d20 = new THREE.Mesh(
-            create_d20_geometry(10), 
-            new THREE.MeshStandardMaterial({ 
-                color: 0xCC2551, 
+            create_d20_geometry(10),
+            new THREE.MeshStandardMaterial({
+                color: 0xCC2551,
                 shininess: 40,
-                flatShading: true, 
+                flatShading: true,
             })
         );
         me.scene.add(me.d20);
@@ -111,12 +111,13 @@ gg.Canvas.prototype = {
 
         //render loop
         function render() {
-            requestAnimationFrame(render);
             me.update();
             me.renderer.render(me.effectsScene, me.camera);
             me.renderer.render(me.scene, me.camera);
+
+            requestAnimationFrame(render);
         }
-        render();
+        requestAnimationFrame(render);
     },
 
     update: function () {
