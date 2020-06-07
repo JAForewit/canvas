@@ -5,7 +5,7 @@
     <title>Canvas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
@@ -13,43 +13,34 @@
     <!--FOR DEBUGGING-->
     <div id="log" style="position: absolute; right: 0; top: 0;"></div>
 
-    <!--canvas-->
-    <canvas id="canvas">
-        Your browser does not support canvas element.
-    </canvas>
 
-    <!--widget toolbar-->
-    <div id="nav-icon" onclick="toggleWidgetToolbar()"></div>
-    <div id="widget-toolbar" class="scrollable">
-        <div class="widget draggable" style="height: 300px; background: lightgreen">
-            <div class="widget-handle"></div>
-            <div class="widget-close"></div>
-        </div>
-        <div class="widget draggable" style="height: 500px; background: seagreen">
-            <div class="widget-handle"></div>
-            <div class="widget-close"></div>
-        </div>
-        <div class="widget draggable" style="height: 300px; background: lightskyblue">
-            <div class="widget-handle"></div>
-            <div class="widget-close"></div>
-        </div>
-    </div>
+    <h1 id="title">canvas.gg</h1>
+    <div id="firebaseui-auth-container"></div>
+    <div id="loader">Loading...</div>
 
-    <!--preferences toolbar-->
-    <div id="nav-icon2" onclick="togglePrefToolbar()"></div>
-    <div id="pref-toolbar" class="scrollable">
-        <div style="height: 300px; background: lightseagreen"></div>
-        <div style="height: 300px; background: lightcoral"></div>
-        <div style="height: 300px; background: lightgreen"></div>
-        <div style="height: 300px; background: lightskyblue"></div>
-    </div>
+
+    <!--setup firebase-->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.css" />
+    <script>
+        var config = {
+            apiKey: "AIzaSyAsBkU7NKqKn9gAV07V_21AkQMw3ZJQ9hQ",
+            authDomain: "canvas-2fdd2.firebaseapp.com",
+            databaseURL: "https://canvas-2fdd2.firebaseio.com",
+            projectId: "canvas-2fdd2",
+            storageBucket: "canvas-2fdd2.appspot.com",
+            messagingSenderId: "989212373436",
+            appId: "1:989212373436:web:2491b895c5a13ec3007bb9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(config);
+    </script>
 
     <!--scripts-->
-    <script type='text/javascript' src="./scripts/drag.js"></script>
-    <script type='text/javascript' src="./scripts/scroll.js"></script>
-    <script type='text/javascript' src="./scripts/widget-toolbar.js"></script>
-    <script type='text/javascript' src="./scripts/app.js"></script>
-
+    <script src="app.js"></script>
 </body>
- 
+
 </html>
