@@ -31,21 +31,3 @@ for (var i = 0; i < document.getElementsByClassName('scrollable').length; i++) {
         options = {};
     var scrollable = new Scroll(scrollEl, options);
 }
-
-//THREE.Cache.enabled = true;
-var loader = new THREE.FileLoader();
-loader.load('./resources/canvas/pref.json', success, progress, error);
-
-function error(err) { console.error('An error happened'); };
-function progress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); };
-function success(data) {
-    var json = null;
-    try { json = JSON.parse(data); }
-    catch (err) { error(err); return; }
-
-    //load Canvas
-    var newCanvas = new gg.Canvas(json);
-};
-
-//Stats
-(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
