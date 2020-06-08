@@ -1,1 +1,59 @@
-h1 { font-family: Cabin; font-size: 23px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } h3 { font-family: Cabin; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } p { font-family: Cabin; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } blockquote { font-family: Cabin; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } pre { font-family: Cabin; font-size: 11px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; }
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#loader {
+    display: none; /* change to block when loading */
+    position: fixed;
+    margin-left: -30px;
+    margin-top: -30px;
+    left: 50%;
+    top: 50%;
+    /* border: 8px solid #f3f3f3; Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.curved {
+    background-color: aliceblue;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    padding-top: 100px;
+    width: 100vw;
+}
+.curved svg {
+    display: block;/*block*/
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+      'header header header header header header'
+      'menu main main main main main'
+      'menu footer footer footer footer footer';
+    grid-gap: 10px;
+    background-color: rgba(0,0,100,0.1);
+    padding: 10px;
+}
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+}
+
+.item1 { grid-area: header; }
+.item2 { grid-area: menu; }
+.item3 { grid-area: main; }
+.item4 { grid-area: footer; }
+

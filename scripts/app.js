@@ -9,9 +9,6 @@ var uiConfig = {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            console.log(authResult);
-            let name = firebase.auth().currentUser.displayName;
-            document.getElementById('title').innerHTML = "Hi, " + name;
             return false;
         },
         uiShown: function () {
@@ -49,3 +46,4 @@ var user = firebase.auth().currentUser;
 // user.displayName
 // user.email
 // user.uid
+
