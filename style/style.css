@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 #loader {
@@ -37,14 +38,30 @@ html, body {
 
 .grid-container {
     display: grid;
+    margin: auto;
+    height: 100%;
+    max-width: 2000px;
+    grid-template-columns: auto;
+    grid-template-rows: 200px auto auto 100px;
     grid-template-areas:
-      'header header header header header header'
-      'menu main main main main main'
-      'menu footer footer footer footer footer';
+      'header'
+      'menu'
+      'main'
+      'footer';
     grid-gap: 10px;
     background-color: rgba(0,0,100,0.1);
-    padding: 10px;
 }
+@media (min-width: 1000px) {
+    .grid-container {
+        grid-template-columns: 300px auto;
+        grid-template-rows: 200px auto 100px;
+        grid-template-areas:
+          'header header'
+          'menu main'
+          'menu footer';
+    }
+}
+
 .grid-container > div {
     background-color: rgba(255, 255, 255, 0.5);
     text-align: center;
