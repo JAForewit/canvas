@@ -24,23 +24,22 @@ html, body {
     100% { transform: rotate(360deg); }
 }
 
-.curved {
-    background-color: aliceblue;
-    position: fixed;
+#top-curve {
+    background-color: #f0f8ff;
+    position: absolute;
     z-index: -1;
     top: 0;
     padding-top: 100px;
-    width: 100vw;
+    width: 100%;
 }
-.curved svg {
+#top-curve svg {
     display: block;/*block*/
 }
 
 .grid-container {
     display: grid;
     margin: auto;
-    height: 100%;
-    max-width: 2000px;
+    max-width: 1200px;
     grid-template-columns: auto;
     grid-template-rows: 200px auto auto 100px;
     grid-template-areas:
@@ -54,7 +53,7 @@ html, body {
 @media (min-width: 1000px) {
     .grid-container {
         grid-template-columns: 300px auto;
-        grid-template-rows: 200px auto 100px;
+        grid-template-rows: 200px auto 150px;
         grid-template-areas:
           'header header'
           'menu main'
@@ -71,6 +70,9 @@ html, body {
 
 .item1 { grid-area: header; }
 .item2 { grid-area: menu; }
-.item3 { grid-area: main; }
+.item3 { 
+    grid-area: main;
+    height: 1000px;
+}
 .item4 { grid-area: footer; }
 
