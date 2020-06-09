@@ -25,11 +25,9 @@ html, body {
 }
 
 #top-curve {
-    background-color: #f0f8ff;
     position: absolute;
     z-index: -1;
     top: 0;
-    padding-top: 100px;
     width: 100%;
 }
 #top-curve svg {
