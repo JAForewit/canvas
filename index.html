@@ -13,20 +13,25 @@
 <body>
     <!--FOR DEBUGGING-->
     <div id="log" style="position: absolute; right: 0; top: 0;"></div>
+    <div id="loader"></div>
 
-    <!--BACKGROUND CURVE-->
-    <div id="top-curve"></div>
-    
-    <div class="grid-container">
-        <div class="item1">Header</div>
-        <div class="item2">Menu</div>
-        <div class="item3">Main
-            <div id="firebaseui-auth-container" lang="en"></div>
+
+    <div id="page-container">
+        <div id="top-curve"></div>
+
+        <div class="grid-container">
+            <div class="item1">Header</div>
+            <div class="item2">Menu</div>
+            <div class="item3">Main
+                <div id="firebaseui-auth-container" lang="en"></div>
+            </div>
+            <div class="item4">Footer</div>
         </div>
-        <div class="item4">Footer</div>
+
+        <div id="bottom-curve"></div>
     </div>
 
-    <div id="loader"></div>
+
 
     <!--setup firebase-->
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>

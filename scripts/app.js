@@ -51,45 +51,75 @@ var user = firebase.auth().currentUser;
 
 // -----------------------------
 // RANDOMIZED SVG Curves
-
 // How to write SVG path: https://css-tricks.com/svg-path-syntax-illustrated-guide/
-function wave(frequency, amplitude, width, height) {
+function wave(svg, path, frequency, amplitude, flipped=false) {
+    
     // define starting point
-    let d = `M0,-1L0,${Math.random() * amplitude}`;
+    let d = (flipped) ? 'M0,2' : 'M0,-1';
+    d += `L0,${Math.random() * amplitude}`;
 
-    let aspect = width / (height * frequency);
     let x1, x2, y1, y2;
 
     for (var i = 0; i < frequency; i++) {
-        // define handle
-        x1 = (0.5 + i * 2) * aspect;
+        // define bezier handle and point
+        x1 = 0.5 + i * 2;
         y1 = Math.random() * amplitude;
-
-        // define point
-        x2 = (1.5 + i * 2) * aspect;
+        x2 = 1.5 + i * 2;
         y2 = Math.random() * amplitude;
-
         d += `S${x1},${y1},${x2},${y2}`;
     }
 
-    // define ending handle
-    x1 = (0.5 + frequency * 2) * aspect;
+    // define last bezier handle and point
+    x1 = 0.5 + frequency * 2;
     y1 = Math.random() * amplitude;
+    x2 = 1 + frequency * 2;
+    y2 = Math.random() * amplitude;
+    d += `S${x1},${y1},${x2},${y2}`
 
     // define ending point
-    x2 = (frequency * 2 + 1) * aspect;
-    y2 = Math.random() * amplitude;
-    d += `S${x1},${y1},${x2},${y2}L${x2},-1Z`;
+    d += (flipped) ? `L${x2},2Z` : `L${x2},-1Z`;
 
-    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", `0,-0.5,${(frequency * 2 + 1) * aspect},2`);
-    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    // set SVG attributes
+    svg.setAttribute("viewBox", `0,-1,${frequency * 2 + 1},3`);
+    svg.setAttribute("preserveAspectRatio", "none")
     path.setAttribute("d", d);
-    svg.appendChild(path);
-
-    return svg;
 }
 
-let svg = wave(3, 0.5, window.innerWidth, 800);
-document.getElementById("top-curve").appendChild(svg)
+// Create page top curve
+let topPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+let topSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+topSVG.appendChild(topPath);
+document.getElementById("top-curve").appendChild(topSVG)
 
+// create page bottom curve
+let bottomPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+let bottomSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+bottomSVG.appendChild(bottomPath);
+document.getElementById("bottom-curve").appendChild(bottomSVG)
+
+
+// -----------------------------
+// DEBOUNCED RESIZE EVENT
+var rtime;
+var timeout = false;
+var delta = 200;
+window.addEventListener('resize',function() {
+    rtime = new Date();
+    if (timeout === false) {
+        timeout = true;
+        setTimeout(resizeend, delta);
+    }
+});
+
+function resizeend() {
+    if (new Date() - rtime < delta) {
+        setTimeout(resizeend, delta);
+    } else {
+        timeout = false;
+
+        // Resize finished
+        wave(topSVG, topPath, 2, 1);
+        wave(bottomSVG, bottomPath, 1, 0.5, true)
+    }               
+}
+resizeend();
