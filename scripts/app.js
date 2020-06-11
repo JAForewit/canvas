@@ -119,7 +119,7 @@ function resizeend() {
 
         // Resize finished
         wave(topSVG, topPath, 7, 1);
-        wave(bottomSVG, bottomPath, 3, 0.5, true)
+        wave(bottomSVG, bottomPath, 3, 0.7, true)
     }
 }
 resizeend();
