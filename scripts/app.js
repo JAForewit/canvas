@@ -118,8 +118,8 @@ function resizeend() {
         timeout = false;
 
         // Resize finished
-        wave(topSVG, topPath, 20, 1);
-        wave(bottomSVG, bottomPath, 2, 0.5, true)
-    }               
+        wave(topSVG, topPath, 7, 1);
+        wave(bottomSVG, bottomPath, 3, 0.5, true)
+    }
 }
 resizeend();

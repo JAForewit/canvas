@@ -33,13 +33,13 @@ html, body {
     position: absolute;
     z-index: -1;
     top: 0;
-    height: 400px;
+    height: 600px;
     width: 100%;
 } #top-curve svg{
     height: 100%;
     width: 100%;
 } #top-curve svg path {
-    transition: d 3s ease;
+    transition: d 3s ease-in-out;
 }
 
 #bottom-curve {
@@ -52,7 +52,7 @@ html, body {
     height: 100%;
     width: 100%;
 } #bottom-curve svg path {
-    transition: d 3s ease;
+    transition: d 3s ease-in-out;
 }
 
 .grid-container {
