@@ -39,10 +39,9 @@
 } #top-curve svg{
     height: 100%;
     width: 100%;
+    display: block;
 } #top-curve svg path {
     fill: #2C2F33;
-    transition: d 3s ease-in-out;
-    -webkit-transition: d 3s ease-in-out;
 }
 
 #bottom-curve {
@@ -54,10 +53,9 @@
 } #bottom-curve svg {
     height: 100%;
     width: 100%;
+    display: block;
 } #bottom-curve svg path {
     fill: #3262a0;
-    transition: 3s ease-in-out;
-    -webkit-transition: 3s ease-in-out;
 }
 
 .grid-container {

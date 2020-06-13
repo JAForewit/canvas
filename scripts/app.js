@@ -52,8 +52,13 @@ var user = firebase.auth().currentUser;
 // -----------------------------
 // RANDOMIZED SVG Curves
 // How to write SVG path: https://css-tricks.com/svg-path-syntax-illustrated-guide/
-function wave(svg, path, frequency, amplitude, flipped=false) {
+function wave(svg, duration, frequency, amplitude, flipped = false) {
+    let path = svg.querySelector("path");
+    let animate = path.querySelector("animate");
     
+    // prevent multiple animations
+    if (svg.classList.contains("playing")) return;
+
     // define starting point
     let d = (flipped) ? 'M0,2' : 'M0,-1';
     d += `L0,${Math.random() * amplitude}`;
@@ -80,22 +85,28 @@ function wave(svg, path, frequency, amplitude, flipped=false) {
     d += (flipped) ? `L${x2},2Z` : `L${x2},-1Z`;
 
     // set SVG attributes
+    svg.classList.add("playing");
+
     svg.setAttribute("viewBox", `0,-1,${frequency * 2 + 1},3`);
-    svg.setAttribute("preserveAspectRatio", "none")
-    path.setAttribute("d", d);
+
+    let from = animate.getAttribute("to");
+    animate.setAttribute("from", from);
+    animate.setAttribute("to", d);
+    animate.setAttribute("dur", `${duration / 1000}s`)
+
+    animate.beginElement();
+
+    setTimeout(() => { 
+        path.setAttribute("d", d);
+        svg.classList.remove("playing");
+     }, duration - 10);
 }
 
 // Create page top curve
-let topPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-let topSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-topSVG.appendChild(topPath);
-document.getElementById("top-curve").appendChild(topSVG)
+let topSVG = document.querySelector("#top-curve svg");
 
 // create page bottom curve
-let bottomPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-let bottomSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-bottomSVG.appendChild(bottomPath);
-document.getElementById("bottom-curve").appendChild(bottomSVG)
+let bottomSVG = document.querySelector("#bottom-curve svg");
 
 
 // -----------------------------
@@ -103,7 +114,7 @@ document.getElementById("bottom-curve").appendChild(bottomSVG)
 var rtime;
 var timeout = false;
 var delta = 200;
-window.addEventListener('resize',function() {
+window.addEventListener('resize', function () {
     rtime = new Date();
     if (timeout === false) {
         timeout = true;
@@ -118,8 +129,8 @@ function resizeend() {
         timeout = false;
 
         // Resize finished
-        wave(topSVG, topPath, 7, 1);
-        wave(bottomSVG, bottomPath, 3, 0.7, true)
+        wave(bottomSVG, 2000, 3, 0.7, true)
+
+        wave(topSVG, 2000, 7, 1);
     }
 }
-resizeend();
