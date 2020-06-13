@@ -45,8 +45,8 @@ html, body {
     width: 100%;
 } #top-curve svg path {
     fill: #2C2F33;
-    transition: d 3s ease-in-out;
-    -webkit-transition: d 3s ease-in-out;
+    transition: 3s ease-in-out;
+    -webkit-transition: 3s ease-in-out;
 }
 
 #bottom-curve {
@@ -60,8 +60,8 @@ html, body {
     width: 100%;
 } #bottom-curve svg path {
     fill: #2C2F33;
-    transition: d 3s ease-in-out;
-    -webkit-transition: d 3s ease-in-out;
+    transition: 3s ease-in-out;
+    -webkit-transition: 3s ease-in-out;
 }
 
 .grid-container {
