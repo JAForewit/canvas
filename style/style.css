@@ -1,4 +1,8 @@
-
+html, body {
+    margin: 0;
+    padding: 0;
+}
+}
 #loader {
     display: none; /* change to block when loading */
 }
@@ -38,7 +42,7 @@
     width: 100%;
     display: block;
 } #bottom-curve svg path {
-    fill: #D6B12D;
+    fill: #2C2F33;
 }
 
 .content-grid {
