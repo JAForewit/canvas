@@ -1,24 +1,7 @@
 
 #loader {
     display: none; /* change to block when loading */
-    position: fixed;
-    margin-left: -30px;
-    margin-top: -30px;
-    left: 50%;
-    top: 50%;
-    /* border: 8px solid #f3f3f3; Light grey */
-    border-top: 8px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
 }
-  
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 
 #page-container {
     position: relative;
@@ -58,7 +41,7 @@
     fill: #D6B12D;
 }
 
-.page-container {
+.content-grid {
     display: grid;
     margin: auto;
     max-width: 1200px;
@@ -70,32 +53,10 @@
       'main'
       'footer';
     grid-gap: 10px;
-} .page-container > div {
+} .content-grid > div {
     padding: 20px 0;
-}
-
-.header { 
-    grid-area: header; 
-    display: grid;
-    grid-template-areas: 
-      'home options'
-      'logon logon';
-}
-.home { 
-    grid-area: home; 
-} #logo { height: 60px; padding: 24px;}
-.logon { grid-area: logon; }
-.options { grid-area: options; }
-
-.menu { grid-area: menu; }
-.main { 
-    grid-area: main;
-    height: 1000px;
-}
-.footer { grid-area: footer; }
-
-@media (min-width: 1000px) {
-    .page-container {
+} @media (min-width: 1000px) {
+    .content-grid {
         grid-template-columns: 300px auto;
         grid-template-rows: auto auto 150px;
         grid-template-areas:
@@ -105,10 +66,42 @@
     }
 }
 
-@media (min-width: 500px) {
+/*********** HEADER **********/
+.header { 
+    grid-area: header; 
+    display: grid;
+    grid-template-areas: 
+      'home options'
+      'logon logon';
+} @media (min-width: 500px) {
     .header { 
         grid-template-columns: 88px auto 88px;
         grid-template-areas: 
           'home logon options';
     }
 }
+.home { 
+    grid-area: home; 
+} #logo { height: 60px; padding: 24px;}
+.logon { grid-area: logon; }
+.options { grid-area: options; }
+
+/*****************************/
+
+
+/************ MENU ***********/
+.menu { grid-area: menu; }
+/*****************************/
+
+
+/************ MAIN ***********/
+.main { 
+    grid-area: main;
+    height: 1000px;
+}
+/*****************************/
+
+
+/*********** FOOTER **********/
+.footer { grid-area: footer; }
+/*****************************/
