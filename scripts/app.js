@@ -145,5 +145,4 @@ function openOptionsMenu() {
 function closeOptionsMenu() {
     document.getElementById("options-menu").classList.remove("open");
     document.getElementById("overlay").classList.remove("open");
-
 }
