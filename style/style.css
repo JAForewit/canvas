@@ -120,17 +120,22 @@ html, body {
 }
 .home { 
     grid-area: home; 
+    margin: 0px auto auto 20px;
+
 } #nav-icon-home { 
     height: 60px;
-    padding: 24px;
     cursor: pointer;
 }
 .logon { grid-area: logon; }
-.options { grid-area: options; }
-#nav-icon-options { 
-    height: 60px; 
-    padding: 24px;
+.options { 
+    grid-area: options; 
+    margin: 10px 20px auto auto;
+} #nav-icon-options { 
+    height: 40px; 
     cursor: pointer;
+    fill: #ffffff;
+} #nav-icon-options:hover {
+    fill: #D6B12D;
 }
 /*****************************/
 
