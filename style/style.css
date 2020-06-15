@@ -47,8 +47,8 @@ html, body {
 }
 
 #options-menu {
-    position: absolute;
-    height: 100%;
+    position: fixed;
+    height: 100vh;
     width: 400px;
     top: 0;
     right: -400px;
@@ -108,15 +108,9 @@ html, body {
 .header-grid { 
     grid-area: header; 
     display: grid;
+    grid-template-columns: 88px  auto;
     grid-template-areas: 
       'home options'
-      'logon logon';
-} @media (min-width: 500px) {
-    .header-grid { 
-        grid-template-columns: 88px auto 88px;
-        grid-template-areas: 
-          'home logon options';
-    }
 }
 .home { 
     grid-area: home; 
@@ -126,10 +120,9 @@ html, body {
     height: 60px;
     cursor: pointer;
 }
-.logon { grid-area: logon; }
 .options { 
     grid-area: options; 
-    margin: 10px 20px auto auto;
+    margin: 0px 20px auto auto;
 } #nav-icon-options { 
     height: 40px; 
     cursor: pointer;
