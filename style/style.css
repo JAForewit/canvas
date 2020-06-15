@@ -106,9 +106,8 @@ html, body {
 
 /*********** HEADER **********/
 .header-grid { 
-    grid-area: header; 
+    grid-area: header;
     display: grid;
-    grid-template-columns: 88px  auto;
     grid-template-areas: 
       'home options'
 }
