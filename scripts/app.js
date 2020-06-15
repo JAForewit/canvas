@@ -134,3 +134,15 @@ function resizeend() {
         wave(topSVG, 2000, 7, 1);
     }
 }
+
+
+// -----------------------------
+// TOGGLE OPTIONS MENU
+function openOptionsMenu() {
+    document.getElementById("options-menu").classList.add("open");
+    document.getElementById("overlay").classList.add("open");
+}
+function closeOptionsMenu() {
+    document.getElementById("options-menu").classList.remove("open");
+    document.getElementById("overlay").classList.remove("open");
+}
