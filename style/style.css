@@ -18,34 +18,6 @@ html, body {
     z-index: 100;
 }
 
-#top-curve {
-    position: absolute;
-    z-index: -100;
-    top: 0;
-    height: 600px;
-    width: 100%;
-} #top-curve svg{
-    height: 100%;
-    width: 100%;
-    display: block;
-} #top-curve svg path {
-    fill: #2C2F33;
-}
-
-#bottom-curve {
-    position: absolute;
-    z-index: -1;
-    bottom: 0;
-    height: 300px;
-    width: 100%;
-} #bottom-curve svg {
-    height: 100%;
-    width: 100%;
-    display: block;
-} #bottom-curve svg path {
-    fill: #2C2F33;
-}
-
 #options-menu {
     position: fixed;
     height: 100vh;
@@ -63,6 +35,7 @@ html, body {
     transform: translateX(-100%);
     box-shadow: -5px 0px black;
 }
+
 #overlay {
     visibility: hidden;
     opacity: 0;
